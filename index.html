@@ -587,7 +587,7 @@
       <div class="auth-card">
         <div class="auth-logo"><i class="fas fa-bolt"></i></div>
         <h2 style="margin-bottom: 20px; color: var(--text-main)">
-          আবিদ পোর্টাল
+          আবিদ সিকিউরিটি পোর্টাল
         </h2>
 
         <div class="auth-tabs">
@@ -599,22 +599,21 @@
           </button>
         </div>
 
+        <!-- Login form -->
         <form id="loginForm">
           <div class="form-group">
             <label>নাম</label>
-            <input
-              type="text"
-              id="loginName"
-              placeholder="আপনার নাম দিন"
-              required
-            />
+            <select id="loginName" required>
+              <option value="">নাম লোড হচ্ছে...</option>
+            </select>
           </div>
+
           <div class="form-group">
-            <label>ইমেইল এড্রেস</label>
+            <label>পাসওয়ার্ড</label>
             <input
-              type="email"
-              id="loginEmail"
-              placeholder="আপনার ইমেইল দিন"
+              type="password"
+              id="loginPassword"
+              placeholder="আপনার পাসওয়ার্ড দিন"
               required
             />
           </div>
@@ -623,6 +622,7 @@
           </button>
         </form>
 
+        <!-- Signup form -->
         <form id="signupForm" style="display: none">
           <div class="form-group">
             <label>নাম নির্বাচন করুন</label>
@@ -631,11 +631,11 @@
             </select>
           </div>
           <div class="form-group">
-            <label>ইমেইল এড্রেস</label>
+            <label>পাসওয়ার্ড দিন</label>
             <input
-              type="email"
-              id="signupEmail"
-              placeholder="আপনার ইমেইল দিন"
+              type="password"
+              id="signupPassword"
+              placeholder="একটি নতুন পাসওয়ার্ড দিন"
               required
             />
           </div>
@@ -1001,7 +1001,7 @@
 
     <script>
       const SCRIPT_URL_MSG =
-        "https://script.google.com/macros/s/AKfycbxjWFjIZbnjuhzUEpTkC8BR9glmkXNwqBPUFQ3H4kAhQ7JwYKjy-Utb9N__04AJ5Fp8/exec";
+        "https://script.google.com/macros/s/AKfycbwJqVBQB-hxji3drMIXIorf_yOctqINbwFHE-6OXDcAsvxBiiWvvGIpkIB_6dVnCYM7/exec";
 
       const SCRIPT_URL_NOTIF = "" || SCRIPT_URL_MSG; // Fallback to MSG URL if NOTIF URL is not set
 
@@ -1010,16 +1010,71 @@
       const SCRIPT_URL_MEAL = "" || SCRIPT_URL_MSG; // Fallback to MSG URL if MEAL URL is not set
 
       const GOOGLE_SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbyBXfYMgW8YaA_9TmJafaQqPQS70Kti7INamGa8zqdhrQjX-IJk_OazIjwoxKo8ez2u/exec";
+        "https://script.google.com/macros/s/AKfycbwlcdIIh4HgwW_isvFeTsOSF7cjFJs3YcCuRFRgJe44AfTkL-p7Ex2gDJQIiON79fGK/exec";
 
-      const MEAL_LOCK_START_HOUR = 22;
-      const MEAL_LOCK_START_MIN = 30;
-      const MEAL_LOCK_END_HOUR = 8;
-      const MEAL_LOCK_END_MIN = 40;
+      // const MEAL_LOCK_START_HOUR = 22;
+      // const MEAL_LOCK_START_MIN = 30;
+      // const MEAL_LOCK_END_HOUR = 5;
+      // const MEAL_LOCK_END_MIN = 40;
+      const CSV_URL_1 =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vThIiaP8iBgMS9bbYeASkztAvf4yZG9rIi0o1qvPEtqZBnTaPiO0PzhJI93LJH2HhIyEoV6P5ftqq92/pub?gid=1763748646&single=true&output=csv";
 
-      const SHEET_1_ID =
-        "2PACX-1vSfUBJWuWm_7glPm5PI7B7REUicGre1uTRSfOhkwNbPF89smWBg98VfX0_blsAb8eB9k5p-znfcjD8U";
-      const SHEET_1_URL = `https://docs.google.com/spreadsheets/d/e/${SHEET_1_ID}/pub?output=csv`;
+      let MEAL_LOCK_START_HOUR,
+        MEAL_LOCK_START_MIN,
+        MEAL_LOCK_END_HOUR,
+        MEAL_LOCK_END_MIN;
+
+      async function fetchMealLockTimes() {
+        try {
+          const response = await fetch(`${CSV_URL_1}&t=${Date.now()}`);
+          if (!response.ok) throw new Error("Network error");
+          const text = await response.text();
+          const csvSheetData1 = parseCSV(text); // Use const to keep scope clean
+
+          // 1. Filter to ensure the row has a name
+          const validRows = csvSheetData1.data.filter((row) => row.Name);
+
+          // 2. Map them into 4 separate arrays & Convert string values to Number
+          MEAL_LOCK_END_HOUR = Number(
+            validRows.map((row) => row.MealOnHour)[0],
+          );
+          MEAL_LOCK_END_MIN = Number(
+            validRows.map((row) => row.MealOnMunite)[0],
+          );
+          MEAL_LOCK_START_HOUR = Number(
+            validRows.map((row) => row.MealOffHour)[0],
+          );
+          MEAL_LOCK_START_MIN = Number(
+            validRows.map((row) => row.MealOffMunite)[0],
+          );
+
+          // Re-apply the meal lock state now that the real times are loaded
+          applyMealLockState();
+        } catch (error) {
+          console.error("Failed to load times:", error);
+          // Fallback times in case the CSV fetch fails so the app doesn't break
+          MEAL_LOCK_START_HOUR = 22;
+          MEAL_LOCK_START_MIN = 30;
+          MEAL_LOCK_END_HOUR = 5;
+          MEAL_LOCK_END_MIN = 40;
+
+          console.log(
+            "Using fallback meal lock times: ",
+            `${MEAL_LOCK_START_HOUR}:${MEAL_LOCK_START_MIN} to ${MEAL_LOCK_END_HOUR}:${MEAL_LOCK_END_MIN}`,
+          );
+          applyMealLockState();
+        }
+      }
+
+      fetchMealLockTimes();
+
+      /* const CSV_URL_1 =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vSfUBJWuWm_7glPm5PI7B7REUicGre1uTRSfOhkwNbPF89smWBg98VfX0_blsAb8eB9k5p-znfcjD8U/pub?output=csv";
+         */
+      /*
+      const CSV_URL_1 =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vThIiaP8iBgMS9bbYeASkztAvf4yZG9rIi0o1qvPEtqZBnTaPiO0PzhJI93LJH2HhIyEoV6P5ftqq92/pub?gid=1763748646&single=true&output=csv";
+        */
 
       let globalSheetData = null;
       let tempSelectedMeal = null;
@@ -1064,7 +1119,8 @@
         return "FP_" + hash(data).toUpperCase();
       }
 
-      // console.log(generateFingerprint());
+      // User fingeprint সেভ করার জন্য
+      localStorage.setItem("userFingerPrint", generateFingerprint());
 
       // --- Helper: Calculate time and formatting for countdown ---
       function getNextUnlockTime() {
@@ -1094,6 +1150,9 @@
 
         const mealData = JSON.parse(saved);
         if (!mealData.timestamp) return false;
+
+        // Safe guard: Don't execute if data isn't ready
+        if (typeof MEAL_LOCK_END_HOUR === "undefined") return false;
 
         const submitTime = new Date(mealData.timestamp);
         const now = new Date();
@@ -1137,7 +1196,7 @@
         document.getElementById("profileName").innerText = nameInput;
         document.getElementById("profileFingerprint").innerText =
           `Digital ID :   ${fp}`;
-        fetchSheetData();
+        fetchReportData();
         initApp();
       }
 
@@ -1169,21 +1228,38 @@
             mode: "cors",
             redirect: "follow",
           });
+
           const names = await res.json();
-          const select = document.getElementById("signupName");
-          select.innerHTML =
+          const selectSignup = document.getElementById("signupName");
+          //--
+          const selectLogin = document.getElementById("loginName");
+          //--
+
+          selectSignup.innerHTML =
             '<option value="">আপনার নাম নির্বাচন করুন</option>';
+
+          //--
+          selectLogin.innerHTML =
+            '<option value="">আপনার নাম নির্বাচন করুন</option>';
+          //--
           names.forEach((n) => {
             let val =
               typeof n === "string"
                 ? n
                 : n.name || n.Name || Object.values(n)[0];
-            select.innerHTML += `<option value="${val}">${val}</option>`;
+            selectSignup.innerHTML += `<option value="${val}">${val}</option>`;
+            //--
+            selectLogin.innerHTML += `<option value="${val}">${val}</option>`;
+            //--
           });
         } catch (e) {
           console.error(e);
           document.getElementById("signupName").innerHTML =
             '<option value="">নাম লোড করতে ব্যর্থ</option>';
+          //--
+          document.getElementById("loginName").innerHTML =
+            '<option value="">নাম লোড করতে ব্যর্থ</option>';
+          //--
         }
       }
 
@@ -1194,7 +1270,7 @@
         btn.innerText = "অপেক্ষা করুন...";
 
         const nameInput = document.getElementById("signupName").value;
-        const emailInput = document.getElementById("signupEmail").value;
+        const emailInput = document.getElementById("signupPassword").value;
 
         let fp = localStorage.getItem("userFingerPrint");
         if (!fp) {
@@ -1204,32 +1280,49 @@
 
         try {
           // POST request to Create Account
-          await fetch(`${SCRIPT_URL_LOGIN}?action=createAccount`, {
-            method: "POST",
-            mode: "cors",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify({
-              Name: nameInput,
-              Email: emailInput,
-              fingerprint: fp,
-            }),
-            redirect: "follow",
-          });
-          localStorage.setItem("userName", nameInput);
-          setupUserUI(nameInput, fp);
+          const response = await fetch(
+            `${SCRIPT_URL_LOGIN}?action=createAccount`,
+            {
+              method: "POST",
+              mode: "cors",
+              headers: { "Content-Type": "text/plain;charset=utf-8" },
+              body: JSON.stringify({
+                Name: nameInput,
+                Email: emailInput,
+                FingerprintSignup: fp,
+              }),
+              redirect: "follow",
+            },
+          );
 
-          auth.style.display = "none";
-          app.style.display = "block";
-          btn.innerText = "অ্যাকাউন্ট তৈরি করুন";
-          navTo("home");
-          showToast(`স্বাগতম, ${nameInput}!`);
+          // Parse the JSON response from GAS
+          const result = await response.json();
+          console.log("Signup response:", result);
+
+          // Check if the account creation was successful based on the GAS logic
+          if (result.success) {
+            localStorage.setItem("userName", nameInput);
+            setupUserUI(nameInput, fp);
+
+            auth.style.display = "none";
+            app.style.display = "block";
+            btn.innerText = "অ্যাকাউন্ট তৈরি করুন";
+            navTo("home");
+            showToast(`স্বাগতম, ${nameInput}!`);
+          } else if (result.digitalSignature) {
+            showToast("একাধিক অ্যাকাউন্ট তৈরি করার অনুমতি নেই!");
+            btn.innerText = "অ্যাকাউন্ট তৈরি করুন";
+          } else {
+            // If the user already exists (or another error occurred in GAS)
+            showToast("অ্যাকাউন্ট ইতিমধ্যে বিদ্যমান! অনুগ্রহ করে লগইন করুন।");
+            btn.innerText = "অ্যাকাউন্ট তৈরি করুন";
+          }
         } catch (error) {
           console.error("Signup error:", error);
           showToast("অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে।");
           btn.innerText = "অ্যাকাউন্ট তৈরি করুন";
         }
       };
-
       // --- Handle Login Form ---
       document.getElementById("loginForm").onsubmit = async (e) => {
         e.preventDefault();
@@ -1237,7 +1330,7 @@
         btn.innerText = "অপেক্ষা করুন...";
 
         const nameInput = document.getElementById("loginName").value;
-        const emailInput = document.getElementById("loginEmail").value;
+        const emailInput = document.getElementById("loginPassword").value;
         try {
           // GET request to Login
           const response = await fetch(
@@ -1460,6 +1553,8 @@
 
       // --- Meal Management Logic ---
       function isMealLocked() {
+        if (typeof MEAL_LOCK_START_HOUR === "undefined") return true; // Failsafe
+
         const now = new Date();
         const currentTotalMin = now.getHours() * 60 + now.getMinutes();
         const startTotalMin = MEAL_LOCK_START_HOUR * 60 + MEAL_LOCK_START_MIN;
@@ -1483,6 +1578,19 @@
         const mealBtnText = document.getElementById("mealBtnText");
         const icon = mealBtn.querySelector("i");
         const resultDiv = document.getElementById("meal-submission-result");
+
+        // --- NEW: Block UI if times are still loading ---
+        if (typeof MEAL_LOCK_START_HOUR === "undefined") {
+          mealBtn.disabled = true;
+          mealBtn.style.background = "#f1f5f9";
+          mealBtn.style.borderColor = "#e2e8f0";
+          mealBtn.style.color = "#94a3b8";
+          mealBtn.style.cursor = "wait";
+          icon.className = "fas fa-spinner fa-spin";
+          mealBtnText.innerHTML = `<span style="font-size: 15px; font-weight: 700;">চেক করা হচ্ছে...</span>`;
+          resultDiv.style.display = "none";
+          return; // Exit early. The fetch function will call this again later.
+        }
 
         const saved = localStorage.getItem("abid_meal");
         let mealData = saved ? JSON.parse(saved) : null;
@@ -1518,19 +1626,18 @@
             }
           };
 
-          // Formatting string for text line and appending the timer element
           mealBtnText.innerHTML = `
-                <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
-                    <span style="font-size: 15px; font-weight: 700;">${mainText}</span>
-                    <span id="meal-countdown-timer" style="font-size: 13px; font-weight: 700; color: var(--danger); margin-top: 4px;">চালু হবে  ঃ ${formatTimeLeft(nextUnlock)}</span>
-                </div>
-            `;
+          <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
+              <span style="font-size: 15px; font-weight: 700;">${mainText}</span>
+              <span id="meal-countdown-timer" style="font-size: 13px; font-weight: 700; color: var(--danger); margin-top: 4px;">চালু হবে  ঃ ${formatTimeLeft(nextUnlock)}</span>
+          </div>
+      `;
 
           mealLockTimer = setInterval(updateTimerUI, 1000);
 
           if (mealData) {
             resultDiv.style.display = "block";
-            resultDiv.innerHTML = `<i class="fas fa-check-circle" style="margin-right:5px;"></i> আজকের মিল: <b>${mealData.txt}</b>`;
+            resultDiv.innerHTML = `কালকের মিল &nbsp;<i class="fas fa-check-circle" style="margin-right:5px;"></i><b>${mealData.txt}</b>`;
           } else {
             resultDiv.style.display = "none";
           }
@@ -1553,9 +1660,14 @@
           }
         }
       }
-
       // Meal Selection Popup Logic
       function openMealPopup() {
+        // Prevent opening if the times haven't loaded yet
+        if (typeof MEAL_LOCK_START_HOUR === "undefined") {
+          showToast("সার্ভার থেকে ডেটা লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...");
+          return;
+        }
+
         if (isMealLocked() || checkMealSubmissionStatus()) {
           showToast("মিল নির্বাচনের সময় শেষ হয়েছে!");
           return;
@@ -1730,9 +1842,9 @@
         return { headers, data };
       }
 
-      async function fetchSheetData() {
+      async function fetchReportData() {
         try {
-          const response = await fetch(`${SHEET_1_URL}&t=${Date.now()}`);
+          const response = await fetch(`${CSV_URL_1}&t=${Date.now()}`);
           if (!response.ok) throw new Error("Network error");
           const text = await response.text();
           globalSheetData = parseCSV(text);
@@ -1750,10 +1862,10 @@
       function renderHomeData() {
         const container = document.getElementById("home-content");
         if (!globalSheetData || !globalSheetData.data.length) return;
-        const takeList = globalSheetData.data.filter((row) => row.takeName);
+        const takeList = globalSheetData.data.filter((row) => row.dueTkName);
         let html = `
                       <div style="display: flex; justify-content: space-between; align-items: center; margin: 25px 0 15px;">
-                          <h4 style="margin: 0; color: var(--text-main);">সক্রিয় ডিউ গ্রহীতা</h4>
+                          <h4 style="margin: 0; color: var(--text-main);">সক্রিয় ডিউ [বাঁকি] গ্রহীতা</h4>
                           <span style="font-size: 13px; background: #e2e8f0; color: #475569; padding: 4px 12px; border-radius: 20px; font-weight: 700;">${takeList.length} এন্ট্রি</span>
                       </div>
                       <div style="display: grid; gap: 12px;">
@@ -1762,10 +1874,10 @@
                               (item, index) => `
                               <div style="background: white; padding: 16px; border-radius: 16px; border: 1px solid #f1f5f9; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow);">
                                   <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; flex-shrink: 0;">
-                                      ${item.takeName.charAt(0).toUpperCase()}
+                                      ${item.dueTkName.charAt(0).toUpperCase()}
                                   </div>
                                   <div style="flex: 1; overflow: hidden;">
-                                      <p style="margin: 0; font-weight: 700; font-size: 15px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.takeName}</p>
+                                      <p style="margin: 0; font-weight: 700; font-size: 15px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.dueTkName}</p>
                                       <p style="margin: 0; font-size: 13px; color: var(--text-muted); margin-top: 2px;">এন্ট্রি #${index + 1}</p>
                                   </div>
                               </div>
@@ -1781,12 +1893,11 @@
         const container = document.getElementById("report-content");
         if (!globalSheetData || !globalSheetData.data.length) return;
         const rateValue =
-          globalSheetData.data.find((row) => row.mealRattt)?.mealRattt ||
-          "0.00";
+          globalSheetData.data.find((row) => row.mealRate)?.mealRate || "0.00";
         const reportData = globalSheetData.data.filter((row) => row.Name);
         let html = `
                       <div class="card" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border-radius: 24px; padding: 30px 25px; box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.4); margin-bottom: 25px;">
-                          <p style="font-size: 13px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 8px;">বর্তমান মিল রেট</p>
+                          <p style="font-size: 13px; opacity: 0.9; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">বর্তমান মিল রেট</p>
                           <h2 style="font-size: 42px; margin: 0; font-family: monospace;">${rateValue} <span style="font-size: 18px; font-family: 'Hind Siliguri', sans-serif; opacity: 0.8;">৳</span></h2>
                       </div>
                       <div class="card" style="padding: 0; overflow: hidden;">
@@ -1799,7 +1910,7 @@
                                       <tr>
                                           <th style="padding: 16px; font-weight: 700; color: var(--text-muted);">নাম</th>
                                           <th style="padding: 16px; font-weight: 700; color: var(--text-muted); text-align: center;">মিল</th>
-                                          <th style="padding: 16px; font-weight: 700; color: var(--text-muted); text-align: center;">জমা (৳)</th>
+                                          <th style="padding: 16px; font-weight: 700; color: var(--text-muted); text-align: center;">জমা [৳]</th>
                                           <th style="padding: 16px; font-weight: 700; color: var(--text-muted); text-align: center;">খরচ</th>
                                       </tr>
                                   </thead>
@@ -1810,9 +1921,9 @@
                                           <tr style="border-bottom: 1px solid #f1f5f9;">
                                               <td style="padding: 16px; font-weight: 600; color: var(--text-main); white-space: nowrap;">${row.Name}</td>
                                               <td style="padding: 16px; text-align: center;"><span style="background: var(--primary-light); color: var(--primary); padding: 5px 10px; border-radius: 8px; font-size: 13px; font-weight: bold;">${row["Total Meal"] || 0}</span></td>
-                                              <td style="padding: 16px; text-align: center; color: var(--text-muted); font-weight: 600;">${row.Given || 0}</td>
+                                              <td style="padding: 16px; text-align: center; color: var(--text-muted); font-weight: 600;">${row.GivenTk || 0}</td>
                                               <td style="padding: 16px; text-align: center;">
-                                                  ${row.Wasted && row.Wasted !== "0" ? `<span style="color: var(--danger); font-weight: 700;">${row.Wasted}</span>` : `<span style="color: #cbd5e1;">-</span>`}
+                                                  ${row.Eaten && row.Eaten !== "0" ? `<span style="color: var(--danger); font-weight: 700;">${row.Eaten}</span>` : `<span style="color: #cbd5e1;">-</span>`}
                                               </td>
                                           </tr>
                                        `,
