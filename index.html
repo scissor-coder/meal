@@ -132,7 +132,7 @@
 
       .btn-main {
         width: 100%;
-        padding: 15px;
+        padding: 9px;
         background: var(--primary);
         color: white;
         border: none;
@@ -233,14 +233,16 @@
         flex-direction: column;
         gap: 8px;
         padding: 15px;
+        overflow: scroll;
+        max-height: 451px;
       }
       .popup-item {
-        padding: 16px 20px;
+        padding: 3px 25px;
         text-align: left;
         background: #f8fafc;
         border: 2px solid transparent;
         border-radius: 14px;
-        font-size: 16px;
+        font-size: 17px;
         font-weight: 600;
         color: var(--text-main);
         font-family: inherit;
@@ -278,6 +280,7 @@
         flex-direction: column;
         gap: 16px;
         padding: 10px 0 90px 0;
+        /* padding: 10px 0 0 0; */
         height: 100%;
         overflow-y: auto;
       }
@@ -323,6 +326,10 @@
         line-height: 1.4;
         position: relative;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+
+        max-width: 75%;
+        white-space: pre-wrap;
+        word-break: break-word;
       }
       .received .bubble {
         background: white;
@@ -354,7 +361,7 @@
         pointer-events: none;
       }
       .chat-input-wrapper {
-        max-width: 600px;
+        max-width: 80%;
         width: 100%;
         display: flex;
         gap: 10px;
@@ -362,6 +369,7 @@
         padding: 8px;
         border-radius: 30px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        align-items: center;
         pointer-events: auto;
       }
       .chat-input-area input {
@@ -374,6 +382,7 @@
         font-family: inherit;
         font-size: 15px;
       }
+
       .send-btn {
         width: 44px;
         height: 44px;
@@ -516,8 +525,8 @@
         color: white;
         font-size: 9px;
         font-weight: 700;
-        padding: 2px 5px;
-        border-radius: 10px;
+        padding: 0.7px 7px;
+        border-radius: 19px;
         border: 2px solid white;
         min-width: 18px;
         text-align: center;
@@ -944,6 +953,7 @@
           <h3 style="margin: 0; font-size: 20px">আপনার মিল বেছে নিন</h3>
         </div>
         <div class="popup-list" id="popupMealOptions">
+          <!-- Fallback options: these will be dynamically overwritten by JS if fetch is successful -->
           <button
             class="popup-item"
             data-val="2.5"
@@ -1030,6 +1040,35 @@
           if (!response.ok) throw new Error("Network error");
           const text = await response.text();
           const csvSheetData1 = parseCSV(text); // Use const to keep scope clean
+
+          // --- NEW: Load Meal Options Dynamically from CSV ---
+          const popupList = document.getElementById("popupMealOptions");
+          if (popupList && csvSheetData1.data.length > 0) {
+            let mealOptionsHtml = "";
+            csvSheetData1.data.forEach((row) => {
+              const val = row["Meal Values"];
+              const txt = row["Meal data-value"];
+
+              // Add only if both exist and 'Meal Values' is not empty
+              if (val !== undefined && txt !== undefined && val.trim() !== "") {
+                mealOptionsHtml += `
+                  <button
+                    class="popup-item"
+                    data-val="${val}"
+                    onclick="highlightMeal(this, '${val}', '${txt}')"
+                  >
+                    <span>${txt}</span> <i class="fas fa-check-circle"></i>
+                  </button>
+                `;
+              }
+            });
+
+            // Replace old content with the populated CSV list
+            if (mealOptionsHtml !== "") {
+              popupList.innerHTML = mealOptionsHtml;
+            }
+          }
+          // ---------------------------------------------------
 
           // 1. Filter to ensure the row has a name
           const validRows = csvSheetData1.data.filter((row) => row.Name);
@@ -1621,7 +1660,7 @@
             } else {
               const timerSpan = document.getElementById("meal-countdown-timer");
               if (timerSpan) {
-                timerSpan.innerText = `চালু হবে  ঃ ${formatTimeLeft(nextUnlock)}`;
+                timerSpan.innerText = `চালু হবে ঃ ${formatTimeLeft(nextUnlock)}`;
               }
             }
           };
@@ -1629,7 +1668,7 @@
           mealBtnText.innerHTML = `
           <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
               <span style="font-size: 15px; font-weight: 700;">${mainText}</span>
-              <span id="meal-countdown-timer" style="font-size: 13px; font-weight: 700; color: var(--danger); margin-top: 4px;">চালু হবে  ঃ ${formatTimeLeft(nextUnlock)}</span>
+              <span id="meal-countdown-timer" style="font-size: 13px; font-weight: 700; color: var(--danger); margin-top: 4px;">চালু হবে ঃ ${formatTimeLeft(nextUnlock)}</span>
           </div>
       `;
 
