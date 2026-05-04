@@ -12,15 +12,57 @@
       @import url("https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&display=swap");
 
       :root {
-        --primary: #6366f1;
-        --primary-light: #e0e7ff;
-        --bg-body: #f1f5f9;
-        --bg-card: #ffffff;
-        --text-main: #0f172a;
-        --text-muted: #64748b;
-        --radius: 24px;
-        --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        --danger: #ef4444;
+        /* Google Material Design 3 (M3) Color Palette */
+        --md-primary: #6750a4;
+        --md-on-primary: #ffffff;
+        --md-primary-container: #eaddff;
+        --md-on-primary-container: #21005d;
+
+        --md-secondary: #625b71;
+        --md-on-secondary: #ffffff;
+        --md-secondary-container: #e8def8;
+        --md-on-secondary-container: #1d192b;
+
+        --md-tertiary-container: #ffd8e4;
+        --md-on-tertiary-container: #31111d;
+
+        --md-error: #b3261e;
+        --md-on-error: #ffffff;
+        --md-error-container: #f9dedc;
+        --md-on-error-container: #410e0b;
+
+        --md-surface: #fef7ff;
+        --md-on-surface: #1d1b20;
+        --md-surface-variant: #e7e0ec;
+        --md-on-surface-variant: #49454f;
+
+        --md-surface-container: #f3edf7;
+        --md-surface-container-high: #ece6f0;
+        --md-outline: #79747e;
+        --md-outline-variant: #cac4d0;
+
+        /* Mapping original variables to M3 */
+        --primary: var(--md-primary);
+        --primary-light: var(--md-primary-container);
+        --bg-body: var(--md-surface-container);
+        --bg-card: var(--md-surface);
+        --text-main: var(--md-on-surface);
+        --text-muted: var(--md-on-surface-variant);
+        --danger: var(--md-error);
+
+        /* M3 Elevations & Shapes */
+        --radius: 12px; /* M3 standard card */
+        --radius-pill: 100px; /* M3 buttons */
+        --shadow-1:
+          0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+          0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+        --shadow-2:
+          0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+          0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+        --shadow-3:
+          0px 1px 3px 0px rgba(0, 0, 0, 0.3),
+          0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+        --shadow: var(--shadow-1);
       }
 
       * {
@@ -37,12 +79,12 @@
         overflow-x: hidden;
       }
 
-      /* --- লগইন স্ক্রিন --- */
+      /* --- লগইন স্ক্রিন (Material 3 Hero Style) --- */
       #auth-screen {
         position: fixed;
         inset: 0;
         z-index: 500;
-        background: linear-gradient(135deg, #0f172a, #1e293b);
+        background: var(--md-surface-container);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -50,105 +92,124 @@
       }
 
       .auth-card {
-        background: rgba(255, 255, 255, 0.98);
+        background: var(--md-surface);
         width: 100%;
         max-width: 400px;
         padding: 40px 30px;
-        border-radius: var(--radius);
+        border-radius: 28px; /* M3 large surface */
         text-align: center;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        box-shadow: var(--shadow-3);
       }
 
       .auth-logo {
-        width: 70px;
-        height: 70px;
-        background: var(--primary-light);
-        color: var(--primary);
-        border-radius: 20px;
+        width: 72px;
+        height: 72px;
+        background: var(--md-primary-container);
+        color: var(--md-on-primary-container);
+        border-radius: 24px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 32px;
         margin: 0 auto 20px;
-        transform: rotate(-10deg);
-        box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.2);
+        box-shadow: var(--shadow-1);
       }
 
-      /* --- Auth Tabs --- */
+      /* --- Auth Tabs (Material Segmented Button) --- */
       .auth-tabs {
         display: flex;
-        gap: 10px;
+        gap: 0;
         margin-bottom: 25px;
-        background: #f1f5f9;
-        padding: 5px;
-        border-radius: 16px;
+        background: transparent;
+        border: 1px solid var(--md-outline);
+        border-radius: var(--radius-pill);
+        overflow: hidden;
       }
       .auth-tab {
         flex: 1;
         padding: 12px;
         border: none;
         background: transparent;
-        border-radius: 12px;
         font-family: inherit;
-        font-weight: 700;
+        font-weight: 600;
         color: var(--text-muted);
         cursor: pointer;
-        transition: 0.3s;
+        transition:
+          background-color 0.2s,
+          color 0.2s;
+        border-right: 1px solid var(--md-outline);
+      }
+      .auth-tab:last-child {
+        border-right: none;
       }
       .auth-tab.active {
-        background: white;
-        color: var(--primary);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        background: var(--md-secondary-container);
+        color: var(--md-on-secondary-container);
       }
 
+      /* --- Material 3 Outlined Text Fields --- */
       .form-group {
         text-align: left;
         margin-bottom: 20px;
+        position: relative;
       }
       .form-group label {
         display: block;
-        font-weight: 600;
-        margin-bottom: 8px;
-        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 6px;
+        font-size: 13px;
         color: var(--text-main);
       }
       .form-group input,
       .form-group select {
         width: 100%;
         padding: 14px 16px;
-        border: 2px solid #e2e8f0;
-        border-radius: 14px;
+        border: 1px solid var(--md-outline);
+        border-radius: 4px;
         outline: none;
         font-family: inherit;
-        transition: all 0.3s ease;
-        background: #f8fafc;
+        transition: all 0.2s ease;
+        background: transparent;
+        color: var(--text-main);
+        font-size: 16px;
+      }
+      .form-group input:hover,
+      .form-group select:hover {
+        border-color: var(--text-main);
       }
       .form-group input:focus,
       .form-group select:focus {
-        border-color: var(--primary);
-        background: white;
-        box-shadow: 0 0 0 4px var(--primary-light);
+        border: 2px solid var(--md-primary);
+        padding: 13px 15px; /* Offset the 2px border */
       }
 
+      /* --- Material 3 Filled Button --- */
       .btn-main {
         width: 100%;
-        padding: 9px;
-        background: var(--primary);
-        color: white;
+        padding: 12px;
+        background: var(--md-primary);
+        color: var(--md-on-primary);
         border: none;
-        border-radius: 14px;
-        font-weight: 700;
+        border-radius: var(--radius-pill);
+        font-weight: 600;
         cursor: pointer;
         font-family: inherit;
-        font-size: 16px;
+        font-size: 15px;
         transition:
-          transform 0.2s,
+          background-color 0.2s,
           box-shadow 0.2s;
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        box-shadow: var(--shadow-1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-main:hover {
+        box-shadow: var(--shadow-2);
+        background: #5b4694; /* slightly darker primary */
       }
       .btn-main:active {
-        transform: scale(0.97);
-        box-shadow: none;
+        box-shadow: var(--shadow-1);
       }
 
       /* --- অ্যাপ কন্টেন্ট --- */
@@ -161,26 +222,26 @@
       }
 
       header {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(12px);
-        padding: 15px 20px;
+        background: var(--md-surface);
+        padding: 12px 20px;
         position: sticky;
         top: 0;
         z-index: 100;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.08); /* slight separation */
       }
 
       main {
-        padding: 20px;
+        padding: 16px;
         max-width: 600px;
         margin: 0 auto;
       }
 
       .view-section {
         display: none;
-        animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        animation: fadeIn 0.3s ease-out;
       }
       .view-section.active {
         display: block;
@@ -188,7 +249,7 @@
       @keyframes fadeIn {
         from {
           opacity: 0;
-          transform: translateY(15px);
+          transform: translateY(10px);
         }
         to {
           opacity: 1;
@@ -196,36 +257,35 @@
         }
       }
 
-      /* কার্ড ডিজাইন */
+      /* M3 Elevated Card */
       .card {
-        background: var(--bg-card);
+        background: var(--md-surface);
         border-radius: var(--radius);
-        padding: 24px;
-        margin-bottom: 20px;
-        box-shadow: var(--shadow);
+        padding: 20px;
+        margin-bottom: 16px;
+        box-shadow: var(--shadow-1);
       }
 
-      /* --- মিল নির্বাচন পপ-আপ ডিজাইন --- */
+      /* --- মিল নির্বাচন (M3 Tonal Button Style) --- */
       .meal-btn-selector {
         width: 100%;
         padding: 16px;
-        background: white;
-        border: 2px solid var(--primary-light);
-        color: var(--primary);
+        background: var(--md-secondary-container);
+        color: var(--md-on-secondary-container);
+        border: none;
         border-radius: 16px;
-        font-weight: 700;
+        font-weight: 600;
         font-size: 16px;
         cursor: pointer;
         display: flex;
         justify-content: space-between;
         align-items: center;
         font-family: inherit;
-        transition: 0.3s;
-        margin-bottom: 15px;
+        transition: 0.2s;
+        margin-bottom: 16px;
       }
       .meal-btn-selector:active {
-        background: var(--primary-light);
-        transform: scale(0.98);
+        background: var(--md-surface-variant);
       }
 
       .popup-list {
@@ -236,15 +296,16 @@
         overflow: scroll;
         max-height: 451px;
       }
+      /* M3 List Items */
       .popup-item {
-        padding: 3px 25px;
+        padding: 16px 20px;
         text-align: left;
-        background: #f8fafc;
-        border: 2px solid transparent;
-        border-radius: 14px;
-        font-size: 17px;
-        font-weight: 600;
-        color: var(--text-main);
+        background: var(--md-surface);
+        border: 1px solid var(--md-outline-variant);
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--md-on-surface);
         font-family: inherit;
         cursor: pointer;
         transition: 0.2s;
@@ -252,18 +313,15 @@
         justify-content: space-between;
         align-items: center;
       }
-      .popup-item:active {
-        transform: scale(0.98);
-      }
       .popup-item i {
         display: none;
-        color: var(--primary);
+        color: var(--md-primary);
         font-size: 20px;
       }
       .popup-item.selected {
-        background: var(--primary-light);
-        border-color: var(--primary);
-        color: var(--primary);
+        background: var(--md-primary-container);
+        border-color: var(--md-primary-container);
+        color: var(--md-on-primary-container);
       }
       .popup-item.selected i {
         display: inline-block;
@@ -272,15 +330,21 @@
       /* --- মেসেঞ্জার সেকশন --- */
       #messenger {
         height: calc(100vh - 160px);
-        position: relative;
+        position: relative; /* Containing block for the absolute input */
+        flex-direction: column;
+        overflow: hidden;
+        display: none; /* Hide by default to respect the view-section class */
+      }
+
+      #messenger.active {
+        display: flex; /* Override .view-section.active's display: block to maintain flex layout */
       }
 
       .chat-container {
         display: flex;
         flex-direction: column;
-        gap: 16px;
-        padding: 10px 0 90px 0;
-        /* padding: 10px 0 0 0; */
+        gap: 17px;
+        padding: 10px 0 85px 0; /* Space at bottom so messages aren't hidden by the input */
         height: 100%;
         overflow-y: auto;
       }
@@ -300,7 +364,7 @@
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background: #e2e8f0;
+        background: var(--md-surface-variant);
         flex-shrink: 0;
         margin-bottom: 20px;
       }
@@ -314,81 +378,84 @@
       }
       .sender-name {
         font-size: 11px;
-        font-weight: 700;
+        font-weight: 600;
         color: var(--text-muted);
         margin: 0 4px;
       }
 
+      /* M3 Chat Bubbles */
       .bubble {
         padding: 12px 16px;
         border-radius: 20px;
         font-size: 15px;
         line-height: 1.4;
         position: relative;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
-
-        max-width: 75%;
-        white-space: pre-wrap;
+        max-width: 85%;
         word-break: break-word;
       }
       .received .bubble {
-        background: white;
-        color: var(--text-main);
+        background: var(--md-surface-variant);
+        color: var(--md-on-surface-variant);
         border-bottom-left-radius: 4px;
       }
       .sent .bubble {
-        background: var(--primary);
-        color: white;
+        background: var(--md-primary-container);
+        color: var(--md-on-primary-container);
         border-bottom-right-radius: 4px;
       }
       .msg-time {
         font-size: 10px;
-        opacity: 0.7;
+        opacity: 0.8;
         margin-top: 2px;
+        color: var(--text-muted);
       }
 
+      /* M3 Chat Input (Fixed jumping and typing) */
       .chat-input-area {
-        position: fixed;
-        bottom: 85px;
+        position: absolute; /* Fixes stretching/jumping during tab navigation */
+        bottom: 0;
         left: 0;
         right: 0;
-        background: transparent;
-        padding: 10px 20px;
+        background: var(
+          --md-surface
+        ); /* Prevents messages from showing behind the input bar */
+        padding: 12px 16px;
         display: flex;
         align-items: center;
         justify-content: center;
         z-index: 10;
-        pointer-events: none;
+        border-top: 1px solid var(--md-outline-variant);
       }
       .chat-input-wrapper {
-        max-width: 80%;
+        max-width: 100%;
         width: 100%;
         display: flex;
         gap: 10px;
-        background: white;
-        padding: 8px;
+        background: var(--md-surface-container-high);
+        padding: 6px 6px 6px 16px;
         border-radius: 30px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-1);
         align-items: center;
-        pointer-events: auto;
       }
+
       .chat-input-area input {
         flex: 1;
-        padding: 12px 18px;
-        border-radius: 25px;
+        padding: 10px 0;
         border: none;
         background: transparent;
         outline: none;
+        color: var(--md-on-surface);
         font-family: inherit;
         font-size: 15px;
       }
+      /* ---------------------------------- */
 
       .send-btn {
-        width: 44px;
-        height: 44px;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
-        background: var(--primary);
-        color: white;
+        background: var(--md-primary);
+        color: var(--md-on-primary);
         border: none;
         display: flex;
         align-items: center;
@@ -400,32 +467,33 @@
         transform: scale(0.9);
       }
 
-      /* নোটিফিকেশন UI */
+      /* M3 Notification Items */
       .notif-item {
         padding: 16px;
-        border-radius: 20px;
-        background: white;
+        border-radius: var(--radius);
+        background: var(--md-surface);
         margin-bottom: 12px;
         display: flex;
-        gap: 15px;
+        gap: 16px;
         position: relative;
-        box-shadow: var(--shadow);
-        transition: 0.3s;
+        box-shadow: var(--shadow-1);
+        transition: 0.2s;
         border: 1px solid transparent;
       }
       .notif-item.unread {
-        border-color: var(--primary-light);
-        background: #f8faff;
+        background: var(--md-surface);
+        border-color: var(--md-outline-variant);
       }
       .notif-item.read {
-        opacity: 0.7;
+        opacity: 0.6;
         box-shadow: none;
-        border-color: #f1f5f9;
+        border-color: var(--md-surface-variant);
+        background: var(--md-surface-container);
       }
       .notif-icon {
         width: 48px;
         height: 48px;
-        border-radius: 16px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -433,52 +501,46 @@
         flex-shrink: 0;
       }
       .unread .notif-icon {
-        background: var(--primary-light);
-        color: var(--primary);
+        background: var(--md-tertiary-container);
+        color: var(--md-on-tertiary-container);
       }
       .read .notif-icon {
-        background: #f1f5f9;
-        color: #94a3b8;
+        background: var(--md-surface-variant);
+        color: var(--md-on-surface-variant);
       }
 
-      /* পঠিত চিহ্নিত করুন বাটন স্টাইল */
+      /* M3 Tonal Button for Mark Read */
       .mark-read-btn {
         margin-top: 12px;
-        padding: 6px 14px;
-        font-size: 12px;
-        color: var(--primary);
-        background: var(--primary-light);
+        padding: 8px 16px;
+        font-size: 13px;
+        color: var(--md-on-secondary-container);
+        background: var(--md-secondary-container);
         border: none;
-        border-radius: 10px;
-        font-weight: 700;
+        border-radius: var(--radius-pill);
+        font-weight: 600;
         cursor: pointer;
         font-family: inherit;
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: background-color 0.2s;
       }
       .mark-read-btn:hover {
-        background: var(--primary);
-        color: white;
-      }
-      .mark-read-btn:active {
-        transform: scale(0.95);
+        background: var(--md-outline-variant);
       }
 
-      /* অ্যান্ড্রয়েড মেটেরিয়াল ৩ স্টাইল বটম নেভিগেশন */
+      /* M3 Bottom Navigation */
       .bottom-nav {
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
+        background: var(--md-surface-container);
         height: 80px;
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         align-items: center;
-        border-top: 1px solid #f1f5f9;
         z-index: 200;
         padding-bottom: env(safe-area-inset-bottom);
       }
@@ -486,19 +548,22 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         gap: 4px;
         background: none;
         border: none;
-        color: var(--text-muted);
+        color: var(--md-on-surface-variant);
         font-family: inherit;
-        font-weight: 600;
-        font-size: 11px;
+        font-weight: 500;
+        font-size: 12px;
         cursor: pointer;
+        height: 100%;
       }
       .nav-icon-wrap {
-        padding: 6px 16px;
-        border-radius: 20px;
-        transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        width: 64px;
+        height: 32px;
+        border-radius: 16px;
+        transition: 0.2s ease-in-out;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -508,38 +573,38 @@
         font-size: 20px;
       }
       .nav-item.active {
-        color: var(--text-main);
-        font-weight: 700;
+        color: var(--md-on-surface);
+        font-weight: 600;
       }
       .nav-item.active .nav-icon-wrap {
-        background: var(--primary-light);
-        color: var(--primary);
+        background: var(--md-secondary-container);
+        color: var(--md-on-secondary-container);
       }
 
       /* ন্যাভ ব্যাজ স্টাইল */
       .nav-badge {
         position: absolute;
-        top: -2px;
-        right: -2px;
-        background: var(--danger);
-        color: white;
-        font-size: 9px;
-        font-weight: 700;
-        padding: 0.7px 7px;
-        border-radius: 19px;
-        border: 2px solid white;
-        min-width: 18px;
+        top: 2px;
+        right: 12px;
+        background: var(--md-error);
+        color: var(--md-on-error);
+        font-size: 10px;
+        font-weight: 600;
+        padding: 0 4px;
+        border-radius: 8px;
+        min-width: 16px;
         text-align: center;
-        transform: translate(25%, -25%);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 0 2px var(--md-surface-container);
+      }
+      .nav-item.active .nav-badge {
+        box-shadow: 0 0 0 2px var(--md-secondary-container);
       }
 
-      /* মোডাল */
+      /* M3 Modal/Dialog */
       .modal {
         position: fixed;
         inset: 0;
-        background: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(4px);
+        background: rgba(0, 0, 0, 0.4);
         display: none;
         align-items: center;
         justify-content: center;
@@ -547,12 +612,12 @@
         padding: 20px;
       }
       .modal-content {
-        background: white;
+        background: var(--md-surface-container-high);
         border-radius: 28px;
         width: 100%;
         max-width: 360px;
         overflow: hidden;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        box-shadow: var(--shadow-3);
         animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       }
       @keyframes slideUp {
@@ -566,21 +631,21 @@
         }
       }
 
-      /* ডাইনামিক টোস্ট স্টাইল */
+      /* M3 Snackbar / Toast */
       .toast-box {
         position: fixed;
         bottom: 100px;
         left: 50%;
         transform: translateX(-50%) translateY(100px);
-        background: #1e293b;
-        color: white;
-        padding: 14px 28px;
-        border-radius: 50px;
+        background: #313033; /* M3 inverse surface */
+        color: #f4eff4; /* M3 inverse on-surface */
+        padding: 14px 24px;
+        border-radius: 4px;
         font-size: 14px;
-        transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: 0.3s ease;
         z-index: 2000;
-        font-weight: 600;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        font-weight: 500;
+        box-shadow: var(--shadow-2);
         opacity: 0;
         pointer-events: none;
       }
@@ -595,7 +660,9 @@
     <div id="auth-screen">
       <div class="auth-card">
         <div class="auth-logo"><i class="fas fa-bolt"></i></div>
-        <h2 style="margin-bottom: 20px; color: var(--text-main)">
+        <h2
+          style="margin-bottom: 24px; color: var(--text-main); font-weight: 600"
+        >
           আবিদ সিকিউরিটি পোর্টাল
         </h2>
 
@@ -608,7 +675,6 @@
           </button>
         </div>
 
-        <!-- Login form -->
         <form id="loginForm">
           <div class="form-group">
             <label>নাম</label>
@@ -631,7 +697,6 @@
           </button>
         </form>
 
-        <!-- Signup form -->
         <form id="signupForm" style="display: none">
           <div class="form-group">
             <label>নাম নির্বাচন করুন</label>
@@ -657,18 +722,17 @@
 
     <div id="app-content">
       <header>
-        <h3 id="view-title" style="font-size: 20px">হোম</h3>
+        <h3 id="view-title" style="font-size: 20px; font-weight: 600">হোম</h3>
         <div style="display: flex; gap: 15px; align-items: center">
           <div
             style="
-              width: 38px;
-              height: 38px;
+              width: 40px;
+              height: 40px;
               border-radius: 50%;
-              background: var(--primary-light);
+              background: var(--md-surface-variant);
               overflow: hidden;
               cursor: pointer;
-              border: 2px solid white;
-              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+              border: 1px solid var(--md-outline-variant);
             "
           >
             <img
@@ -683,7 +747,13 @@
       <main>
         <section id="home" class="view-section active">
           <div class="card">
-            <h4 style="margin-bottom: 16px; color: var(--text-main)">
+            <h4
+              style="
+                margin-bottom: 16px;
+                color: var(--text-main);
+                font-weight: 600;
+              "
+            >
               আপনার মিল নির্বাচন করুন
             </h4>
 
@@ -700,51 +770,51 @@
               id="meal-submission-result"
               style="
                 padding: 14px;
-                border-radius: 14px;
-                background: var(--primary-light);
-                color: var(--primary);
-                font-weight: 700;
+                border-radius: 12px;
+                background: var(--md-primary-container);
+                color: var(--md-on-primary-container);
+                font-weight: 600;
                 text-align: center;
                 display: none;
+                margin-bottom: 16px;
               "
             ></div>
 
-            <div style="margin-top: 20px">
+            <div style="margin-top: 10px">
               <button
                 onclick="toggleOthersMeal()"
                 style="
                   width: 100%;
-                  padding: 14px;
-                  background: #f8fafc;
-                  color: var(--text-main);
-                  border: 1px solid #e2e8f0;
-                  border-radius: 14px;
-                  font-weight: 700;
+                  padding: 16px;
+                  background: var(--md-surface-container);
+                  color: var(--md-on-surface);
+                  border: none;
+                  border-radius: 12px;
+                  font-weight: 600;
                   cursor: pointer;
                   font-family: inherit;
                   display: flex;
                   justify-content: space-between;
                   align-items: center;
-                  transition: 0.3s;
+                  transition: 0.2s;
                 "
               >
                 <span>আজকের মিল এন্ট্রি দেখুন</span>
                 <i
                   class="fas fa-chevron-down"
                   id="others-meal-icon"
-                  style="color: var(--text-muted)"
+                  style="color: var(--md-on-surface-variant)"
                 ></i>
               </button>
               <div
                 id="others-meal-list"
                 style="
                   display: none;
-                  margin-top: 10px;
-                  background: white;
-                  border-radius: 14px;
-                  border: 1px solid #f1f5f9;
-                  padding: 15px;
-                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+                  margin-top: 8px;
+                  background: var(--md-surface);
+                  border-radius: 12px;
+                  border: 1px solid var(--md-outline-variant);
+                  padding: 16px;
                 "
               >
                 <div style="text-align: center; color: var(--text-muted)">
@@ -837,18 +907,18 @@
               padding: 0 5px;
             "
           >
-            <span id="notif-count" style="font-weight: 700; font-size: 16px"
+            <span id="notif-count" style="font-weight: 600; font-size: 16px"
               >নতুন নোটিফিকেশন</span
             >
             <button
               onclick="clearNotif()"
               style="
-                color: var(--danger);
-                background: #fee2e2;
-                padding: 6px 14px;
-                border-radius: 10px;
+                color: var(--md-error);
+                background: var(--md-error-container);
+                padding: 8px 16px;
+                border-radius: var(--radius-pill);
                 border: none;
-                font-weight: 700;
+                font-weight: 600;
                 cursor: pointer;
                 font-family: inherit;
                 transition: 0.2s;
@@ -869,20 +939,22 @@
                 src="https://api.dicebear.com/7.x/avataaars/svg?seed=User"
                 style="
                   width: 100px;
-                  margin-bottom: 15px;
+                  margin-bottom: 16px;
                   border-radius: 50%;
-                  background: var(--primary-light);
-                  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-                  border: 4px solid white;
+                  background: var(--md-surface-variant);
+                  box-shadow: var(--shadow-1);
+                  border: 2px solid var(--md-outline-variant);
                 "
               />
             </div>
-            <h3 id="profileName" style="font-size: 22px">ইউজার</h3>
+            <h3 id="profileName" style="font-size: 24px; font-weight: 600">
+              ইউজার
+            </h3>
             <p
               style="
                 color: var(--text-muted);
-                font-size: 15px;
-                margin-top: 5px;
+                font-size: 14px;
+                margin-top: 4px;
                 font-weight: 500;
               "
               id="profileFingerprint"
@@ -891,16 +963,16 @@
             </p>
             <hr
               style="
-                margin: 25px 0;
+                margin: 24px 0;
                 border: none;
-                border-top: 1px solid #f1f5f9;
+                border-top: 1px solid var(--md-outline-variant);
               "
             />
             <button
               class="btn-main"
               style="
-                background: #fff0f0;
-                color: var(--danger);
+                background: var(--md-error-container);
+                color: var(--md-on-error-container);
                 box-shadow: none;
               "
               onclick="logout()"
@@ -944,16 +1016,18 @@
       <div class="modal-content" onclick="event.stopPropagation()">
         <div
           style="
-            background: var(--primary);
-            padding: 24px;
-            text-align: center;
-            color: white;
+            background: var(--md-surface-container-high);
+            padding: 24px 24px 16px;
+            text-align: left;
+            color: var(--md-on-surface);
+            border-bottom: 1px solid var(--md-outline-variant);
           "
         >
-          <h3 style="margin: 0; font-size: 20px">আপনার মিল বেছে নিন</h3>
+          <h3 style="margin: 0; font-size: 22px; font-weight: 500">
+            আপনার মিল বেছে নিন
+          </h3>
         </div>
         <div class="popup-list" id="popupMealOptions">
-          <!-- Fallback options: these will be dynamically overwritten by JS if fetch is successful -->
           <button
             class="popup-item"
             data-val="2.5"
@@ -984,15 +1058,22 @@
           </button>
         </div>
         <div
-          style="padding: 20px; display: flex; gap: 12px; background: #f8fafc"
+          style="
+            padding: 16px 24px 24px;
+            display: flex;
+            gap: 8px;
+            background: var(--md-surface-container-high);
+            justify-content: flex-end;
+          "
         >
           <button
             class="btn-main"
             style="
-              background: #e2e8f0;
-              color: var(--text-main);
-              flex: 1;
+              background: transparent;
+              color: var(--md-primary);
               box-shadow: none;
+              width: auto;
+              padding: 10px 16px;
             "
             onclick="closeMealPopup()"
           >
@@ -1000,7 +1081,7 @@
           </button>
           <button
             class="btn-main"
-            style="flex: 2"
+            style="width: auto; padding: 10px 24px"
             onclick="confirmMealSelection()"
           >
             সাবমিট করুন
@@ -1011,7 +1092,7 @@
 
     <script>
       const SCRIPT_URL_MSG =
-        "https://script.google.com/macros/s/AKfycbwJqVBQB-hxji3drMIXIorf_yOctqINbwFHE-6OXDcAsvxBiiWvvGIpkIB_6dVnCYM7/exec";
+        "https://script.google.com/macros/s/AKfycbwlcdIIh4HgwW_isvFeTsOSF7cjFJs3YcCuRFRgJe44AfTkL-p7Ex2gDJQIiON79fGK/exec";
 
       const SCRIPT_URL_NOTIF = "" || SCRIPT_URL_MSG; // Fallback to MSG URL if NOTIF URL is not set
 
@@ -1019,13 +1100,11 @@
 
       const SCRIPT_URL_MEAL = "" || SCRIPT_URL_MSG; // Fallback to MSG URL if MEAL URL is not set
 
-      const GOOGLE_SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbwlcdIIh4HgwW_isvFeTsOSF7cjFJs3YcCuRFRgJe44AfTkL-p7Ex2gDJQIiON79fGK/exec";
-
       // const MEAL_LOCK_START_HOUR = 22;
       // const MEAL_LOCK_START_MIN = 30;
       // const MEAL_LOCK_END_HOUR = 5;
       // const MEAL_LOCK_END_MIN = 40;
+
       const CSV_URL_1 =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vThIiaP8iBgMS9bbYeASkztAvf4yZG9rIi0o1qvPEtqZBnTaPiO0PzhJI93LJH2HhIyEoV6P5ftqq92/pub?gid=1763748646&single=true&output=csv";
 
@@ -1107,14 +1186,6 @@
 
       fetchMealLockTimes();
 
-      /* const CSV_URL_1 =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vSfUBJWuWm_7glPm5PI7B7REUicGre1uTRSfOhkwNbPF89smWBg98VfX0_blsAb8eB9k5p-znfcjD8U/pub?output=csv";
-         */
-      /*
-      const CSV_URL_1 =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vThIiaP8iBgMS9bbYeASkztAvf4yZG9rIi0o1qvPEtqZBnTaPiO0PzhJI93LJH2HhIyEoV6P5ftqq92/pub?gid=1763748646&single=true&output=csv";
-        */
-
       let globalSheetData = null;
       let tempSelectedMeal = null;
       let mealLockTimer = null; // Timer variable for the countdown
@@ -1159,7 +1230,7 @@
       }
 
       // User fingeprint সেভ করার জন্য
-      localStorage.setItem("userFingerPrint", generateFingerprint());
+      // .setItem("userFingerPrint", generateFingerprint());
 
       // --- Helper: Calculate time and formatting for countdown ---
       function getNextUnlockTime() {
@@ -1382,7 +1453,8 @@
           const data = await response.json();
           // Assuming Google Script returns an object on success (or validate accordingly)
           if (data && data.success !== false && !data.error) {
-            let fp = localStorage.getItem("userFingerPrint");
+            let fp =
+              data.logedFingerprint || localStorage.getItem("userFingerPrint");
             if (!fp) {
               fp = generateFingerprint();
               localStorage.setItem("userFingerPrint", fp);
@@ -1452,6 +1524,7 @@
         if (viewId === "messenger") {
           const box = document.getElementById("chatBox");
           box.scrollTop = box.scrollHeight;
+
           fetchMessages();
         } else if (viewId === "notification") {
           fetchNotifications();
@@ -1621,12 +1694,11 @@
         // --- NEW: Block UI if times are still loading ---
         if (typeof MEAL_LOCK_START_HOUR === "undefined") {
           mealBtn.disabled = true;
-          mealBtn.style.background = "#f1f5f9";
-          mealBtn.style.borderColor = "#e2e8f0";
-          mealBtn.style.color = "#94a3b8";
+          mealBtn.style.background = "var(--md-surface-variant)";
+          mealBtn.style.color = "var(--md-on-surface-variant)";
           mealBtn.style.cursor = "wait";
           icon.className = "fas fa-spinner fa-spin";
-          mealBtnText.innerHTML = `<span style="font-size: 15px; font-weight: 700;">চেক করা হচ্ছে...</span>`;
+          mealBtnText.innerHTML = `<span style="font-size: 15px; font-weight: 600;">চেক করা হচ্ছে...</span>`;
           resultDiv.style.display = "none";
           return; // Exit early. The fetch function will call this again later.
         }
@@ -1639,9 +1711,8 @@
 
         if (naturallyLocked || submittedOnce) {
           mealBtn.disabled = true;
-          mealBtn.style.background = "#f1f5f9";
-          mealBtn.style.borderColor = "#e2e8f0";
-          mealBtn.style.color = "#94a3b8";
+          mealBtn.style.background = "var(--md-surface-variant)";
+          mealBtn.style.color = "var(--md-on-surface-variant)";
           mealBtn.style.cursor = "not-allowed";
           icon.className = "fas fa-lock";
 
@@ -1667,8 +1738,8 @@
 
           mealBtnText.innerHTML = `
           <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
-              <span style="font-size: 15px; font-weight: 700;">${mainText}</span>
-              <span id="meal-countdown-timer" style="font-size: 13px; font-weight: 700; color: var(--danger); margin-top: 4px;">চালু হবে ঃ ${formatTimeLeft(nextUnlock)}</span>
+              <span style="font-size: 15px; font-weight: 600;">${mainText}</span>
+              <span id="meal-countdown-timer" style="font-size: 13px; font-weight: 600; color: var(--md-error); margin-top: 4px;">চালু হবে ঃ ${formatTimeLeft(nextUnlock)}</span>
           </div>
       `;
 
@@ -1682,9 +1753,8 @@
           }
         } else {
           mealBtn.disabled = false;
-          mealBtn.style.background = "white";
-          mealBtn.style.borderColor = "var(--primary-light)";
-          mealBtn.style.color = "var(--primary)";
+          mealBtn.style.background = "var(--md-secondary-container)";
+          mealBtn.style.color = "var(--md-on-secondary-container)";
           mealBtn.style.cursor = "pointer";
           icon.className = "fas fa-chevron-circle-down";
           mealBtnText.innerHTML = mealData
@@ -1849,9 +1919,9 @@
           let html = '<ul style="list-style: none; padding: 0; margin: 0">';
           todaysMeals.forEach((m) => {
             html += `
-              <li style="display: flex; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; margin-bottom: 10px;">
-                <span style="font-weight: 600; font-size: 15px; color: var(--text-main);">${m.name || m.Name || "অজানা"}</span>
-                <span style="background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 10px; font-size: 13px; font-weight: bold;">${m.mealText || m.meal || ""}</span>
+              <li style="display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--md-outline-variant); margin-bottom: 12px;">
+                <span style="font-weight: 500; font-size: 15px; color: var(--md-on-surface);">${m.name || m.Name || "অজানা"}</span>
+                <span style="background: var(--md-primary-container); color: var(--md-on-primary-container); padding: 4px 12px; border-radius: 8px; font-size: 13px; font-weight: 600;">${m.mealText || m.meal || ""}</span>
               </li>`;
           });
           html += "</ul>";
@@ -1903,21 +1973,21 @@
         if (!globalSheetData || !globalSheetData.data.length) return;
         const takeList = globalSheetData.data.filter((row) => row.dueTkName);
         let html = `
-                      <div style="display: flex; justify-content: space-between; align-items: center; margin: 25px 0 15px;">
-                          <h4 style="margin: 0; color: var(--text-main);">সক্রিয় ডিউ [বাঁকি] গ্রহীতা</h4>
-                          <span style="font-size: 13px; background: #e2e8f0; color: #475569; padding: 4px 12px; border-radius: 20px; font-weight: 700;">${takeList.length} এন্ট্রি</span>
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin: 24px 0 16px;">
+                          <h4 style="margin: 0; color: var(--text-main); font-weight: 600;">সক্রিয় ডিউ [বাঁকি] গ্রহীতা</h4>
+                          <span style="font-size: 13px; background: var(--md-surface-variant); color: var(--md-on-surface-variant); padding: 4px 12px; border-radius: var(--radius-pill); font-weight: 600;">${takeList.length} এন্ট্রি</span>
                       </div>
                       <div style="display: grid; gap: 12px;">
                           ${takeList
                             .map(
                               (item, index) => `
-                              <div style="background: white; padding: 16px; border-radius: 16px; border: 1px solid #f1f5f9; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow);">
-                                  <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; flex-shrink: 0;">
+                              <div style="background: var(--md-surface); padding: 16px; border-radius: 12px; border: 1px solid var(--md-outline-variant); display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow-1);">
+                                  <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--md-tertiary-container); color: var(--md-on-tertiary-container); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
                                       ${item.dueTkName.charAt(0).toUpperCase()}
                                   </div>
                                   <div style="flex: 1; overflow: hidden;">
-                                      <p style="margin: 0; font-weight: 700; font-size: 15px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.dueTkName}</p>
-                                      <p style="margin: 0; font-size: 13px; color: var(--text-muted); margin-top: 2px;">এন্ট্রি #${index + 1}</p>
+                                      <p style="margin: 0; font-weight: 600; font-size: 16px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.dueTkName}</p>
+                                      <p style="margin: 0; font-size: 13px; color: var(--text-muted); margin-top: 4px;">এন্ট্রি #${index + 1}</p>
                                   </div>
                               </div>
                           `,
@@ -1935,34 +2005,34 @@
           globalSheetData.data.find((row) => row.mealRate)?.mealRate || "0.00";
         const reportData = globalSheetData.data.filter((row) => row.Name);
         let html = `
-                      <div class="card" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border-radius: 24px; padding: 30px 25px; box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.4); margin-bottom: 25px;">
+                      <div class="card" style="background: var(--md-primary); color: var(--md-on-primary); border-radius: 24px; padding: 32px 24px; box-shadow: var(--shadow-2); margin-bottom: 24px;">
                           <p style="font-size: 13px; opacity: 0.9; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">বর্তমান মিল রেট</p>
-                          <h2 style="font-size: 42px; margin: 0; font-family: monospace;">${rateValue} <span style="font-size: 18px; font-family: 'Hind Siliguri', sans-serif; opacity: 0.8;">৳</span></h2>
+                          <h2 style="font-size: 42px; margin: 0; font-weight: 500;">${rateValue} <span style="font-size: 18px; opacity: 0.8;">৳</span></h2>
                       </div>
                       <div class="card" style="padding: 0; overflow: hidden;">
-                          <div style="padding: 20px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; background: #f8fafc;">
-                              <h4 style="margin: 0;">মিল রিপোর্ট</h4>
+                          <div style="padding: 20px; border-bottom: 1px solid var(--md-outline-variant); display: flex; justify-content: space-between; align-items: center; background: var(--md-surface-container-high);">
+                              <h4 style="margin: 0; font-weight: 500;">মিল রিপোর্ট</h4>
                           </div>
                           <div style="overflow-x: auto;">
                               <table style="width: 100%; text-align: left; border-collapse: collapse; font-size: 14px;">
-                                  <thead style="background: white; border-bottom: 2px solid #f1f5f9;">
+                                  <thead style="background: var(--md-surface); border-bottom: 1px solid var(--md-outline-variant);">
                                       <tr>
-                                          <th style="padding: 16px; font-weight: 700; color: var(--text-muted);">নাম</th>
-                                          <th style="padding: 16px; font-weight: 700; color: var(--text-muted); text-align: center;">মিল</th>
-                                          <th style="padding: 16px; font-weight: 700; color: var(--text-muted); text-align: center;">জমা [৳]</th>
-                                          <th style="padding: 16px; font-weight: 700; color: var(--text-muted); text-align: center;">খরচ</th>
+                                          <th style="padding: 16px; font-weight: 600; color: var(--text-muted);">নাম</th>
+                                          <th style="padding: 16px; font-weight: 600; color: var(--text-muted); text-align: center;">মিল</th>
+                                          <th style="padding: 16px; font-weight: 600; color: var(--text-muted); text-align: center;">জমা [৳]</th>
+                                          <th style="padding: 16px; font-weight: 600; color: var(--text-muted); text-align: center;">খরচ</th>
                                       </tr>
                                   </thead>
                                   <tbody>
                                       ${reportData
                                         .map(
                                           (row) => `
-                                          <tr style="border-bottom: 1px solid #f1f5f9;">
-                                              <td style="padding: 16px; font-weight: 600; color: var(--text-main); white-space: nowrap;">${row.Name}</td>
-                                              <td style="padding: 16px; text-align: center;"><span style="background: var(--primary-light); color: var(--primary); padding: 5px 10px; border-radius: 8px; font-size: 13px; font-weight: bold;">${row["Total Meal"] || 0}</span></td>
-                                              <td style="padding: 16px; text-align: center; color: var(--text-muted); font-weight: 600;">${row.GivenTk || 0}</td>
+                                          <tr style="border-bottom: 1px solid var(--md-outline-variant);">
+                                              <td style="padding: 16px; font-weight: 500; color: var(--text-main); white-space: nowrap;">${row.Name}</td>
+                                              <td style="padding: 16px; text-align: center;"><span style="background: var(--md-primary-container); color: var(--md-on-primary-container); padding: 4px 10px; border-radius: 8px; font-size: 13px; font-weight: 600;">${row["Total Meal"] || 0}</span></td>
+                                              <td style="padding: 16px; text-align: center; color: var(--text-muted); font-weight: 500;">${row.GivenTk || 0}</td>
                                               <td style="padding: 16px; text-align: center;">
-                                                  ${row.Eaten && row.Eaten !== "0" ? `<span style="color: var(--danger); font-weight: 700;">${row.Eaten}</span>` : `<span style="color: #cbd5e1;">-</span>`}
+                                                  ${row.Eaten && row.Eaten !== "0" ? `<span style="color: var(--md-error); font-weight: 600;">${row.Eaten}</span>` : `<span style="color: var(--md-outline-variant);">-</span>`}
                                               </td>
                                           </tr>
                                        `,
@@ -2045,7 +2115,7 @@
 
         if (notifs.length === 0) {
           box.innerHTML =
-            "<div style='text-align:center; padding:50px 20px; color:#94a3b8;'><i class='fas fa-bell-slash fa-3x' style='margin-bottom:15px; opacity:0.3;'></i><p style='font-weight:600;'>কোন নতুন নোটিফিকেশন নেই</p></div>";
+            "<div style='text-align:center; padding:50px 20px; color:var(--md-outline);'><i class='fas fa-bell-slash fa-3x' style='margin-bottom:16px; opacity:0.5;'></i><p style='font-weight:500;'>কোন নতুন নোটিফিকেশন নেই</p></div>";
           document.getElementById("notif-count").innerText = "০টি নোটিফিকেশন";
           return;
         }
@@ -2060,8 +2130,8 @@
                       <div class="notif-item ${n.read ? "read" : "unread"}" id="${n.id}">
                           <div class="notif-icon"><i class="fas ${n.icon || "fa-bell"}"></i></div>
                           <div style="flex: 1;">
-                              <p style="font-weight: 700; font-size: 15px; color: var(--text-main); margin-bottom: 4px;">${n.title}</p>
-                              <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.4;">${n.desc}</p>
+                              <p style="font-weight: 600; font-size: 16px; color: var(--text-main); margin-bottom: 4px;">${n.title}</p>
+                              <p style="font-size: 14px; color: var(--text-muted); line-height: 1.4;">${n.desc}</p>
                               ${!n.read ? `<button onclick="markRead('${n.id}')" class="mark-read-btn"><i class="fas fa-check"></i> পঠিত হিসেবে চিহ্নিত করুন</button>` : ""}
                           </div>
                       </div>
@@ -2100,7 +2170,10 @@
         t.innerText = msg;
         document.body.appendChild(t);
 
-        setTimeout(() => t.classList.add("show"), 10);
+        // trigger reflow
+        void t.offsetWidth;
+
+        t.classList.add("show");
         setTimeout(() => {
           t.classList.remove("show");
           setTimeout(() => t.remove(), 400);
