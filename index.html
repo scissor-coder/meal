@@ -959,8 +959,14 @@
               "
               id="profileFingerprint"
             >
-              Fingerprint:
+              
             </p>
+            <br>
+            <p  style="
+                color: var(--text-muted);
+                font-size: 9px;
+                margin-top: 4px;
+                font-weight: 500;">Developer \> Abid Al Jamee</p>
             <hr
               style="
                 margin: 24px 0;
@@ -1305,7 +1311,7 @@
         document.getElementById("profileAvatar").src = avatarUrl;
         document.getElementById("profileName").innerText = nameInput;
         document.getElementById("profileFingerprint").innerText =
-          `Digital ID :   ${fp}`;
+          `DIGITAL ID : \u00A0 ${fp}`;
         fetchReportData();
         initApp();
       }
@@ -1763,7 +1769,7 @@
 
           if (mealData) {
             resultDiv.style.display = "block";
-            resultDiv.innerHTML = `<i class="fas fa-check-circle" style="margin-right:5px;"></i> আজকের মিল: <b>${mealData.txt}</b>`;
+            resultDiv.innerHTML = `<i class="fas fa-check-circle" style="margin-right:5px;"></i> নির্বাচিত ছিল: <b>${mealData.txt}</b>`;
           } else {
             resultDiv.style.display = "none";
           }
