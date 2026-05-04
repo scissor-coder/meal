@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mess Meal Submission by ABID AL JAMEE</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        /* Material Design 3 Color Palette */
+        --md-primary: #6750a4;
+        --md-on-primary: #ffffff;
+        --md-primary-container: #eaddff;
+        --md-on-primary-container: #21005d;
+        --md-surface: #fef7ff;
+        --md-on-surface: #1c1b1f;
+        --md-surface-variant: #e7e0ec;
+        --md-on-surface-variant: #49454f;
+        --md-surface-container: #f3edf7;
+        --md-outline: #79747e;
+        --md-error: #b3261e;
+        --md-on-error: #ffffff;
+        --md-success: #146c2e;
+        --md-on-success: #ffffff;
+        --md-inverse-surface: #313033;
+        --md-inverse-on-surface: #f4eff4;
+
+        /* Material Elevations */
+        --md-elevation-1:
+          0px 1px 3px 1px rgba(0, 0, 0, 0.15),
+          0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+        --md-elevation-3:
+          0px 4px 8px 3px rgba(0, 0, 0, 0.15),
+          0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Roboto", sans-serif;
+        background: var(--md-surface-container);
+        color: var(--md-on-surface);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 600px;
+        background: var(--md-surface);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: var(--md-elevation-1);
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: var(--md-on-surface);
+        margin: 0 0 8px 0;
+      }
+
+      p {
+        color: var(--md-on-surface-variant);
+        font-size: 0.875rem;
+        margin: 0;
+      }
+
+      .form-group {
+        margin-bottom: 24px;
+      }
+
+      label.input-label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--md-on-surface-variant);
+        margin-bottom: 8px;
+        letter-spacing: 0.033em;
+      }
+
+      input[type="date"],
+      select {
+        width: 100%;
+        padding: 16px;
+        border: 1px solid var(--md-outline);
+        border-radius: 12px;
+        font-size: 1rem;
+        font-family: inherit;
+        color: var(--md-on-surface);
+        background: var(--md-surface);
+        transition: all 0.2s ease;
+      }
+
+      select.meal-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%2349454f%22%20d%3D%22M7%2010l5%205%205-5z%22%2F%3E%3C%2Fsvg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        background-size: 24px;
+        cursor: pointer;
+      }
+
+      input:focus,
+      select:focus {
+        outline: 2px solid var(--md-primary);
+        outline-offset: -1px;
+        border-color: transparent;
+      }
+
+      .meal-entry {
+        background: var(--md-surface);
+        border: 1px solid var(--md-surface-variant);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+        position: relative;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .remove-btn {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: transparent;
+        color: var(--md-on-surface-variant);
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+
+      .remove-btn:hover {
+        background: var(--md-surface-variant);
+        color: var(--md-error);
+      }
+
+      .multi-select-container {
+        max-height: 250px;
+        overflow-y: auto;
+        background: var(--md-surface);
+        border: 1px solid var(--md-outline);
+        border-radius: 12px;
+        padding: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .name-item {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 16px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 100px;
+        border: 1px solid var(--md-outline);
+        background: var(--md-surface);
+        color: var(--md-on-surface);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        user-select: none;
+      }
+
+      .name-item:hover:not(.disabled) {
+        background: var(--md-surface-variant);
+      }
+
+      .name-item input {
+        display: none;
+      }
+
+      .name-item:has(input:checked) {
+        background: var(--md-primary-container);
+        color: var(--md-on-primary-container);
+        border-color: transparent;
+      }
+
+      .name-item.disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        background: var(--md-surface-variant);
+        border-color: transparent;
+      }
+
+      .btn-add {
+        background: var(--md-primary-container);
+        color: var(--md-on-primary-container);
+        border: none;
+        width: 100%;
+        padding: 16px;
+        border-radius: 100px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 0.875rem;
+        margin-bottom: 24px;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .btn-add:hover {
+        background: #d0bcfe;
+      }
+
+      .btn-submit {
+        width: 100%;
+        background: var(--md-primary);
+        color: var(--md-on-primary);
+        border: none;
+        padding: 16px;
+        border-radius: 100px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          box-shadow 0.2s;
+        box-shadow: var(--md-elevation-1);
+      }
+
+      .btn-submit:hover {
+        background: #56428f;
+        box-shadow: var(--md-elevation-3);
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 16px;
+      }
+
+      .modal-content {
+        background: var(--md-surface);
+        padding: 24px;
+        border-radius: 28px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: var(--md-elevation-3);
+      }
+
+      .modal-content h3 {
+        margin: 0 0 16px 0;
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: var(--md-on-surface);
+      }
+
+      .preview-box {
+        font-size: 0.875rem;
+        margin-bottom: 24px;
+        line-height: 1.5;
+        color: var(--md-on-surface-variant);
+        max-height: 50vh;
+        overflow-y: auto;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .btn-cancel,
+      .btn-confirm {
+        background: transparent;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 100px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 0.875rem;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .btn-cancel {
+        color: var(--md-primary);
+      }
+
+      .btn-cancel:hover:not(:disabled) {
+        background: rgba(103, 80, 164, 0.08);
+      }
+
+      .btn-confirm {
+        background: var(--md-primary);
+        color: var(--md-on-primary);
+      }
+
+      .btn-confirm:hover:not(:disabled) {
+        background: #56428f;
+      }
+
+      .btn-confirm:disabled,
+      .btn-cancel:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Custom Toast Notification Styles */
+      .toast-container {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 2000;
+        pointer-events: none;
+      }
+
+      .toast {
+        background: var(--md-inverse-surface);
+        color: var(--md-inverse-on-surface);
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: var(--md-elevation-3);
+        opacity: 0;
+        transform: translateY(20px);
+        animation:
+          toastEnter 0.3s cubic-bezier(0, 0, 0.2, 1) forwards,
+          toastLeave 0.3s cubic-bezier(0.4, 0, 1, 1) forwards 3.5s;
+        max-width: 90vw;
+        width: max-content;
+      }
+
+      .toast.success {
+        background: var(--md-success);
+        color: var(--md-on-success);
+      }
+
+      .toast.error {
+        background: var(--md-error);
+        color: var(--md-on-error);
+      }
+
+      @keyframes toastEnter {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes toastLeave {
+        to {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h2>Order Group Meals</h2>
+        <p>Mess Meal Submission by ABID AL JAMEE</p>
+      </header>
+
+      <form id="mealForm">
+        <div class="form-group">
+          <label class="input-label">Delivery Date</label>
+          <input type="date" id="dateInput" required />
+        </div>
+
+        <div id="entriesContainer"></div>
+
+        <button type="button" class="btn-add" onclick="addMealEntry()">
+          <span class="material-symbols-outlined" style="font-size: 20px"
+            >add</span
+          >
+          Add Another Meal
+        </button>
+        <button type="submit" class="btn-submit">Review Order</button>
+      </form>
+    </div>
+
+    <div id="modalOverlay" class="modal-overlay">
+      <div class="modal-content">
+        <h3>Confirm Order</h3>
+        <div id="previewBox" class="preview-box"></div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeModal()" id="btnCancel">
+            Back
+          </button>
+          <button class="btn-confirm" onclick="submitToSheet()" id="btnConfirm">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script>
+      const CSV_URL =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vThIiaP8iBgMS9bbYeASkztAvf4yZG9rIi0o1qvPEtqZBnTaPiO0PzhJI93LJH2HhIyEoV6P5ftqq92/pub?gid=1763748646&single=true&output=csv";
+
+      const SHEET_APP_URL =
+        "https://script.google.com/macros/s/AKfycbxbVAtO6ycxRS8lL-ZGm84tTQpoHLeFDc6JFRW6YIXnnY4nyZVM1dOcDAm7GiU8iyQX/exec";
+
+      let cachedNames = [];
+      let cachedMeals = [];
+      let currentPayload = null;
+
+      const bdDate = new Date().toLocaleDateString("en-CA", {
+        timeZone: "Asia/Dhaka",
+      });
+
+      document.getElementById("dateInput").value = bdDate;
+
+      // Custom Toast Function
+      function showToast(message, icon = "info", type = "default") {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `<span class="material-symbols-outlined" style="font-size: 20px;">${icon}</span> ${message}`;
+        container.appendChild(toast);
+
+        // Remove from DOM after animation completes (3.5s + 0.3s)
+        setTimeout(() => {
+          toast.remove();
+        }, 3800);
+      }
+
+      async function init() {
+        await fetchData();
+        addMealEntry();
+      }
+
+      async function fetchData() {
+        try {
+          const response = await fetch(CSV_URL);
+          const data = await response.text();
+          const rows = data.split("\n").map((r) => r.split(","));
+          const namesSet = new Set();
+          const mealsMap = new Map();
+
+          for (let i = 1; i < rows.length; i++) {
+            const col = rows[i];
+            if (col.length < 13) continue;
+            if (col[0]) namesSet.add(col[0].trim());
+            if (col[11] && col[12])
+              mealsMap.set(col[11].trim(), col[12].trim());
+          }
+          cachedNames = Array.from(namesSet).sort();
+          cachedMeals = Array.from(mealsMap.entries());
+        } catch (e) {
+          showToast(
+            "Error loading CSV data. Please refresh.",
+            "error",
+            "error",
+          );
+        }
+      }
+
+      function addMealEntry() {
+        const id = Date.now();
+        const container = document.getElementById("entriesContainer");
+        const entry = document.createElement("div");
+        entry.className = "meal-entry";
+        entry.id = `entry-${id}`;
+
+        const mealOptions = cachedMeals
+          .map(([val, text]) => `<option value="${val}">${text}</option>`)
+          .join("");
+
+        const nameOptions = cachedNames
+          .map(
+            (name) => `
+                <label class="name-item" data-name="${name}">
+                    <input type="checkbox" value="${name}" onchange="syncUniqueSelection()"> ${name}
+                </label>`,
+          )
+          .join("");
+
+        entry.innerHTML = `
+                <button type="button" class="remove-btn" onclick="removeEntry(${id})" aria-label="Remove Meal">
+                  <span class="material-symbols-outlined">close</span>
+                </button>
+                <div class="form-group" style="padding-right: 40px;">
+                    <label class="input-label">Meal Choice</label>
+                    <select class="meal-select" required onchange="syncUniqueMealSelection()">
+                        <option value="" disabled selected>Choose a dish...</option>
+                        ${mealOptions}
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                    <label class="input-label">Who is having this?</label>
+                    <div class="multi-select-container">${nameOptions}</div>
+                </div>
+            `;
+        container.appendChild(entry);
+        syncUniqueSelection();
+        syncUniqueMealSelection();
+      }
+
+      function syncUniqueSelection() {
+        const allCheckedCheckboxes = Array.from(
+          document.querySelectorAll('input[type="checkbox"]:checked'),
+        );
+        const selectedNames = allCheckedCheckboxes.map((cb) => cb.value);
+        const allCheckboxes = document.querySelectorAll(
+          'input[type="checkbox"]',
+        );
+
+        allCheckboxes.forEach((cb) => {
+          const label = cb.closest(".name-item");
+          if (!cb.checked) {
+            if (selectedNames.includes(cb.value)) {
+              cb.disabled = true;
+              label.classList.add("disabled");
+            } else {
+              cb.disabled = false;
+              label.classList.remove("disabled");
+            }
+          } else {
+            cb.disabled = false;
+            label.classList.remove("disabled");
+          }
+        });
+      }
+
+      function syncUniqueMealSelection() {
+        const allSelects = document.querySelectorAll(".meal-select");
+        const selectedMeals = Array.from(allSelects)
+          .map((select) => select.value)
+          .filter((val) => val !== "");
+
+        allSelects.forEach((select) => {
+          const options = select.querySelectorAll("option");
+          options.forEach((option) => {
+            if (option.value === "") return;
+            if (
+              selectedMeals.includes(option.value) &&
+              select.value !== option.value
+            ) {
+              option.disabled = true;
+            } else {
+              option.disabled = false;
+            }
+          });
+        });
+      }
+
+      function removeEntry(id) {
+        const entries = document.querySelectorAll(".meal-entry");
+        if (entries.length > 1) {
+          document.getElementById(`entry-${id}`).remove();
+          syncUniqueSelection();
+          syncUniqueMealSelection();
+        }
+      }
+
+      document.getElementById("mealForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const fullDateValue = document.getElementById("dateInput").value;
+        const dayOnly = fullDateValue.split("-")[2];
+
+        const entries = document.querySelectorAll(".meal-entry");
+        const mealData = {};
+        const Names = [];
+        const MealValues = [];
+
+        let summaryHtml = `
+    <div style="margin-bottom: 16px;">
+      <span style="color:var(--md-outline)">Delivery Day:</span>
+      <strong style="color:var(--md-on-surface)">${dayOnly}</strong>
+    </div>
+    <hr style="border:0; border-top:1px solid var(--md-surface-variant); margin:0 0 16px 0">`;
+
+        entries.forEach((entry) => {
+          const mealSelect = entry.querySelector(".meal-select");
+          const mealValue = mealSelect.value;
+          const mealText = mealSelect.options[mealSelect.selectedIndex].text;
+          const checkedCheckboxes = entry.querySelectorAll(
+            'input[type="checkbox"]:checked',
+          );
+
+          if (checkedCheckboxes.length > 0 && mealValue) {
+            const currentEntryNames = [];
+            checkedCheckboxes.forEach((cb) => {
+              const personName = cb.value;
+              mealData[personName] = mealValue;
+              Names.push(personName);
+              MealValues.push(mealValue);
+              currentEntryNames.push(personName);
+            });
+
+            summaryHtml += `
+        <div style="margin-bottom:16px; padding: 12px; background: var(--md-surface-container); border-radius: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <strong style="color:var(--md-on-surface);">
+              <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: text-bottom;">restaurant</span>
+              ${mealText}
+            </strong>
+            <span style="background: var(--md-primary-container); color: var(--md-on-primary-container); padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">
+              ${currentEntryNames.length} ${currentEntryNames.length === 1 ? "person" : "people"}
+            </span>
+          </div>
+          <span style="color:var(--md-on-surface-variant); font-size: 0.8rem;">${currentEntryNames.join(", ")}</span>
+        </div>`;
+          }
+        });
+
+        if (Names.length === 0) {
+          showToast(
+            "Please select at least one meal and one person.",
+            "warning",
+            "error",
+          );
+          return;
+        }
+
+        currentPayload = {
+          subDate: dayOnly,
+          subMealData: mealData,
+          subNames: Names,
+          subMealValues: MealValues,
+        };
+
+        console.log("Payload:", currentPayload);
+
+        document.getElementById("previewBox").innerHTML = summaryHtml;
+        document.getElementById("modalOverlay").style.display = "flex";
+      });
+
+      function closeModal() {
+        document.getElementById("modalOverlay").style.display = "none";
+      }
+
+      async function submitToSheet() {
+        const btnConfirm = document.getElementById("btnConfirm");
+        const btnCancel = document.getElementById("btnCancel");
+        const originalText = btnConfirm.innerHTML;
+
+        btnConfirm.disabled = true;
+        btnCancel.disabled = true;
+        btnConfirm.innerHTML = `<span class="material-symbols-outlined" style="animation: spin 1s linear infinite; font-size: 18px;">sync</span> Submitting...`;
+
+        try {
+          const response = await fetch(SHEET_APP_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "text/plain;charset=utf-8",
+            },
+            body: JSON.stringify(currentPayload),
+          });
+
+          await response.text();
+
+          closeModal();
+          showToast("Order processed successfully!", "check_circle", "success");
+
+          // Slight delay to allow the user to see the success toast before reloading
+          setTimeout(() => {
+            location.reload();
+          }, 1500);
+        } catch (error) {
+          console.error("Submission failed:", error);
+          showToast(
+            "Failed to submit order. Please try again.",
+            "error",
+            "error",
+          );
+
+          btnConfirm.disabled = false;
+          btnCancel.disabled = false;
+          btnConfirm.innerHTML = originalText;
+        }
+      }
+
+      init();
+    </script>
+  </body>
+</html>
