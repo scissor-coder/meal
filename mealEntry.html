@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mess Meal Submission by ABID AL JAMEE</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
       rel="stylesheet"
@@ -45,11 +45,11 @@
       *::before,
       *::after {
         box-sizing: border-box;
+        font-family: "Tiro Bangla", sans-serif;
       }
 
       body {
         margin: 0;
-        font-family: "Roboto", sans-serif;
         background: var(--md-surface-container);
         color: var(--md-on-surface);
         min-height: 100vh;
@@ -404,7 +404,7 @@
   <body>
     <div class="container">
       <header>
-        <h2>Order Group Meals</h2>
+        <h2><i><b>Delivery Group Meals</i></b></h2>
         <p>Mess Meal Submission by ABID AL JAMEE</p>
       </header>
 
@@ -422,13 +422,13 @@
           >
           Add Another Meal
         </button>
-        <button type="submit" class="btn-submit">Review Order</button>
+        <button type="submit" class="btn-submit">Review Delivery</button>
       </form>
     </div>
 
     <div id="modalOverlay" class="modal-overlay">
       <div class="modal-content">
-        <h3>Confirm Order</h3>
+        <h3>Confirm Delivery</h3>
         <div id="previewBox" class="preview-box"></div>
         <div class="modal-actions">
           <button class="btn-cancel" onclick="closeModal()" id="btnCancel">
@@ -702,7 +702,7 @@
           await response.text();
 
           closeModal();
-          showToast("Order processed successfully!", "check_circle", "success");
+          showToast("Delivery processed successfully!", "check_circle", "success");
 
           // Slight delay to allow the user to see the success toast before reloading
           setTimeout(() => {
@@ -725,4 +725,4 @@
       init();
     </script>
   </body>
-</html>
+  </html>
