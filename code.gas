@@ -1,0 +1,536 @@
+/**
+ * Handles incoming HTTP GET requests.
+ * Used for fetching data (Messages, Notifications, Borders, Meals) and checking user login.
+ */
+function doGet(e) {
+  var action = e.parameter.action;
+  var isLogin = e.parameter.userLogin; 
+  
+  // ==========================================
+  // --- LOGIN LOGIC ---
+  // ==========================================
+  if (isLogin === 'true') {
+    var name = e.parameter.name;
+    var email = e.parameter.email;
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Accounts");
+    
+    if (!sheet) {
+      return ContentService.createTextOutput(JSON.stringify({ "success": false, "message": "Accounts sheet not found" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    var data = sheet.getDataRange().getValues();
+    var userFound = false;
+    var userFingerprint = "";
+    
+    for (var i = 1; i < data.length; i++) {
+      if (data[i][0] === name && data[i][1] === email) {
+        userFound = true;
+        userFingerprint = data[i][2];
+        break;
+      }
+    }
+    
+    if (userFound) {
+      return ContentService.createTextOutput(JSON.stringify({ "success": true, "message": "Login successful", "logedFingerprint": userFingerprint }))
+        .setMimeType(ContentService.MimeType.JSON);
+    } else {
+      return ContentService.createTextOutput(JSON.stringify({ "success": false, "message": "Invalid Name or Email" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+  }
+
+  // ==========================================
+  // --- GET MESSAGES ---
+  // ==========================================
+  if (action === 'getMessages') {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Messages");
+    
+    if (!sheet) {
+      return ContentService.createTextOutput(JSON.stringify([]))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    var data = sheet.getDataRange().getValues();
+    var messages = [];
+    
+    for (var i = 1; i < data.length; i++) {
+      if (data[i][0] || data[i][1] || data[i][2]) {
+        messages.push({
+          userFingerPrint: data[i][0],
+          userName: data[i][1],
+          message: data[i][2],
+          dateTime: data[i][3]
+        });
+      }
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify(messages))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // ==========================================
+  // --- GET NOTIFICATIONS ---
+  // ==========================================
+  if (action === 'getNotifications') {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Notifications");
+    
+    if (!sheet) {
+      return ContentService.createTextOutput(JSON.stringify([]))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    var data = sheet.getDataRange().getValues();
+    var Notifications = [];
+    
+    for (var i = 1; i < data.length; i++) {
+      if (data[i][0] || data[i][1] || data[i][2]) {
+        Notifications.push({
+          id: data[i][0],
+          title: data[i][1],
+          desc: data[i][2],
+          icon: data[i][3]
+        });
+      }
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify(Notifications))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // ==========================================
+  // --- GET BORDERS ---
+  // ==========================================
+  if (action === 'getBorderNames') {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Borders");
+    
+    if (!sheet) {
+      return ContentService.createTextOutput(JSON.stringify([]))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    var data = sheet.getDataRange().getValues();
+    var Borders = [];
+    
+    for (var i = 1; i < data.length; i++) {
+      if (data[i][0] || data[i][1] || data[i][2]) {
+        Borders.push({
+          name: data[i][0]
+        });
+      }
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify(Borders))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // ==========================================
+  // --- GET MEALS ---
+  // ==========================================
+  if (action === 'getMeals') {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Meals");
+    
+    if (!sheet) {
+      return ContentService.createTextOutput(JSON.stringify([]))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    var data = sheet.getDataRange().getValues();
+    var Meals = [];
+    
+    for (var i = 1; i < data.length; i++) {
+      if (data[i][0] || data[i][1] || data[i][2]) {
+        Meals.push({
+          name: data[i][0],
+          mealText: data[i][2],
+          date: data[i][3]
+        });
+      }
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify(Meals))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  return ContentService.createTextOutput("ABID AL JAMEE Portal Messaging API is running. [req: GET]");
+}
+
+/**
+ * Handles incoming HTTP POST requests.
+ * Used for saving new data (Messages, Accounts, Meals) to the Google Sheets.
+ */
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(5000); // 5 seconds wait
+
+  var data = JSON.parse(e.postData.contents);
+  var action = e.parameter.action;
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet;
+
+  // ==========================================
+  // --- CREATE MESSAGE ---
+  // ==========================================
+  if (action === 'createMessage') {
+    sheet = ss.getSheetByName("Messages");
+    
+    if (!sheet) {
+      sheet = ss.insertSheet("Messages");
+      sheet.appendRow(["Fingerprint", "Name", "Message", "DateTime"]);
+      sheet.getRange("A1:D1").setFontWeight("bold").setBackground("#e0e7ff");
+    }
+
+    sheet.appendRow([
+      data.userFingerPrint || "Unknown",
+      data.userName || "Anonymous",
+      data.message || "",
+      data.dateTime || new Date().toLocaleString()
+    ]);
+    
+    lock.releaseLock();
+    return ContentService.createTextOutput(JSON.stringify({ "success": true, "message": "Message sent!" }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } 
+  
+  // ==========================================
+  // --- CREATE ACCOUNT ---
+  // ==========================================
+  else if (action === 'createAccount') {
+    sheet = ss.getSheetByName("Accounts");
+    
+    if (!sheet) {
+      sheet = ss.insertSheet("Accounts");
+      sheet.appendRow(["Name", "Email", "Fingerprint", "Time"]);
+      sheet.getRange("A1:D1").setFontWeight("bold").setBackground("#e0e7ff");
+    }
+    
+    var dataSheet = sheet.getDataRange().getValues();
+    var userFound = false;
+    var fingerprintFound = false;
+
+    // Check if user already exists
+    for (var i = 1; i < dataSheet.length; i++) {
+      if (dataSheet[i][0] === data.Name || dataSheet[i][1] === data.Email) {
+        userFound = true;
+        break;
+      }
+    }
+
+    // Check if user is from the same device
+    for (var i = 1; i < dataSheet.length; i++) {
+      if (dataSheet[i][2] === data.FingerprintSignup) {
+        fingerprintFound = true;
+        break;
+      }
+    }
+  
+    if (userFound) {
+      lock.releaseLock();
+      return ContentService.createTextOutput(JSON.stringify({ "success": false, "message": "Account already exists!" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    } 
+
+    // Check for fingerprint matching
+    if (fingerprintFound) {
+      lock.releaseLock();
+      return ContentService.createTextOutput(JSON.stringify({ "digitalSignature": true, "message": "Digital Signature matched; cannot proceed!" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // Append new user if not found
+    sheet.appendRow([
+      data.Name || "Unknown",
+      data.Email || "Anonymous",
+      data.FingerprintSignup || "",
+      data.Time || new Date().toLocaleString()
+    ]);
+    
+    lock.releaseLock();
+    return ContentService.createTextOutput(JSON.stringify({ "success": true, "message": "Account created successfully" }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } 
+  
+  // ==========================================
+  // --- CREATE MEAL ---
+  // ==========================================
+  else if (action === 'createMeal') {
+    sheet = ss.getSheetByName("Meals");
+    if (!sheet) {
+      sheet = ss.insertSheet("Meals");
+      sheet.appendRow(["Name", "MealValue", "MealText", "Date", "Fingerprint", "EmailStatus"]);
+      sheet.getRange("A1:F1").setFontWeight("bold").setBackground("#e0e7ff");
+    }
+
+    // 1. Log the meal data
+    sheet.appendRow([
+      data.name || "Unknown",
+      data.mealValue || "Anonymous",
+      data.mealText || "",
+      new Date(), // Storing as proper date object
+      data.fingerprint || "",
+      "" // EmailStatus column starts empty
+    ]);
+
+    // 2. IMPORTANT: Create a one-time trigger to run in 1 second
+    ScriptApp.newTrigger("processMealEmailQueue")
+             .timeBased()
+             .after(7000) // 7 second delay
+             .create();
+
+    lock.releaseLock();
+    return ContentService.createTextOutput(JSON.stringify({ 
+      "status": "success", 
+      "message": "Meal logged! Email processing started in background." 
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // Fallback for missing action
+  lock.releaseLock();
+  return ContentService.createTextOutput(JSON.stringify({ "status": "error", "message": "Invalid Action" }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ==========================================
+// --- EMAIL AUTOMATION ---
+// ==========================================
+
+// --- CONFIGURATION ---
+var EMAIL_TIME_24H = "08:55"; // এই ভেরিয়েবলটি পরিবর্তন করে সময় সেট করুন (২৪ ঘণ্টা ফরম্যাটে)
+var MY_TIMEZONE = "Asia/Dhaka";
+var RECEIVER_EMAIL = "abidaljamee1000@gmail.com";
+var BCC_EMAIL = "mdsuaibahmed97@gmail.com";
+
+/**
+ * এই ফাংশনটি ম্যানুয়ালি একবার রান করবেন। 
+ * এটি আপনার দেওয়া সময়ে প্রতিদিনের জন্য একটি অটোমেটিক ট্রিগার তৈরি করবে।
+ */
+function setupDailyTrigger() {
+  createDailyTrigger();
+}
+
+function createDailyTrigger() {
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === "sendDailyMealEmail")
+      ScriptApp.deleteTrigger(triggers[i]);
+  }
+
+  var timeParts = EMAIL_TIME_24H.split(":");
+  var scheduledTime = new Date();
+  scheduledTime.setHours(parseInt(timeParts[0], 10), parseInt(timeParts[1], 10), 0, 0);
+
+  // যদি নির্ধারিত সময়টি আজকের জন্য পার হয়ে গিয়ে থাকে, তবে আগামীকালের জন্য সেট হবে
+  if (scheduledTime <= new Date()) {
+    scheduledTime.setDate(scheduledTime.getDate() + 1);
+  }
+
+  ScriptApp.newTrigger("sendDailyMealEmail")
+    .timeBased()
+    .at(scheduledTime)
+    .create();
+  
+  console.log("পরবর্তী ইমেইল রিপোর্ট শিডিউল করা হয়েছে: " + scheduledTime);
+}
+
+function sendDailyMealEmail() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("Meals");
+  if (!sheet) {
+    createDailyTrigger();
+    return;
+  }
+
+  var data = sheet.getDataRange().getValues();
+  var today = new Date();
+  var todayString = Utilities.formatDate(today, MY_TIMEZONE, "yyyy-MM-dd");
+  var displayDate = Utilities.formatDate(today, MY_TIMEZONE, "MMMM dd, yyyy");
+
+  // --- HTML Design with Credit ---
+  var htmlBody = `
+    <div style="background-color: #f0f2f5; padding: 50px 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+      <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.05);">
+        
+        <div style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); padding: 40px 20px; text-align: center; color: white;">
+          <div style="font-size: 45px; margin-bottom: 10px;">🍲</div>
+          <h1 style="margin: 0; font-size: 26px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">Daily Meal Report</h1>
+          <p style="margin-top: 10px; opacity: 0.9; font-size: 16px;">Abid Meal Management System</p>
+        </div>
+
+        <div style="padding: 40px 30px;">
+          <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #f8fafc; padding-bottom: 20px; margin-bottom: 30px;">
+            <span style="color: #64748b; font-weight: 600;">DATE: ${displayDate}</span>
+            <span style="color: #6366f1; font-weight: 700;">#SUMMARY</span>
+          </div>
+
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="text-align: left; color: #94a3b8; font-size: 13px; text-transform: uppercase;">
+                <th style="padding: 12px 10px; border-bottom: 1px solid #f1f5f9;">User Name</th>
+                <th style="padding: 12px 10px; border-bottom: 1px solid #f1f5f9; text-align: right;">Meal Detail</th>
+              </tr>
+            </thead>
+            <tbody>`;
+
+  var count = 0;
+  for (var i = 1; i < data.length; i++) {
+    var rowDate = data[i][3];
+    var rowDateString = "";
+
+    if (rowDate instanceof Date) {
+      rowDateString = Utilities.formatDate(rowDate, MY_TIMEZONE, "yyyy-MM-dd");
+    } else if (rowDate !== "") {
+      try {
+        rowDateString = Utilities.formatDate(new Date(rowDate), MY_TIMEZONE, "yyyy-MM-dd");
+      } catch(e) { continue; }
+    }
+
+    if (rowDateString === todayString) {
+      count++;
+      htmlBody += `
+        <tr>
+          <td style="padding: 18px 10px; border-bottom: 1px solid #f8fafc; color: #1e293b; font-weight: 600; font-size: 15px;">${data[i][0]}</td>
+          <td style="padding: 18px 10px; border-bottom: 1px solid #f8fafc; color: #475569; text-align: right; font-size: 15px;">${data[i][2]}</td>
+        </tr>`;
+    }
+  }
+
+  if (count === 0) {
+    htmlBody += `<tr><td colspan="2" style="text-align: center; padding: 50px 20px; color: #94a3b8; font-style: italic;">No meals logged for ${todayString}.</td></tr>`;
+  }
+
+  htmlBody += `
+            </tbody>
+          </table>
+          
+          <div style="margin-top: 40px; padding: 20px; background-color: #f8fafc; border-radius: 12px; text-align: center;">
+             <p style="margin: 0; color: #64748b; font-size: 14px; font-weight: 500;">Total Entries Found: <span style="color: #6366f1; font-weight: 700;">${count}</span></p>
+          </div>
+        </div>
+
+        <div style="background-color: #ffffff; padding: 0 30px 40px 30px; text-align: center;">
+          <hr style="border: 0; border-top: 1px solid #f1f5f9; margin-bottom: 25px;">
+          <p style="margin: 0; color: #1e293b; font-size: 15px; font-weight: 700; letter-spacing: 0.5px;">
+             Send by <span style="color: #6366f1;">ABID AL JAMEE</span>
+          </p>
+          <p style="margin-top: 8px; color: #94a3b8; font-size: 11px; text-transform: uppercase;">
+             Automated System • Do not reply
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  MailApp.sendEmail({
+    to: RECEIVER_EMAIL,
+    bcc: BCC_EMAIL,
+    subject: "🍽️ Daily Meal Summary: " + displayDate,
+    htmlBody: htmlBody,
+  });
+
+  // পরের দিনের জন্য ট্রিগার আপডেট করা
+  createDailyTrigger(); 
+}
+
+/**
+ * Processes the email queue and cleans up finished triggers.
+ * Scans for all meals logged TODAY by the user and sends a combined receipt.
+ */
+function processMealEmailQueue() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var mealSheet = ss.getSheetByName("Meals");
+  var accountSheet = ss.getSheetByName("Accounts");
+  
+  if (!mealSheet || !accountSheet) return;
+
+  var mealData = mealSheet.getDataRange().getValues();
+  var accountData = accountSheet.getDataRange().getValues();
+  var timezone = ss.getSpreadsheetTimeZone();
+  
+  var now = new Date();
+  var todayStr = Utilities.formatDate(now, timezone, "yyyy-MM-dd");
+
+  // Track processed fingerprints to prevent duplicate emails 
+  // if multiple records are posted at the exact same time
+  var processedFingerprints = {}; 
+
+  // 1. Process the Queue
+  for (var i = 1; i < mealData.length; i++) {
+    var emailStatus = String(mealData[i][5] || "").trim(); // Column F (Index 5)
+
+    // Only process rows where EmailStatus is empty
+    if (emailStatus === "") {
+      var targetFingerprint = String(mealData[i][4] || "").trim(); // Column E (Index 4)
+      
+      // If we already sent an email for this user in this execution loop, just mark as sent
+      if (processedFingerprints[targetFingerprint]) {
+         mealSheet.getRange(i + 1, 6).setValue("Sent");
+         continue; 
+      }
+
+      var userEmail = "";
+
+      // Find matching user email from Accounts sheet
+      // Accounts Sheet: Column B (Index 1) is Email, Column C (Index 2) is Fingerprint
+      for (var j = 1; j < accountData.length; j++) {
+        if (String(accountData[j][2]).trim() === targetFingerprint) {
+          userEmail = accountData[j][1];
+          break;
+        }
+      }
+
+      // If email found, compile and send the meal receipt
+      if (userEmail !== "") {
+        try {
+          var emailBody = "এখানে আপনার আজকের (" + Utilities.formatDate(now, timezone, "dd MMMM, yyyy") + ") খাবার তালিকা:\n\n";
+          var hasMatches = false;
+
+          // Scan all meals for matches matching Fingerprint AND Today's Date
+          for (var m = 1; m < mealData.length; m++) {
+            var rowName = mealData[m][0];      // Column A
+            var rowMealText = mealData[m][2];  // Column C
+            var rowDateVal = mealData[m][3];   // Column D
+            var rowFingerprint = String(mealData[m][4] || "").trim(); // Column E
+
+            var rowDateStr = "";
+            if (rowDateVal instanceof Date) {
+              rowDateStr = Utilities.formatDate(rowDateVal, timezone, "yyyy-MM-dd");
+            } else if (rowDateVal) {
+              rowDateStr = Utilities.formatDate(new Date(rowDateVal), timezone, "yyyy-MM-dd");
+            }
+
+            if (rowFingerprint === targetFingerprint && rowDateStr === todayStr) {
+              var formattedTime = Utilities.formatDate(new Date(rowDateVal), timezone, "hh:mm a");
+              // Formatted using Column A (Name), Column C (MealText), Column D (Date/Time)
+              emailBody += "নাম: " + rowName + "\nখাবার: " + rowMealText + "\nসময়: " + formattedTime + "\n-------------------\n";
+              hasMatches = true;
+            }
+          }
+
+          var tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          var tomorrowDateString = Utilities.formatDate(tomorrow, timezone, "dd-MM-yyyy");
+          emailBody += "\nএই meal কার্যকর হবেঃ " + tomorrowDateString + " থেকে।\nধন্যবাদঃ আবিদ আল জামী";
+
+          if (hasMatches) {
+            MailApp.sendEmail(userEmail, "আপনার খাবারের রসিদ", emailBody);
+            processedFingerprints[targetFingerprint] = true; // Mark fingerprint to avoid dupes
+          }
+          
+          mealSheet.getRange(i + 1, 6).setValue("Sent"); 
+        } catch (e) {
+          mealSheet.getRange(i + 1, 6).setValue("Error: " + e.message);
+        }
+      } else {
+        mealSheet.getRange(i + 1, 6).setValue("User Not Found");
+      }
+    }
+  }
+
+  // 2. SELF-CLEANUP: Delete the triggers for this function
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var k = 0; k < triggers.length; k++) {
+    if (triggers[k].getHandlerFunction() === "processMealEmailQueue") {
+      ScriptApp.deleteTrigger(triggers[k]);
+    }
+  }
+}
