@@ -1396,8 +1396,11 @@
               data.logedFingerprint || localStorage.getItem("userFingerPrint");
             if (!fp) {
               fp = generateFingerprint();
-              localStorage.setItem("userFingerPrint", fp);
+              // localStorage.setItem("userFingerPrint", fp);
             }
+            //
+            localStorage.setItem("userFingerPrint", fp);
+            //
             localStorage.setItem("userName", nameInput);
 
             setupUserUI(nameInput, fp);
