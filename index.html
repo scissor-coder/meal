@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>আবিদ পোর্টাল</title>
+    <title>আবিদ মিল পোর্টাল</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
@@ -650,8 +650,8 @@
             </select>
           </div>
           <div class="form-group">
-            <label>পাসওয়ার্ড</label>
-            <input type="password" id="loginPassword" placeholder="আপনার পাসওয়ার্ড দিন" required />
+            <label>ই-মেল</label>
+            <input type="email" id="signupEmail" placeholder="আপনার ই-মেল দিন" required />
           </div>
           <button type="submit" class="btn-main" id="loginBtn">লগইন করুন</button>
         </form>
@@ -664,8 +664,8 @@
             </select>
           </div>
           <div class="form-group">
-            <label>পাসওয়ার্ড দিন</label>
-            <input type="password" id="signupPassword" placeholder="একটি নতুন পাসওয়ার্ড দিন" required />
+            <label>ই-মেল দিন</label>
+            <input type="email" id="signupEmail" placeholder="একটি নতুন ই-মেল দিন" required />
           </div>
           <button type="submit" class="btn-main" id="signupBtn">অ্যাকাউন্ট তৈরি করুন</button>
         </form>
@@ -804,18 +804,7 @@
           <h3 style="margin: 0; font-size: 22px; font-weight: 500">আপনার মিল বেছে নিন</h3>
         </div>
         <div class="popup-list" id="popupMealOptions">
-          <button class="popup-item" data-val="2.5" onclick="highlightMeal(this, '2.5', '২.৫ মিল')">
-            <span>২.৫ মিল</span> <i class="fas fa-check-circle"></i>
-          </button>
-          <button class="popup-item" data-val="1.5 N" onclick="highlightMeal(this, '1.5 N', '১.৫ রাত')">
-            <span>১.৫ রাত</span> <i class="fas fa-check-circle"></i>
-          </button>
-          <button class="popup-item" data-val="1.5 D" onclick="highlightMeal(this, '1.5 D', '১.৫ দুপুর')">
-            <span>১.৫ দুপুর</span> <i class="fas fa-check-circle"></i>
-          </button>
-          <button class="popup-item" data-val="5 FF" onclick="highlightMeal(this, '5 FF', '৫ (গেস্ট)')">
-            <span>৫ (গেস্ট)</span> <i class="fas fa-check-circle"></i>
-          </button>
+            <!-- will be injected by JS -->
         </div>
         <div style="padding: 16px 24px 24px; display: flex; gap: 8px; background: var(--md-surface-container-high); justify-content: flex-end;">
           <button class="btn-main" style="background: transparent; color: var(--md-primary); box-shadow: none; width: auto; padding: 10px 16px;" onclick="closeMealPopup()">
@@ -1061,7 +1050,7 @@
         btn.innerText = "অপেক্ষা করুন...";
 
         const nameInput = document.getElementById("signupName").value;
-        const emailInput = document.getElementById("signupPassword").value;
+        const emailInput = document.getElementById("signupEmail").value;
 
         let fp = localStorage.getItem("userFingerPrint");
         if (!fp) {
@@ -1113,7 +1102,7 @@
         btn.innerText = "অপেক্ষা করুন...";
 
         const nameInput = document.getElementById("loginName").value;
-        const emailInput = document.getElementById("loginPassword").value;
+        const emailInput = document.getElementById("signupEmail").value;
         try {
           const response = await fetch(`${SCRIPT_URL_LOGIN}?userLogin=true&name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`, {
             method: "GET",
@@ -1593,7 +1582,7 @@
         let html = `
             <div style="display: flex; justify-content: space-between; align-items: center; margin: 24px 0 16px;">
                 <h4 style="margin: 0; color: var(--text-main); font-weight: 600;">সক্রিয় ডিউ [বাঁকি] গ্রহীতা</h4>
-                <span style="font-size: 13px; background: var(--md-surface-variant); color: var(--md-on-surface-variant); padding: 4px 12px; border-radius: var(--radius-pill); font-weight: 600;">${takeList.length} এন্ট্রি</span>
+                <span style="font-size: 13px; background: var(--md-surface-variant); color: var(--md-on-surface-variant); padding: 4px 12px; border-radius: var(--radius-pill); font-weight: 600;">${takeList.length} টি এন্ট্রি</span>
             </div>
             <div style="display: grid; gap: 12px;">
                 ${takeList.map((item, index) => `
@@ -1619,7 +1608,7 @@
         const reportData = globalSheetData.data.filter((row) => row.Name);
         let html = `
             <div class="card" style="background: var(--md-primary); color: var(--md-on-primary); border-radius: 24px; padding: 32px 24px; box-shadow: var(--shadow-2); margin-bottom: 24px;">
-                <p style="font-size: 13px; opacity: 0.9; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">বর্তমান মিল রেট</p>
+                <p style="font-size: 13px; opacity: 0.9; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">গতকালের মিল রেট</p>
                 <h2 style="font-size: 42px; margin: 0; font-weight: 500;">${rateValue} <span style="font-size: 18px; opacity: 0.8;">৳</span></h2>
             </div>
             <div class="card" style="padding: 0; overflow: hidden;">
