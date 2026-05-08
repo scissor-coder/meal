@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="bn">
   <head>
     <meta charset="UTF-8" />
@@ -10,8 +10,8 @@
     <!-- Google Material Symbols Outlined -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap" rel="stylesheet" />
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&display=swap");
-
+      @import url('https://fonts.googleapis.com/css2?family=Google+Sans:opsz@17..18&display=swap');
+    
       :root {
         color-scheme: light;
         /* Light Mode - Google Material Design 3 (M3) Color Palette */
@@ -113,6 +113,7 @@
       }
 
       * {
+        font-family: "Anek Bangla", "Hind Siliguri", "Tiro Bangla", "Google Sans", sans-serif;
         box-sizing: border-box;
         margin: 0;
         padding: 0;
@@ -120,7 +121,6 @@
       }
 
       body {
-        font-family: "Anek Bangla", "Hind Siliguri", sans-serif;
         background-color: var(--bg-body);
         color: var(--text-main);
         overflow-x: hidden;
@@ -412,7 +412,7 @@
       }
       .nav-badge {
         position: absolute; top: 0px; right: -4px; background: var(--md-error);
-        color: var(--md-on-error); font-size: 10px; font-weight: 600; padding: 0 4px;
+        color: var(--md-on-error); font-size: 10px; font-weight: 600; padding: 2.5px 4px;
         border-radius: 8px; min-width: 16px; text-align: center; box-shadow: 0 0 0 2px var(--md-surface-container);
       }
 
@@ -558,7 +558,10 @@
           <div class="chat-container" id="chatBox"></div>
           <div class="chat-input-area">
             <div class="chat-input-wrapper">
-              <input type="text" id="chatInput" placeholder="আপনার বার্তা লিখুন..." onkeypress="if (event.key === 'Enter') sendMsg();" />
+              <input type="text" id="chatInput"
+              spellcheck="false" 
+              autocorrect="off"
+              placeholder="আপনার বার্তা লিখুন..." onkeypress="if (event.key === 'Enter') sendMsg();" />
               <button class="send-btn" id="sendMsgBtn" onclick="sendMsg()">
                 <span class="material-symbols-outlined">send</span>
               </button>
@@ -598,7 +601,7 @@
             </div>
 
             <h3 id="profileName" style="font-size: 24px; font-weight: 600">ইউজার</h3>
-            <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px; font-weight: 500;" id="profileFingerprint"></p>
+            <p style="color: var(--text-muted); font-size: 14px; margin-top: 17px; font-weight: 500;" id="profileFingerprint"></p>
             <br />
             <p style="color: var(--text-muted); font-size: 11px; margin-top: 4px; font-weight: 500; display:flex; align-items:center; justify-content:center; gap:4px;">
               <span class="material-symbols-outlined" style="font-size:14px;">code</span> Developer /> Abid Al Jamee
