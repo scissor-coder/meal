@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="bn">
   <head>
     <meta charset="UTF-8" />
@@ -7,15 +7,14 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>আবিদ মিল পোর্টাল</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
+    <!-- Google Material Symbols Outlined -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap" rel="stylesheet" />
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&display=swap");
 
       :root {
-        /* Google Material Design 3 (M3) Color Palette */
+        color-scheme: light;
+        /* Light Mode - Google Material Design 3 (M3) Color Palette */
         --md-primary: #6750a4;
         --md-on-primary: #ffffff;
         --md-primary-container: #eaddff;
@@ -44,7 +43,11 @@
         --md-outline: #79747e;
         --md-outline-variant: #cac4d0;
 
-        /* Mapping original variables to M3 */
+        /* Inverse for Toasts */
+        --md-inverse-surface: #313033;
+        --md-inverse-on-surface: #f4eff4;
+
+        /* Core mappings */
         --primary: var(--md-primary);
         --primary-light: var(--md-primary-container);
         --bg-body: var(--md-surface-container);
@@ -53,19 +56,60 @@
         --text-muted: var(--md-on-surface-variant);
         --danger: var(--md-error);
 
-        /* M3 Elevations & Shapes */
+        /* Elevations & Shapes */
         --radius: 12px;
         --radius-pill: 100px;
-        --shadow-1:
-          0px 1px 2px 0px rgba(0, 0, 0, 0.3),
-          0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-        --shadow-2:
-          0px 1px 2px 0px rgba(0, 0, 0, 0.3),
-          0px 2px 6px 2px rgba(0, 0, 0, 0.15);
-        --shadow-3:
-          0px 1px 3px 0px rgba(0, 0, 0, 0.3),
-          0px 4px 8px 3px rgba(0, 0, 0, 0.15);
-        --shadow: var(--shadow-1);
+        --shadow-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+        --shadow-2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+        --shadow-3: 0px 1px 3px 0px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Dark Mode Overrides */
+      body.dark-mode {
+        color-scheme: dark;
+        --md-primary: #d0bcff;
+        --md-on-primary: #381e72;
+        --md-primary-container: #4f378b;
+        --md-on-primary-container: #eaddff;
+
+        --md-secondary: #ccc2dc;
+        --md-on-secondary: #332d41;
+        --md-secondary-container: #4a4458;
+        --md-on-secondary-container: #e8def8;
+
+        --md-tertiary-container: #633b48;
+        --md-on-tertiary-container: #ffd8e4;
+
+        --md-error: #f2b8b5;
+        --md-on-error: #601410;
+        --md-error-container: #8c1d18;
+        --md-on-error-container: #f9dedc;
+
+        --md-surface: #141218;
+        --md-on-surface: #e6e0e9;
+        --md-surface-variant: #49454f;
+        --md-on-surface-variant: #cac4d0;
+
+        --md-surface-container: #1d1b20;
+        --md-surface-container-high: #2b2930;
+        --md-outline: #938f99;
+        --md-outline-variant: #49454f;
+
+        --md-inverse-surface: #e6e1e5;
+        --md-inverse-on-surface: #313033;
+
+        --shadow-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.8), 0px 1px 3px 1px rgba(0, 0, 0, 0.6);
+        --shadow-2: 0px 1px 2px 0px rgba(0, 0, 0, 0.8), 0px 2px 6px 2px rgba(0, 0, 0, 0.6);
+        --shadow-3: 0px 1px 3px 0px rgba(0, 0, 0, 0.8), 0px 4px 8px 3px rgba(0, 0, 0, 0.6);
+
+        /* FIX: Re-alias variables to fix CSS cascading issues in dark mode */
+        --primary: var(--md-primary);
+        --primary-light: var(--md-primary-container);
+        --bg-body: var(--md-surface-container);
+        --bg-card: var(--md-surface);
+        --text-main: var(--md-on-surface);
+        --text-muted: var(--md-on-surface-variant);
+        --danger: var(--md-error);
       }
 
       * {
@@ -80,9 +124,53 @@
         background-color: var(--bg-body);
         color: var(--text-main);
         overflow-x: hidden;
+        transition: background-color 0.3s, color 0.3s;
       }
 
-      /* --- লগইন স্ক্রিন (Material 3 Hero Style) --- */
+      /* Material Icons setup */
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        vertical-align: middle;
+        transition: 0.3s ease;
+      }
+      .active .material-symbols-outlined, .filled-icon {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+
+      /* Custom Spinner */
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2.5px solid var(--md-on-primary);
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+      }
+      .spinner.primary { border-color: var(--md-primary); border-bottom-color: transparent; }
+      @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+      /* Skeleton Loading Styles */
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          var(--md-surface-variant) 25%,
+          var(--md-surface-container-high) 50%,
+          var(--md-surface-variant) 75%
+        );
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s infinite;
+        border-radius: 8px;
+      }
+      @keyframes skeleton-loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      .skeleton-text { height: 16px; margin-bottom: 8px; width: 100%; border-radius: 4px; }
+      .skeleton-avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; }
+
+      /* --- লগইন স্ক্রিন --- */
       #auth-screen {
         position: fixed;
         inset: 0;
@@ -92,6 +180,7 @@
         align-items: center;
         justify-content: center;
         padding: 20px;
+        transition: background-color 0.3s;
       }
 
       .auth-card {
@@ -113,17 +202,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 32px;
         margin: 0 auto 20px;
         box-shadow: var(--shadow-1);
       }
+      .auth-logo span { font-size: 36px; }
 
-      /* --- Auth Tabs (Material Segmented Button) --- */
       .auth-tabs {
         display: flex;
         gap: 0;
         margin-bottom: 25px;
-        background: transparent;
         border: 1px solid var(--md-outline);
         border-radius: var(--radius-pill);
         overflow: hidden;
@@ -137,534 +224,251 @@
         font-weight: 600;
         color: var(--text-muted);
         cursor: pointer;
-        transition:
-          background-color 0.2s,
-          color 0.2s;
+        transition: background-color 0.2s, color 0.2s;
         border-right: 1px solid var(--md-outline);
       }
-      .auth-tab:last-child {
-        border-right: none;
-      }
+      .auth-tab:last-child { border-right: none; }
       .auth-tab.active {
         background: var(--md-secondary-container);
         color: var(--md-on-secondary-container);
       }
 
-      /* --- Material 3 Outlined Text Fields --- */
-      .form-group {
-        text-align: left;
-        margin-bottom: 20px;
-        position: relative;
-      }
+      .form-group { text-align: left; margin-bottom: 20px; position: relative; }
       .form-group label {
-        display: block;
-        font-weight: 500;
-        margin-bottom: 6px;
-        font-size: 13px;
-        color: var(--text-main);
+        display: block; font-weight: 500; margin-bottom: 6px; font-size: 13px; color: var(--text-main);
       }
-      .form-group input,
-      .form-group select {
-        width: 100%;
-        padding: 14px 16px;
-        border: 1px solid var(--md-outline);
-        border-radius: 4px;
-        outline: none;
-        font-family: inherit;
-        transition: all 0.2s ease;
-        background: transparent;
-        color: var(--text-main);
-        font-size: 16px;
+      .form-group input, .form-group select {
+        width: 100%; padding: 14px 16px; border: 1px solid var(--md-outline);
+        border-radius: 8px; outline: none; font-family: inherit;
+        background: transparent; color: var(--text-main); font-size: 16px; transition: 0.2s ease;
       }
-      .form-group input:hover,
-      .form-group select:hover {
-        border-color: var(--text-main);
+      .form-group input:focus, .form-group select:focus {
+        border: 2px solid var(--md-primary); padding: 13px 15px; background: var(--md-surface-container-high);
       }
-      .form-group input:focus,
-      .form-group select:focus {
-        border: 2px solid var(--md-primary);
-        padding: 13px 15px;
-      }
+      .form-group option { background: var(--md-surface); color: var(--text-main); }
 
-      /* --- Material 3 Filled Button --- */
       .btn-main {
-        width: 100%;
-        padding: 12px;
-        background: var(--md-primary);
-        color: var(--md-on-primary);
-        border: none;
-        border-radius: var(--radius-pill);
-        font-weight: 600;
-        cursor: pointer;
-        font-family: inherit;
-        font-size: 15px;
-        transition:
-          background-color 0.2s,
-          box-shadow 0.2s;
-        box-shadow: var(--shadow-1);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
+        width: 100%; padding: 12px; background: var(--md-primary);
+        color: var(--md-on-primary); border: none; border-radius: var(--radius-pill);
+        font-weight: 600; cursor: pointer; font-family: inherit; font-size: 15px;
+        transition: 0.2s; box-shadow: var(--shadow-1);
+        display: flex; justify-content: center; align-items: center; gap: 8px;
       }
-      .btn-main:hover {
-        box-shadow: var(--shadow-2);
-        background: #5b4694;
-      }
-      .btn-main:active {
-        box-shadow: var(--shadow-1);
-      }
+      .btn-main:active { transform: scale(0.98); }
+      .btn-main:disabled { opacity: 0.7; cursor: not-allowed; }
 
       /* --- অ্যাপ কন্টেন্ট --- */
       #app-content {
-        display: none;
-        padding-bottom: 90px;
-        height: 100dvh; /* dvh fixes mobile address bar height issues */
-        overflow-y: auto;
-        scroll-behavior: smooth;
+        display: none; padding-bottom: 90px; height: 100dvh;
+        overflow-y: auto; scroll-behavior: smooth;
       }
 
       header {
-        background: var(--md-surface);
-        padding: 12px 20px;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.08);
+        background: var(--md-surface); padding: 12px 20px;
+        position: sticky; top: 0; z-index: 100; color: var(--text-main);
+        display: flex; justify-content: space-between; align-items: center;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.08); transition: background-color 0.3s;
       }
 
-      main {
-        padding: 16px;
-        max-width: 600px;
-        margin: 0 auto;
-      }
+      main { padding: 16px; max-width: 600px; margin: 0 auto; }
 
       .view-section {
-        display: none;
-        animation: fadeIn 0.3s ease-out;
+        display: none; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .view-section.active {
-        display: block;
-      }
+      .view-section.active { display: block; }
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
       }
 
       .card {
-        background: var(--md-surface);
-        border-radius: var(--radius);
-        padding: 20px;
-        margin-bottom: 16px;
-        box-shadow: var(--shadow-1);
+        background: var(--md-surface); border-radius: var(--radius);
+        padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow-1);
       }
 
-      /* --- মিল নির্বাচন (M3 Tonal Button Style) --- */
+      /* --- মিল নির্বাচন --- */
       .meal-btn-selector {
-        width: 100%;
-        padding: 16px;
-        background: var(--md-secondary-container);
-        color: var(--md-on-secondary-container);
-        border: none;
-        border-radius: 16px;
-        font-weight: 600;
-        font-size: 16px;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-family: inherit;
-        transition: 0.2s;
-        margin-bottom: 16px;
+        width: 100%; padding: 16px; background: var(--md-secondary-container);
+        color: var(--md-on-secondary-container); border: none; border-radius: 16px;
+        font-weight: 600; font-size: 16px; cursor: pointer;
+        display: flex; justify-content: space-between; align-items: center;
+        font-family: inherit; margin-bottom: 16px; transition: 0.2s;
       }
-      .meal-btn-selector:active {
-        background: var(--md-surface-variant);
-      }
+      .meal-btn-selector:active { transform: scale(0.98); }
 
-      .popup-list {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        padding: 15px;
-        overflow: scroll;
-        max-height: 451px;
-      }
+      .popup-list { display: flex; flex-direction: column; gap: 8px; padding: 15px; overflow-y: auto; max-height: 50vh; }
       .popup-item {
-        padding: 16px 20px;
-        text-align: left;
-        background: var(--md-surface);
-        border: 1px solid var(--md-outline-variant);
-        border-radius: 12px;
-        font-size: 16px;
-        font-weight: 500;
-        color: var(--md-on-surface);
-        font-family: inherit;
-        cursor: pointer;
-        transition: 0.2s;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        padding: 16px 20px; text-align: left; background: var(--md-surface);
+        border: 1px solid var(--md-outline-variant); border-radius: 12px;
+        font-size: 16px; font-weight: 500; color: var(--md-on-surface);
+        font-family: inherit; cursor: pointer; display: flex;
+        justify-content: space-between; align-items: center; transition: 0.2s;
       }
-      .popup-item i {
-        display: none;
-        color: var(--md-primary);
-        font-size: 20px;
-      }
+      .popup-item .material-symbols-outlined { display: none; color: var(--md-primary); font-size: 24px; }
       .popup-item.selected {
-        background: var(--md-primary-container);
-        border-color: var(--md-primary-container);
+        background: var(--md-primary-container); border-color: var(--md-primary-container);
         color: var(--md-on-primary-container);
       }
-      .popup-item.selected i {
-        display: inline-block;
-      }
+      .popup-item.selected .material-symbols-outlined { display: inline-block; }
 
       /* --- মেসেঞ্জার সেকশন --- */
       #messenger {
-        /* Fixed responsive height based on header, nav, safe area and padding */
         height: calc(100dvh - 177px - env(safe-area-inset-bottom));
-        position: relative;
-        flex-direction: column;
-        overflow: hidden;
-        display: none;
+        position: relative; flex-direction: column; overflow: hidden; display: none;
       }
-
-      #messenger.active {
-        display: flex;
-      }
+      #messenger.active { display: flex; }
 
       .chat-container {
-        display: flex;
-        flex-direction: column;
-        gap: 17px;
-        padding: 10px 0 85px 0;
-        height: 100%;
-        overflow-y: auto;
+        display: flex; flex-direction: column; gap: 17px; padding: 10px 0 85px 0;
+        height: 100%; overflow-y: auto; scroll-behavior: smooth;
       }
 
-      .message-group {
-        display: flex;
-        gap: 10px;
-        align-items: flex-end;
-        max-width: 85%;
-      }
-      .message-group.sent {
-        align-self: flex-end;
-        flex-direction: row-reverse;
-      }
+      .message-group { display: flex; gap: 10px; align-items: flex-end; max-width: 85%; }
+      .message-group.sent { align-self: flex-end; flex-direction: row-reverse; }
 
       .msg-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: var(--md-surface-variant);
-        flex-shrink: 0;
-        margin-bottom: 20px;
+        width: 32px; height: 32px; border-radius: 50%; background: var(--md-surface-variant);
+        flex-shrink: 0; margin-bottom: 20px; object-fit: cover;
       }
-      .msg-content-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
-      .message-group.sent .msg-content-wrapper {
-        align-items: flex-end;
-      }
-      .sender-name {
-        font-size: 11px;
-        font-weight: 600;
-        color: var(--text-muted);
-        margin: 0 4px;
-      }
+      .msg-content-wrapper { display: flex; flex-direction: column; gap: 4px; }
+      .message-group.sent .msg-content-wrapper { align-items: flex-end; }
+      .sender-name { font-size: 11px; font-weight: 600; color: var(--text-muted); margin: 0 4px; }
 
       .bubble {
-        padding: 12px 16px;
-        border-radius: 20px;
-        font-size: 15px;
-        line-height: 1.4;
-        position: relative;
-        max-width: 85%;
-        word-break: break-word;
+        padding: 12px 16px; border-radius: 20px; font-size: 15px; line-height: 1.4;
+        position: relative; max-width: 85%; word-break: break-word;
       }
       .received .bubble {
-        background: var(--md-surface-variant);
-        color: var(--md-on-surface-variant);
-        border-bottom-left-radius: 4px;
+        background: var(--md-surface-variant); color: var(--md-on-surface-variant); border-bottom-left-radius: 4px;
       }
       .sent .bubble {
-        background: var(--md-primary-container);
-        color: var(--md-on-primary-container);
-        border-bottom-right-radius: 4px;
+        background: var(--md-primary-container); color: var(--md-on-primary-container); border-bottom-right-radius: 4px;
       }
-      .msg-time {
-        font-size: 10px;
-        opacity: 0.8;
-        margin-top: 2px;
-        color: var(--text-muted);
-      }
+      .msg-time { font-size: 10px; opacity: 0.8; margin-top: 2px; color: var(--text-muted); }
 
       .chat-input-area {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: var(--md-surface);
-        padding: 12px 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10;
-        border-top: 1px solid var(--md-outline-variant);
+        position: absolute; bottom: 0; left: 0; right: 0; background: var(--md-surface);
+        padding: 12px 16px; display: flex; align-items: center; justify-content: center;
+        z-index: 10; border-top: 1px solid var(--md-outline-variant);
       }
       .chat-input-wrapper {
-        max-width: 100%;
-        width: 100%;
-        display: flex;
-        gap: 10px;
-        background: var(--md-surface-container-high);
-        padding: 6px 6px 6px 16px;
-        border-radius: 30px;
-        box-shadow: var(--shadow-1);
-        align-items: center;
+        width: 100%; display: flex; gap: 10px; background: var(--md-surface-container-high);
+        padding: 6px 6px 6px 16px; border-radius: 30px; box-shadow: var(--shadow-1); align-items: center;
       }
       .chat-input-area input {
-        flex: 1;
-        padding: 10px 0;
-        border: none;
-        background: transparent;
-        outline: none;
-        color: var(--md-on-surface);
-        font-family: inherit;
-        font-size: 15px;
+        flex: 1; padding: 10px 0; border: none; background: transparent;
+        outline: none; color: var(--md-on-surface); font-family: inherit; font-size: 15px;
       }
       .send-btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: var(--md-primary);
-        color: var(--md-on-primary);
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: 0.2s;
+        width: 40px; height: 40px; border-radius: 50%; background: var(--md-primary);
+        color: var(--md-on-primary); border: none; display: flex; align-items: center;
+        justify-content: center; cursor: pointer; transition: 0.2s;
       }
-      .send-btn:active {
-        transform: scale(0.9);
-      }
+      .send-btn:active { transform: scale(0.9); }
 
-      /* M3 Notification Items */
+      /* Notification */
       .notif-item {
-        padding: 16px;
-        border-radius: var(--radius);
-        background: var(--md-surface);
-        margin-bottom: 12px;
-        display: flex;
-        gap: 16px;
-        position: relative;
-        box-shadow: var(--shadow-1);
-        transition: 0.2s;
-        border: 1px solid transparent;
+        padding: 16px; border-radius: var(--radius); background: var(--md-surface);
+        margin-bottom: 12px; display: flex; gap: 16px; position: relative;
+        box-shadow: var(--shadow-1); border: 1px solid transparent; transition: 0.3s;
       }
-      .notif-item.unread {
-        background: var(--md-surface);
-        border-color: var(--md-outline-variant);
-      }
-      .notif-item.read {
-        opacity: 0.6;
-        box-shadow: none;
-        border-color: var(--md-surface-variant);
-        background: var(--md-surface-container);
-      }
+      .notif-item.unread { border-color: var(--md-outline-variant); }
+      .notif-item.read { opacity: 0.6; box-shadow: none; border-color: var(--md-surface-variant); background: var(--md-surface-container); }
       .notif-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        flex-shrink: 0;
+        width: 48px; height: 48px; border-radius: 50%; display: flex;
+        align-items: center; justify-content: center; flex-shrink: 0;
       }
-      .unread .notif-icon {
-        background: var(--md-tertiary-container);
-        color: var(--md-on-tertiary-container);
-      }
-      .read .notif-icon {
-        background: var(--md-surface-variant);
-        color: var(--md-on-surface-variant);
-      }
+      .unread .notif-icon { background: var(--md-tertiary-container); color: var(--md-on-tertiary-container); }
+      .read .notif-icon { background: var(--md-surface-variant); color: var(--md-on-surface-variant); }
 
       .mark-read-btn {
-        margin-top: 12px;
-        padding: 8px 16px;
-        font-size: 13px;
-        color: var(--md-on-secondary-container);
-        background: var(--md-secondary-container);
-        border: none;
-        border-radius: var(--radius-pill);
-        font-weight: 600;
-        cursor: pointer;
-        font-family: inherit;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        transition: background-color 0.2s;
-      }
-      .mark-read-btn:hover {
-        background: var(--md-outline-variant);
+        margin-top: 12px; padding: 8px 16px; font-size: 13px;
+        color: var(--md-on-secondary-container); background: var(--md-secondary-container);
+        border: none; border-radius: var(--radius-pill); font-weight: 600; cursor: pointer;
+        font-family: inherit; display: inline-flex; align-items: center; gap: 6px;
       }
 
-      /* M3 Bottom Navigation */
+      /* Bottom Navigation (Material 3 style) */
       .bottom-nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: var(--md-surface-container);
-        height: 80px;
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        align-items: center;
-        z-index: 200;
-        padding-bottom: env(safe-area-inset-bottom);
+        position: fixed; bottom: 0; left: 0; right: 0; background: var(--md-surface-container);
+        height: 80px; display: grid; grid-template-columns: repeat(5, 1fr);
+        align-items: center; z-index: 200; padding-bottom: env(safe-area-inset-bottom);
+        box-shadow: 0px -1px 3px rgba(0,0,0,0.05);
       }
       .nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        background: none;
-        border: none;
-        color: var(--md-on-surface-variant);
-        font-family: inherit;
-        font-weight: 500;
-        font-size: 12px;
-        cursor: pointer;
-        height: 100%;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 4px; background: none; border: none; color: var(--md-on-surface-variant);
+        font-family: inherit; font-weight: 500; font-size: 12px; cursor: pointer; height: 100%;
+        transition: 0.3s ease; position: relative;
       }
       .nav-icon-wrap {
-        width: 64px;
-        height: 32px;
-        border-radius: 16px;
-        transition: 0.2s ease-in-out;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
+        width: 32px; height: 32px; border-radius: 16px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex; align-items: center; justify-content: center; position: relative;
       }
-      .nav-item i {
-        font-size: 20px;
-      }
-      .nav-item.active {
-        color: var(--md-on-surface);
-        font-weight: 600;
-      }
+      .nav-item.active { color: var(--md-on-surface); font-weight: 600; }
       .nav-item.active .nav-icon-wrap {
-        background: var(--md-secondary-container);
-        color: var(--md-on-secondary-container);
+        width: 64px; background: var(--md-secondary-container); color: var(--md-on-secondary-container);
       }
       .nav-badge {
-        position: absolute;
-        top: 2px;
-        right: 12px;
-        background: var(--md-error);
-        color: var(--md-on-error);
-        font-size: 10px;
-        font-weight: 600;
-        padding: 0 4px;
-        border-radius: 8px;
-        min-width: 16px;
-        text-align: center;
-        box-shadow: 0 0 0 2px var(--md-surface-container);
-      }
-      .nav-item.active .nav-badge {
-        box-shadow: 0 0 0 2px var(--md-secondary-container);
+        position: absolute; top: 0px; right: -4px; background: var(--md-error);
+        color: var(--md-on-error); font-size: 10px; font-weight: 600; padding: 0 4px;
+        border-radius: 8px; min-width: 16px; text-align: center; box-shadow: 0 0 0 2px var(--md-surface-container);
       }
 
-      /* M3 Modal/Dialog */
+      /* Modal */
       .modal {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.4);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        padding: 20px;
+        position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px);
+        display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px;
       }
       .modal-content {
-        background: var(--md-surface-container-high);
-        border-radius: 28px;
-        width: 100%;
-        max-width: 360px;
-        overflow: hidden;
-        box-shadow: var(--shadow-3);
+        background: var(--md-surface-container-high); border-radius: 28px; width: 100%;
+        max-width: 360px; overflow: hidden; box-shadow: var(--shadow-3);
         animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       }
       @keyframes slideUp {
-        from {
-          transform: translateY(40px) scale(0.95);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0) scale(1);
-          opacity: 1;
-        }
+        from { transform: translateY(40px) scale(0.95); opacity: 0; }
+        to { transform: translateY(0) scale(1); opacity: 1; }
       }
 
-      /* M3 Snackbar / Toast */
+      /* Material 3 Snackbar/Toast */
       .toast-box {
-        position: fixed;
-        bottom: 100px;
-        left: 50%;
-        transform: translateX(-50%) translateY(100px);
-        background: #313033;
-        color: #f4eff4;
-        padding: 14px 24px;
-        border-radius: 4px;
-        font-size: 14px;
-        transition: 0.3s ease;
-        z-index: 2000;
-        font-weight: 500;
-        box-shadow: var(--shadow-2);
-        opacity: 0;
-        pointer-events: none;
+        position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px);
+        background: var(--md-inverse-surface); color: var(--md-inverse-on-surface);
+        padding: 14px 24px; border-radius: 8px; font-size: 14px;
+        transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2000;
+        font-weight: 500; box-shadow: var(--shadow-2); opacity: 0; pointer-events: none;
+        display: flex; align-items: center; gap: 8px; min-width: 250px; justify-content: center;
       }
-      .toast-box.show {
-        transform: translateX(-50%) translateY(0);
-        opacity: 1;
-        pointer-events: auto;
+      .toast-box.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+
+      /* Theme Toggle Button */
+      #theme-toggle {
+        background: transparent; border: none; color: var(--md-on-surface-variant);
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
+        width: 36px; height: 36px; border-radius: 50%; transition: background-color 0.2s;
       }
+      #theme-toggle:hover { background-color: var(--md-surface-variant); }
+      
+      .toggle-icon-wrap {
+          display: flex; transition: transform 0.3s ease;
+      }
+      #theme-toggle:active .toggle-icon-wrap { transform: rotate(45deg); }
     </style>
   </head>
   <body>
     <div id="auth-screen">
       <div class="auth-card">
-        <div class="auth-logo"><i class="fas fa-bolt"></i></div>
-        <h2
-          style="margin-bottom: 24px; color: var(--text-main); font-weight: 600"
-        >
+        <div class="auth-logo"><span class="material-symbols-outlined">
+          crisis_alert
+        </span></div>
+        <h2 style="margin-bottom: 24px; color: var(--text-main); font-weight: 600">
           আবিদ সিকিউরিটি পোর্টাল
         </h2>
 
         <div class="auth-tabs">
-          <button class="auth-tab active" onclick="switchAuth('login')">
-            লগ ইন
-          </button>
-          <button class="auth-tab" onclick="switchAuth('signup')">
-            নতুন Account
-          </button>
+          <button class="auth-tab active" onclick="switchAuth('login')">পুরোনো Account</button>
+          <button class="auth-tab" onclick="switchAuth('signup')">নতুন Account</button>
         </div>
 
         <form id="loginForm">
@@ -676,16 +480,9 @@
           </div>
           <div class="form-group">
             <label>ই-মেল</label>
-            <input
-              type="email"
-              id="loginEmail"
-              placeholder="আপনার ই-মেল দিন"
-              required
-            />
+            <input type="email" id="loginEmail" placeholder="আপনার ই-মেল দিন" required />
           </div>
-          <button type="submit" class="btn-main" id="loginBtn">
-            লগইন করুন
-          </button>
+          <button type="submit" class="btn-main" id="loginBtn">লগইন করুন</button>
         </form>
 
         <form id="signupForm" style="display: none">
@@ -697,16 +494,9 @@
           </div>
           <div class="form-group">
             <label>ই-মেল দিন</label>
-            <input
-              type="email"
-              id="signupEmail"
-              placeholder="একটি নতুন ই-মেল দিন"
-              required
-            />
+            <input type="email" id="signupEmail" placeholder="একটি নতুন ই-মেল দিন" required />
           </div>
-          <button type="submit" class="btn-main" id="signupBtn">
-            অ্যাকাউন্ট তৈরি করুন
-          </button>
+          <button type="submit" class="btn-main" id="signupBtn">অ্যাকাউন্ট তৈরি করুন</button>
         </form>
       </div>
     </div>
@@ -714,23 +504,14 @@
     <div id="app-content">
       <header>
         <h3 id="view-title" style="font-size: 20px; font-weight: 600">হোম</h3>
-        <div style="display: flex; gap: 15px; align-items: center">
-          <div
-            style="
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-              background: var(--md-surface-variant);
-              overflow: hidden;
-              cursor: pointer;
-              border: 1px solid var(--md-outline-variant);
-            "
-          >
-            <img
-              id="headerAvatar"
-              src="https://api.dicebear.com/7.x/avataaars/svg?seed=User"
-              style="width: 100%"
-            />
+        <div style="display: flex; gap: 10px; align-items: center">
+          <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
+            <div class="toggle-icon-wrap">
+                <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+            </div>
+          </button>
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--md-surface-variant); overflow: hidden; cursor: pointer; border: 1px solid var(--md-outline-variant);">
+            <img id="headerAvatar" src="" style="width: 100%; height: 100%; object-fit: cover" />
           </div>
         </div>
       </header>
@@ -738,184 +519,62 @@
       <main>
         <section id="home" class="view-section active">
           <div class="card">
-            <h4
-              style="
-                margin-bottom: 16px;
-                color: var(--text-main);
-                font-weight: 600;
-              "
-            >
-              আপনার মিল নির্বাচন করুন
-            </h4>
-
-            <button
-              id="mealSelectBtn"
-              class="meal-btn-selector"
-              onclick="openMealPopup()"
-            >
+            <h4 style="margin-bottom: 16px; color: var(--text-main); font-weight: 600;">আপনার মিল নির্বাচন করুন</h4>
+            <button id="mealSelectBtn" class="meal-btn-selector" onclick="openMealPopup()">
               <span id="mealBtnText">মিল নির্বাচন করুন</span>
-              <i class="fas fa-chevron-circle-down"></i>
+              <span class="material-symbols-outlined" id="mealBtnIcon">arrow_drop_down_circle</span>
             </button>
 
-            <div
-              id="meal-submission-result"
-              style="
-                padding: 14px;
-                border-radius: 12px;
-                background: var(--md-primary-container);
-                color: var(--md-on-primary-container);
-                font-weight: 600;
-                text-align: center;
-                display: none;
-                margin-bottom: 16px;
-              "
-            ></div>
+            <div id="meal-submission-result" style="padding: 14px; border-radius: 12px; background: var(--md-primary-container); color: var(--md-on-primary-container); font-weight: 600; text-align: center; display: none; margin-bottom: 16px;"></div>
 
             <div style="margin-top: 10px">
-              <button
-                onclick="toggleOthersMeal()"
-                style="
-                  width: 100%;
-                  padding: 16px;
-                  background: var(--md-surface-container);
-                  color: var(--md-on-surface);
-                  border: none;
-                  border-radius: 12px;
-                  font-weight: 600;
-                  cursor: pointer;
-                  font-family: inherit;
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  transition: 0.2s;
-                "
-              >
-                <span>আজকের মিল এন্ট্রি দেখুন</span>
-                <i
-                  class="fas fa-chevron-down"
-                  id="others-meal-icon"
-                  style="color: var(--md-on-surface-variant)"
-                ></i>
-              </button>
-              <div
-                id="others-meal-list"
-                style="
-                  display: none;
-                  margin-top: 8px;
-                  background: var(--md-surface);
-                  border-radius: 12px;
-                  border: 1px solid var(--md-outline-variant);
-                  padding: 16px;
-                "
-              >
-                <div style="text-align: center; color: var(--text-muted)">
-                  <i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...
+              <button onclick="toggleOthersMeal()" style="width: 100%; padding: 16px; background: var(--md-surface-container); color: var(--md-on-surface); border: none; border-radius: 12px; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; justify-content: space-between; align-items: center; transition: 0.2s;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="material-symbols-outlined" style="color: var(--md-primary);">visibility</span>
+                  <span>আজকের মিল এন্ট্রি দেখুন</span>
                 </div>
+                <span class="material-symbols-outlined" id="others-meal-icon" style="color: var(--md-on-surface-variant)">expand_more</span>
+              </button>
+              <div id="others-meal-list" style="display: none; margin-top: 8px; background: var(--md-surface); border-radius: 12px; border: 1px solid var(--md-outline-variant); padding: 16px;">
+                <!-- Content will be injected or skeleton loader -->
               </div>
             </div>
-          </div>
 
-          <div id="home-content">
-            <div style="text-align: center; padding: 40px">
-              <i
-                class="fas fa-circle-notch fa-spin fa-2x"
-                style="color: var(--primary)"
-              ></i>
-              <p
-                style="
-                  margin-top: 15px;
-                  color: var(--text-muted);
-                  font-weight: 500;
-                "
-              >
-                ডেটা লোড হচ্ছে...
-              </p>
+            <div style="margin-top: 10px">
+              <button onclick="fetchAllDaysMeals()" style="width: 100%; padding: 16px; background: var(--md-tertiary-container); color: var(--md-on-tertiary-container); border: none; border-radius: 12px; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; justify-content: space-between; align-items: center; transition: 0.2s;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="material-symbols-outlined" style="color: var(--md-on-tertiary-container);">calendar_month</span>
+                  <span>আপনার সকল দিনের মিল দেখুন</span>
+                </div>
+                <span class="material-symbols-outlined" id="all-days-meal-icon">open_in_new</span>
+              </button>
+              <div id="all-days-meal-container" style="display: none; margin-top: 8px; background: var(--md-surface); border-radius: 12px; border: 1px solid var(--md-outline-variant); padding: 16px;"></div>
             </div>
           </div>
+          <div id="home-content"></div>
         </section>
 
         <section id="messenger" class="view-section">
-          <div class="chat-container" id="chatBox">
-            <div style="text-align: center; padding: 40px">
-              <i
-                class="fas fa-circle-notch fa-spin fa-2x"
-                style="color: var(--primary)"
-              ></i>
-              <p
-                style="
-                  margin-top: 15px;
-                  color: var(--text-muted);
-                  font-weight: 500;
-                "
-              >
-                মেসেজ লোড হচ্ছে...
-              </p>
-            </div>
-          </div>
-
+          <div class="chat-container" id="chatBox"></div>
           <div class="chat-input-area">
             <div class="chat-input-wrapper">
-              <input
-                type="text"
-                id="chatInput"
-                placeholder="আপনার বার্তা লিখুন..."
-                onkeypress="if (event.key === 'Enter') sendMsg();"
-              />
+              <input type="text" id="chatInput" placeholder="আপনার বার্তা লিখুন..." onkeypress="if (event.key === 'Enter') sendMsg();" />
               <button class="send-btn" id="sendMsgBtn" onclick="sendMsg()">
-                <i class="fas fa-paper-plane"></i>
+                <span class="material-symbols-outlined">send</span>
               </button>
             </div>
           </div>
         </section>
 
         <section id="report" class="view-section">
-          <div id="report-content">
-            <div style="text-align: center; padding: 40px">
-              <i
-                class="fas fa-circle-notch fa-spin fa-2x"
-                style="color: var(--primary)"
-              ></i>
-              <p
-                style="
-                  margin-top: 15px;
-                  color: var(--text-muted);
-                  font-weight: 500;
-                "
-              >
-                ডেটা লোড হচ্ছে...
-              </p>
-            </div>
-          </div>
+          <div id="report-content"></div>
         </section>
 
         <section id="notification" class="view-section">
-          <div
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              margin-bottom: 20px;
-              padding: 0 5px;
-            "
-          >
-            <span id="notif-count" style="font-weight: 600; font-size: 16px"
-              >নতুন নোটিফিকেশন</span
-            >
-            <button
-              onclick="clearNotif()"
-              style="
-                color: var(--md-error);
-                background: var(--md-error-container);
-                padding: 8px 16px;
-                border-radius: var(--radius-pill);
-                border: none;
-                font-weight: 600;
-                cursor: pointer;
-                font-family: inherit;
-                transition: 0.2s;
-              "
-            >
-              সব পঠিত করুন
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 5px;">
+            <span id="notif-count" style="font-weight: 600; font-size: 16px">নতুন নোটিফিকেশন</span>
+            <button onclick="clearNotif()" style="color: var(--md-error); background: var(--md-error-container); padding: 8px 16px; border-radius: var(--radius-pill); border: none; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap:4px;">
+               <span class="material-symbols-outlined" style="font-size:18px;">checklist</span> সব পঠিত করুন
             </button>
           </div>
           <div id="notif-box"></div>
@@ -923,59 +582,29 @@
 
         <section id="account" class="view-section">
           <div class="card" style="text-align: center; padding: 40px 20px">
-            <div style="position: relative; display: inline-block">
-              <img
-                id="profileAvatar"
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=User"
-                style="
-                  width: 100px;
-                  margin-bottom: 16px;
-                  border-radius: 50%;
-                  background: var(--md-surface-variant);
-                  box-shadow: var(--shadow-1);
-                  border: 2px solid var(--md-outline-variant);
-                "
-              />
+            <div style="position: relative; display: inline-block; margin-bottom: 16px;">
+              <img id="profileAvatar" src="" style="width: 100px; height: 100px; border-radius: 50%; background: var(--md-surface-variant); box-shadow: var(--shadow-1); border: 2px solid var(--md-outline-variant); object-fit: cover;" />
+              <button onclick="document.getElementById('profilePicInput').click()" style="position: absolute; bottom: 0px; right: 0px; background: var(--md-primary); color: var(--md-on-primary); border: none; border-radius: 50%; width: 34px; height: 34px; cursor: pointer; box-shadow: var(--shadow-2); display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-outlined" style="font-size: 18px">photo_camera</span>
+              </button>
             </div>
-            <h3 id="profileName" style="font-size: 24px; font-weight: 600">
-              ইউজার
-            </h3>
-            <p
-              style="
-                color: var(--text-muted);
-                font-size: 14px;
-                margin-top: 4px;
-                font-weight: 500;
-              "
-              id="profileFingerprint"
-            ></p>
+
+            <input type="file" id="profilePicInput" accept="image/*" style="display: none" onchange="previewProfilePic(event)" />
+
+            <div style="margin-bottom: 8px; display: flex; justify-content: center">
+              <button id="saveProfilePicBtn" class="btn-main" style="display: none; width: auto; padding: 10px 24px" onclick="uploadProfilePic()">
+                ছবি সেভ করুন
+              </button>
+            </div>
+
+            <h3 id="profileName" style="font-size: 24px; font-weight: 600">ইউজার</h3>
+            <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px; font-weight: 500;" id="profileFingerprint"></p>
             <br />
-            <p
-              style="
-                color: var(--text-muted);
-                font-size: 9px;
-                margin-top: 4px;
-                font-weight: 500;
-              "
-            >
-              Developer \> Abid Al Jamee
+            <p style="color: var(--text-muted); font-size: 11px; margin-top: 4px; font-weight: 500; display:flex; align-items:center; justify-content:center; gap:4px;">
+              <span class="material-symbols-outlined" style="font-size:14px;">code</span> Developer /> Abid Al Jamee
             </p>
-            <hr
-              style="
-                margin: 24px 0;
-                border: none;
-                border-top: 1px solid var(--md-outline-variant);
-              "
-            />
-            <button
-              class="btn-main"
-              style="
-                background: var(--md-error-container);
-                color: var(--md-on-error-container);
-                box-shadow: none;
-              "
-              onclick="logout()"
-            >
+            <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--md-outline-variant);" />
+            <button class="btn-main" style="background: var(--md-error-container); color: var(--md-on-error-container); box-shadow: none;" onclick="logout()">
               লগ আউট
             </button>
           </div>
@@ -984,294 +613,180 @@
 
       <nav class="bottom-nav">
         <button class="nav-item active" onclick="navTo('home')">
-          <div class="nav-icon-wrap"><i class="fas fa-home"></i></div>
+          <div class="nav-icon-wrap"><span class="material-symbols-outlined filled-icon">home</span></div>
           <span>হোম</span>
         </button>
         <button class="nav-item" onclick="navTo('messenger')">
-          <div class="nav-icon-wrap"><i class="fas fa-comment-dots"></i></div>
+          <div class="nav-icon-wrap">
+            <span class="material-symbols-outlined">chat</span>
+            <!-- মেসেজ কাউন্টের জন্য ব্যাজ যুক্ত করা হলো -->
+            <span class="nav-badge" id="nav-msg-badge" style="display: none">0</span>
+          </div>
           <span>মেসেজ</span>
         </button>
         <button class="nav-item" onclick="navTo('report')">
-          <div class="nav-icon-wrap"><i class="fas fa-chart-pie"></i></div>
+          <div class="nav-icon-wrap"><span class="material-symbols-outlined">pie_chart</span></div>
           <span>রিপোর্ট</span>
         </button>
         <button class="nav-item" onclick="navTo('notification')">
           <div class="nav-icon-wrap">
-            <i class="fas fa-bell"></i>
-            <span class="nav-badge" id="nav-notif-badge" style="display: none"
-              >0</span
-            >
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="nav-badge" id="nav-notif-badge" style="display: none">0</span>
           </div>
           <span>নোটিফিকেশন</span>
         </button>
         <button class="nav-item" onclick="navTo('account')">
-          <div class="nav-icon-wrap"><i class="fas fa-user"></i></div>
+          <div class="nav-icon-wrap"><span class="material-symbols-outlined">person</span></div>
           <span>প্রোফাইল</span>
         </button>
       </nav>
     </div>
 
+    <!-- Modal for Meal Selection -->
     <div id="mealSelectionModal" class="modal" onclick="closeMealPopup()">
       <div class="modal-content" onclick="event.stopPropagation()">
-        <div
-          style="
-            background: var(--md-surface-container-high);
-            padding: 24px 24px 16px;
-            text-align: left;
-            color: var(--md-on-surface);
-            border-bottom: 1px solid var(--md-outline-variant);
-          "
-        >
-          <h3 style="margin: 0; font-size: 22px; font-weight: 500">
-            আপনার মিল বেছে নিন
-          </h3>
+        <div style="background: var(--md-surface-container-high); padding: 24px 24px 16px; text-align: left; color: var(--md-on-surface); border-bottom: 1px solid var(--md-outline-variant);">
+          <h3 style="margin: 0; font-size: 22px; font-weight: 500">আপনার মিল বেছে নিন</h3>
         </div>
         <div class="popup-list" id="popupMealOptions">
-          <!-- will be injected by JS -->
+             <!-- Meal items injected here -->
         </div>
-        <div
-          style="
-            padding: 16px 24px 24px;
-            display: flex;
-            gap: 8px;
-            background: var(--md-surface-container-high);
-            justify-content: flex-end;
-          "
-        >
-          <button
-            class="btn-main"
-            style="
-              background: transparent;
-              color: var(--md-primary);
-              box-shadow: none;
-              width: auto;
-              padding: 10px 16px;
-            "
-            onclick="closeMealPopup()"
-          >
-            বাতিল
-          </button>
-          <button
-            class="btn-main"
-            style="width: auto; padding: 10px 24px"
-            onclick="confirmMealSelection()"
-          >
-            সাবমিট করুন
-          </button>
+        <div style="padding: 16px 24px 24px; display: flex; gap: 8px; background: var(--md-surface-container-high); justify-content: flex-end;">
+          <button class="btn-main" style="background: transparent; color: var(--md-primary); box-shadow: none; width: auto; padding: 10px 16px;" onclick="closeMealPopup()">বাতিল</button>
+          <button id="mealSubmitBtn" class="btn-main" style="width: auto; padding: 10px 24px" onclick="confirmMealSelection()">ম্যানেজারের কাছে জমাদিন</button>
         </div>
       </div>
     </div>
 
     <script>
-      const SCRIPT_URL_MSG =
-        "https://script.google.com/macros/s/AKfycbwlcdIIh4HgwW_isvFeTsOSF7cjFJs3YcCuRFRgJe44AfTkL-p7Ex2gDJQIiON79fGK/exec";
+      const SCRIPT_URL_MSG = "https://script.google.com/macros/s/AKfycbwlcdIIh4HgwW_isvFeTsOSF7cjFJs3YcCuRFRgJe44AfTkL-p7Ex2gDJQIiON79fGK/exec";
       const SCRIPT_URL_NOTIF = "" || SCRIPT_URL_MSG;
       const SCRIPT_URL_LOGIN = "" || SCRIPT_URL_MSG;
       const SCRIPT_URL_MEAL = "" || SCRIPT_URL_MSG;
+      const CSV_URL_1 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThIiaP8iBgMS9bbYeASkztAvf4yZG9rIi0o1qvPEtqZBnTaPiO0PzhJI93LJH2HhIyEoV6P5ftqq92/pub?gid=1763748646&single=true&output=csv";
+      const CSV_URL_ALL_DAYS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThIiaP8iBgMS9bbYeASkztAvf4yZG9rIi0o1qvPEtqZBnTaPiO0PzhJI93LJH2HhIyEoV6P5ftqq92/pub?gid=0&single=true&output=csv";
 
-      const CSV_URL_1 =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vThIiaP8iBgMS9bbYeASkztAvf4yZG9rIi0o1qvPEtqZBnTaPiO0PzhJI93LJH2HhIyEoV6P5ftqq92/pub?gid=1763748646&single=true&output=csv";
-
-      let MEAL_LOCK_START_HOUR,
-        MEAL_LOCK_START_MIN,
-        MEAL_LOCK_END_HOUR,
-        MEAL_LOCK_END_MIN;
-
-      async function fetchMealLockTimes() {
-        try {
-          const response = await fetch(`${CSV_URL_1}&t=${Date.now()}`);
-          if (!response.ok) throw new Error("Network error");
-          const text = await response.text();
-          const csvSheetData1 = parseCSV(text);
-
-          const popupList = document.getElementById("popupMealOptions");
-          if (popupList && csvSheetData1.data.length > 0) {
-            let mealOptionsHtml = "";
-            csvSheetData1.data.forEach((row) => {
-              const val = row["Meal Values"];
-              const txt = row["Meal data-value"];
-
-              if (val !== undefined && txt !== undefined && val.trim() !== "") {
-                mealOptionsHtml += `
-                  <button
-                    class="popup-item"
-                    data-val="${val}"
-                    onclick="highlightMeal(this, '${val}', '${txt}')"
-                  >
-                    <span>${txt}</span> <i class="fas fa-check-circle"></i>
-                  </button>
-                `;
-              }
-            });
-
-            if (mealOptionsHtml !== "") {
-              popupList.innerHTML = mealOptionsHtml;
-            }
-          }
-
-          const validRows = csvSheetData1.data.filter((row) => row.Name);
-          MEAL_LOCK_END_HOUR = Number(
-            validRows.map((row) => row.MealOnHour)[0],
-          );
-          MEAL_LOCK_END_MIN = Number(
-            validRows.map((row) => row.MealOnMunite)[0],
-          );
-          MEAL_LOCK_START_HOUR = Number(
-            validRows.map((row) => row.MealOffHour)[0],
-          );
-          MEAL_LOCK_START_MIN = Number(
-            validRows.map((row) => row.MealOffMunite)[0],
-          );
-
-          applyMealLockState();
-        } catch (error) {
-          console.error("Failed to load times:", error);
-          MEAL_LOCK_START_HOUR = 22;
-          MEAL_LOCK_START_MIN = 30;
-          MEAL_LOCK_END_HOUR = 5;
-          MEAL_LOCK_END_MIN = 40;
-
-          console.log(
-            "Using fallback meal lock times: ",
-            `${MEAL_LOCK_START_HOUR}:${MEAL_LOCK_START_MIN} to ${MEAL_LOCK_END_HOUR}:${MEAL_LOCK_END_MIN}`,
-          );
-          applyMealLockState();
-        }
-      }
-
-      fetchMealLockTimes();
-
+      let MEAL_LOCK_START_HOUR, MEAL_LOCK_START_MIN, MEAL_LOCK_END_HOUR, MEAL_LOCK_END_MIN;
       let globalSheetData = null;
       let tempSelectedMeal = null;
       let mealLockTimer = null;
+      let tempBase64Pic = null;
 
-      function generateFingerprint() {
-        const navigator = window.navigator;
-        const screen = window.screen;
-        const data = [
-          navigator.userAgent,
-          navigator.language,
-          screen.colorDepth,
-          screen.width + "x" + screen.height,
-          new Date().getTimezoneOffset(),
-          navigator.hardwareConcurrency,
-          navigator.deviceMemory,
-          navigator.platform,
-        ].join("||");
-
-        const hash = (str, seed = 0) => {
-          let h1 = 0xdeadbeef ^ seed,
-            h2 = 0x41c6ce57 ^ seed;
-          for (let i = 0, ch; i < str.length; i++) {
-            ch = str.charCodeAt(i);
-            h1 = Math.imul(h1 ^ ch, 2654435761);
-            h2 = Math.imul(h2 ^ ch, 1597334677);
-          }
-          h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
-          h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-          h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
-          h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-          return (
-            (h2 >>> 0).toString(16).padStart(8, "0") +
-            (h1 >>> 0).toString(16).padStart(8, "0")
-          );
-        };
-
-        return "FP_" + hash(data).toUpperCase();
+      // Global API Fetch wrapper to ensure always up-to-date data
+      async function apiFetch(url, options = {}) {
+        const separator = url.includes('?') ? '&' : '?';
+        const updatedUrl = `${url}${separator}t=${Date.now()}`;
+        return fetch(updatedUrl, options);
       }
 
-      function getNextUnlockTime() {
-        const now = new Date();
-        const unlockTime = new Date();
-        unlockTime.setHours(MEAL_LOCK_END_HOUR, MEAL_LOCK_END_MIN, 0, 0);
-
-        if (now.getTime() >= unlockTime.getTime()) {
-          unlockTime.setDate(unlockTime.getDate() + 1);
-        }
-        return unlockTime;
+      // Skeleton HTML Generators
+      function getSkeletonLines(count = 2) {
+          return Array(count).fill('<div class="skeleton skeleton-text"></div>').join('');
+      }
+      function getSkeletonList(count = 3) {
+          return Array(count).fill(`
+            <div style="display: flex; gap: 16px; background: var(--md-surface); padding: 16px; border-radius: 12px; border: 1px solid var(--md-outline-variant); margin-bottom: 12px;">
+                <div class="skeleton skeleton-avatar"></div>
+                <div style="flex: 1;"><div class="skeleton skeleton-text" style="width: 60%"></div><div class="skeleton skeleton-text" style="width: 40%"></div></div>
+            </div>
+          `).join('');
       }
 
-      function getNextLockTime() {
-        const now = new Date();
-        const lockTime = new Date();
-        lockTime.setHours(MEAL_LOCK_START_HOUR, MEAL_LOCK_START_MIN, 0, 0);
+      // Initialize initial skeletons
+      document.getElementById("home-content").innerHTML = getSkeletonList(2);
+      document.getElementById("chatBox").innerHTML = getSkeletonList(4);
+      document.getElementById("report-content").innerHTML = `<div><div class="skeleton skeleton-text" style="height: 120px; border-radius: 24px; margin-bottom: 24px"></div><div class="skeleton skeleton-text" style="height: 200px; border-radius: 12px"></div></div>`;
+      document.getElementById("notif-box").innerHTML = getSkeletonList(3);
+      document.getElementById("others-meal-list").innerHTML = getSkeletonLines(3);
 
-        if (now.getTime() >= lockTime.getTime()) {
-          lockTime.setDate(lockTime.getDate() + 1);
-        }
-        return lockTime;
-      }
-
-      function formatTimeLeft(targetDate) {
-        const diff = targetDate - new Date();
-        if (diff <= 0) return "00:00:00";
-        const h = Math.floor(diff / (1000 * 60 * 60));
-        const m = Math.floor((diff / (1000 * 60)) % 60);
-        const s = Math.floor((diff / 1000) % 60);
-        return `${h.toString().padStart(2, "0")} ঘন্টা ${m.toString().padStart(2, "0")} মিনিট ${s.toString().padStart(2, "0")} সেকেন্ড পরে`;
-      }
-
-      function checkMealSubmissionStatus() {
-        const saved = localStorage.getItem("abid_meal");
-        if (!saved) return false;
-
-        const mealData = JSON.parse(saved);
-        if (!mealData.timestamp) return false;
-
-        if (typeof MEAL_LOCK_END_HOUR === "undefined") return false;
-
-        const submitTime = new Date(mealData.timestamp);
-        const now = new Date();
-        const lastUnlock = new Date();
-
-        lastUnlock.setHours(MEAL_LOCK_END_HOUR, MEAL_LOCK_END_MIN, 0, 0);
-
-        if (now.getTime() < lastUnlock.getTime()) {
-          lastUnlock.setDate(lastUnlock.getDate() - 1);
-        }
-
-        return submitTime.getTime() >= lastUnlock.getTime();
+      function toggleTheme() {
+        const isDark = document.body.classList.toggle("dark-mode");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+        document.getElementById("theme-icon").innerText = isDark ? "light_mode" : "dark_mode";
       }
 
       window.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("theme") === "dark") {
+          document.body.classList.add("dark-mode");
+          document.getElementById("theme-icon").innerText = "light_mode";
+        }
         const savedName = localStorage.getItem("userName");
         if (savedName) {
-          let fp = localStorage.getItem("userFingerPrint");
-          if (!fp) {
-            fp = generateFingerprint();
-            localStorage.setItem("userFingerPrint", fp);
-          }
+          let fp = localStorage.getItem("userFingerPrint") || generateFingerprint();
+          localStorage.setItem("userFingerPrint", fp);
           setupUserUI(savedName, fp);
           document.getElementById("auth-screen").style.display = "none";
           document.getElementById("app-content").style.display = "block";
-          const savedNav = localStorage.getItem("currentNav") || "home";
-          navTo(savedNav);
+          navTo(localStorage.getItem("currentNav") || "home");
         } else {
           fetchBorderNames();
         }
       });
 
+      async function fetchMealLockTimes() {
+        try {
+          const response = await apiFetch(CSV_URL_1);
+          const text = await response.text();
+          const csvSheetData1 = parseCSV(text);
+          const popupList = document.getElementById("popupMealOptions");
+          
+          if (popupList && csvSheetData1.data.length > 0) {
+            let mealOptionsHtml = "";
+            csvSheetData1.data.forEach((row) => {
+              const val = row["Meal Values"], txt = row["Meal data-value"];
+              if (val !== undefined && txt !== undefined && val.trim() !== "") {
+                mealOptionsHtml += `
+                  <button class="popup-item" data-val="${val}" onclick="highlightMeal(this, '${val}', '${txt}')">
+                    <span>${txt}</span> <span class="material-symbols-outlined">check_circle</span>
+                  </button>`;
+              }
+            });
+            if (mealOptionsHtml !== "") popupList.innerHTML = mealOptionsHtml;
+          }
+
+          const validRows = csvSheetData1.data.filter((row) => row.Name);
+          MEAL_LOCK_END_HOUR = Number(validRows.map((row) => row.MealOnHour)[0]);
+          MEAL_LOCK_END_MIN = Number(validRows.map((row) => row.MealOnMunite)[0]);
+          MEAL_LOCK_START_HOUR = Number(validRows.map((row) => row.MealOffHour)[0]);
+          MEAL_LOCK_START_MIN = Number(validRows.map((row) => row.MealOffMunite)[0]);
+          applyMealLockState();
+        } catch (error) {
+          MEAL_LOCK_START_HOUR = 22; MEAL_LOCK_START_MIN = 30; MEAL_LOCK_END_HOUR = 5; MEAL_LOCK_END_MIN = 40;
+          applyMealLockState();
+        }
+      }
+      fetchMealLockTimes();
+
+      function generateFingerprint() {
+        const d = [navigator.userAgent, navigator.language, window.screen.colorDepth, window.screen.width + "x" + window.screen.height, new Date().getTimezoneOffset(), navigator.hardwareConcurrency, navigator.deviceMemory, navigator.platform].join("||");
+        const hash = (str, seed = 0) => {
+          let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+          for (let i = 0; i < str.length; i++) {
+            let ch = str.charCodeAt(i);
+            h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677);
+          }
+          h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507); h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+          h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507); h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+          return ((h2 >>> 0).toString(16).padStart(8, "0") + (h1 >>> 0).toString(16).padStart(8, "0")).toUpperCase();
+        };
+        return "FP_" + hash(d);
+      }
+
       function setupUserUI(nameInput, fp) {
-        const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${nameInput}`;
+        const savedPic = localStorage.getItem("userProfilePic");
+        const avatarUrl = savedPic ? savedPic : `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(nameInput)}`;
         document.getElementById("headerAvatar").src = avatarUrl;
         document.getElementById("profileAvatar").src = avatarUrl;
         document.getElementById("profileName").innerText = nameInput;
-        document.getElementById("profileFingerprint").innerText =
-          `DIGITAL ID : \u00A0 ${fp}`;
+        document.getElementById("profileFingerprint").innerText = `DIGITAL ID : \u00A0 ${fp}`;
         fetchReportData();
         initApp();
       }
 
-      const auth = document.getElementById("auth-screen");
-      const app = document.getElementById("app-content");
-
       function switchAuth(type) {
-        document
-          .querySelectorAll(".auth-tab")
-          .forEach((t) => t.classList.remove("active"));
+        document.querySelectorAll(".auth-tab").forEach((t) => t.classList.remove("active"));
         document.getElementById("loginForm").style.display = "none";
         document.getElementById("signupForm").style.display = "none";
-
         if (type === "login") {
           document.querySelectorAll(".auth-tab")[0].classList.add("active");
           document.getElementById("loginForm").style.display = "block";
@@ -1283,242 +798,230 @@
 
       async function fetchBorderNames() {
         try {
-          const res = await fetch(`${SCRIPT_URL_LOGIN}?action=getBorderNames`, {
-            method: "GET",
-            mode: "cors",
-            redirect: "follow",
-          });
-
+          const res = await apiFetch(`${SCRIPT_URL_LOGIN}?action=getBorderNames`);
           const names = await res.json();
           const selectSignup = document.getElementById("signupName");
           const selectLogin = document.getElementById("loginName");
-
-          selectSignup.innerHTML =
-            '<option value="">আপনার নাম নির্বাচন করুন</option>';
-          selectLogin.innerHTML =
-            '<option value="">আপনার নাম নির্বাচন করুন</option>';
-
+          selectSignup.innerHTML = '<option value="">আপনার নাম নির্বাচন করুন</option>';
+          selectLogin.innerHTML = '<option value="">আপনার নাম নির্বাচন করুন</option>';
           names.forEach((n) => {
-            let val =
-              typeof n === "string"
-                ? n
-                : n.name || n.Name || Object.values(n)[0];
+            let val = typeof n === "string" ? n : n.name || n.Name || Object.values(n)[0];
             selectSignup.innerHTML += `<option value="${val}">${val}</option>`;
             selectLogin.innerHTML += `<option value="${val}">${val}</option>`;
           });
-        } catch (e) {
-          console.error(e);
-          document.getElementById("signupName").innerHTML =
-            '<option value="">নাম লোড করতে ব্যর্থ</option>';
-          document.getElementById("loginName").innerHTML =
-            '<option value="">নাম লোড করতে ব্যর্থ</option>';
-        }
+        } catch (e) { console.error(e); }
       }
 
       document.getElementById("signupForm").onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById("signupBtn");
-        btn.innerText = "অপেক্ষা করুন...";
+        btn.innerHTML = '<span class="spinner"></span> অপেক্ষা করুন...';
+        btn.disabled = true;
 
         const nameInput = document.getElementById("signupName").value;
         const emailInput = document.getElementById("signupEmail").value;
-
-        let fp = localStorage.getItem("userFingerPrint");
-        if (!fp) {
-          fp = generateFingerprint();
-          localStorage.setItem("userFingerPrint", fp);
-        }
+        let fp = localStorage.getItem("userFingerPrint") || generateFingerprint();
+        localStorage.setItem("userFingerPrint", fp);
 
         try {
-          console.log("Attempting signup with:", {
-            Name: nameInput,
-            Email: emailInput,
-            FingerprintSignup: fp,
+          const response = await apiFetch(`${SCRIPT_URL_LOGIN}?action=createAccount`, {
+            method: "POST", mode: "cors", headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ Name: nameInput, Email: emailInput, FingerprintSignup: fp }),
           });
-          const response = await fetch(
-            `${SCRIPT_URL_LOGIN}?action=createAccount`,
-            {
-              method: "POST",
-              mode: "cors",
-              headers: { "Content-Type": "text/plain;charset=utf-8" },
-              body: JSON.stringify({
-                Name: nameInput,
-                Email: emailInput,
-                FingerprintSignup: fp,
-              }),
-              redirect: "follow",
-            },
-          );
-
           const result = await response.json();
-
           if (result.success) {
             localStorage.setItem("userName", nameInput);
             setupUserUI(nameInput, fp);
-
-            auth.style.display = "none";
-            app.style.display = "block";
-            btn.innerText = "অ্যাকাউন্ট তৈরি করুন";
-            navTo("home");
-            showToast(`স্বাগতম, ${nameInput}!`);
-          } else if (result.digitalSignature) {
-            showToast("একাধিক অ্যাকাউন্ট তৈরি করার অনুমতি নেই!");
-            btn.innerText = "অ্যাকাউন্ট তৈরি করুন";
+            document.getElementById("auth-screen").style.display = "none";
+            document.getElementById("app-content").style.display = "block";
+            navTo("home"); showToast(`স্বাগতম, ${nameInput}!`);
           } else {
-            showToast("অ্যাকাউন্ট ইতিমধ্যে বিদ্যমান! অনুগ্রহ করে লগইন করুন।");
-            btn.innerText = "অ্যাকাউন্ট তৈরি করুন";
+            showToast(result.digitalSignature ? "একাধিক অ্যাকাউন্ট তৈরি করার অনুমতি নেই!" : "অ্যাকাউন্ট ইতিমধ্যে বিদ্যমান!");
           }
-        } catch (error) {
-          console.error("Signup error:", error);
-          showToast("অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে।");
-          btn.innerText = "অ্যাকাউন্ট তৈরি করুন";
-        }
+        } catch (error) { showToast("অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে।"); } 
+        finally { btn.innerHTML = 'অ্যাকাউন্ট তৈরি করুন'; btn.disabled = false; }
       };
 
       document.getElementById("loginForm").onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById("loginBtn");
-        btn.innerText = "অপেক্ষা করুন...";
+        btn.innerHTML = '<span class="spinner"></span> অপেক্ষা করুন...';
+        btn.disabled = true;
 
         const nameInput = document.getElementById("loginName").value;
         const emailInput = document.getElementById("loginEmail").value;
         try {
-          const response = await fetch(
-            `${SCRIPT_URL_LOGIN}?userLogin=true&name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`,
-            {
-              method: "GET",
-              mode: "cors",
-            },
-          );
+          const response = await apiFetch(`${SCRIPT_URL_LOGIN}?userLogin=true&name=${encodeURIComponent(nameInput)}&email=${encodeURIComponent(emailInput)}`);
           const data = await response.json();
           if (data && data.success !== false && !data.error) {
-            let fp =
-              data.logedFingerprint || localStorage.getItem("userFingerPrint");
-            if (!fp) {
-              fp = generateFingerprint();
-              // localStorage.setItem("userFingerPrint", fp);
-            }
-            //
+            let fp = data.logedFingerprint || localStorage.getItem("userFingerPrint") || generateFingerprint();
             localStorage.setItem("userFingerPrint", fp);
-            //
             localStorage.setItem("userName", nameInput);
-
+            try {
+              const profileRes = await apiFetch(`${SCRIPT_URL_LOGIN}?action=getprofile&fingerprint=${encodeURIComponent(fp)}&name=${encodeURIComponent(nameInput)}`);
+              const profileData = await profileRes.json();
+              if (profileData && profileData.profilePic) localStorage.setItem("userProfilePic", profileData.profilePic);
+            } catch (e) {}
             setupUserUI(nameInput, fp);
-            auth.style.display = "none";
-            app.style.display = "block";
-            btn.innerText = "লগইন করুন";
-            navTo("home");
-            showToast(`স্বাগতম, ${nameInput}!`);
-          } else {
-            showToast("নাম বা ইমেইল ভুল হয়েছে।");
-            btn.innerText = "লগইন করুন";
-          }
-        } catch (error) {
-          console.error("Login error:", error);
-          showToast("লগইন করতে সমস্যা হয়েছে।");
-          btn.innerText = "লগইন করুন";
-        }
+            document.getElementById("auth-screen").style.display = "none";
+            document.getElementById("app-content").style.display = "block";
+            navTo("home"); showToast(`স্বাগতম, ${nameInput}!`);
+          } else { showToast("নাম বা ইমেইল ভুল হয়েছে।"); }
+        } catch (error) { showToast("লগইন করতে সমস্যা হয়েছে।"); } 
+        finally { btn.innerHTML = 'লগইন করুন'; btn.disabled = false; }
       };
 
       function logout() {
-        auth.style.display = "flex";
-        app.style.display = "none";
-
-        localStorage.removeItem("userName");
-        localStorage.removeItem("currentNav");
-
+        document.getElementById("auth-screen").style.display = "flex";
+        document.getElementById("app-content").style.display = "none";
+        localStorage.removeItem("userName"); localStorage.removeItem("currentNav"); localStorage.removeItem("userProfilePic");
         fetchBorderNames();
       }
 
-      function initApp() {
-        applyMealLockState();
-        fetchMessages();
-        fetchNotifications();
-      }
+      function initApp() { applyMealLockState(); fetchMessages(); fetchNotifications(); }
 
       function navTo(viewId) {
         localStorage.setItem("currentNav", viewId);
-        document
-          .querySelectorAll(".view-section")
-          .forEach((v) => v.classList.remove("active"));
-        document
-          .querySelectorAll(".nav-item")
-          .forEach((n) => n.classList.remove("active"));
+        document.querySelectorAll(".view-section").forEach((v) => v.classList.remove("active"));
+        document.querySelectorAll(".nav-item").forEach((n) => {
+          n.classList.remove("active");
+          const icon = n.querySelector('.material-symbols-outlined');
+          if(icon) icon.classList.remove('filled-icon');
+        });
 
         const targetSection = document.getElementById(viewId);
         if (targetSection) targetSection.classList.add("active");
 
-        const targetNavBtn = document.querySelector(
-          `.nav-item[onclick="navTo('${viewId}')"]`,
-        );
-        if (targetNavBtn) targetNavBtn.classList.add("active");
+        const targetNavBtn = document.querySelector(`.nav-item[onclick="navTo('${viewId}')"]`);
+        if (targetNavBtn) {
+            targetNavBtn.classList.add("active");
+            const icon = targetNavBtn.querySelector('.material-symbols-outlined');
+            if(icon) icon.classList.add('filled-icon');
+        }
 
-        const labels = {
-          home: "হোম",
-          messenger: "মেসেজ",
-          report: "রিপোর্ট",
-          notification: "নোটিফিকেশন",
-          account: "প্রোফাইল",
-        };
-        document.getElementById("view-title").innerText =
-          labels[viewId] || "হোম";
+        const labels = { home: "হোম", messenger: "মেসেজ", report: "রিপোর্ট", notification: "নোটিফিকেশন", account: "প্রোফাইল" };
+        document.getElementById("view-title").innerText = labels[viewId] || "হোম";
+        
+        // Update Data appropriately based on Tab Navigation
         if (viewId === "messenger") {
-          const box = document.getElementById("chatBox");
-          box.scrollTop = box.scrollHeight;
+          const navMsgBadge = document.getElementById("nav-msg-badge");
+          if(navMsgBadge) navMsgBadge.style.display = "none";
           fetchMessages();
         } else if (viewId === "notification") {
           fetchNotifications();
+        } else if (viewId === "report" || viewId === "home") {
+          fetchReportData();
         }
       }
 
-      async function fetchMessages() {
-        try {
-          const response = await fetch(`${SCRIPT_URL_MSG}?action=getMessages`, {
-            method: "GET",
-            mode: "cors",
-            redirect: "follow",
-          });
-          if (!response.ok) throw new Error("Failed to load messages");
+      function previewProfilePic(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = new Image();
+          img.onload = function () {
+            const canvas = document.createElement("canvas");
+            const MAX_WIDTH = 400, MAX_HEIGHT = 400;
+            let width = img.width, height = img.height;
+            if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } } 
+            else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
+            canvas.width = width; canvas.height = height;
+            const ctx = canvas.getContext("2d"); ctx.drawImage(img, 0, 0, width, height);
+            tempBase64Pic = canvas.toDataURL("image/jpeg", 0.6);
+            document.getElementById("profileAvatar").src = tempBase64Pic;
+            document.getElementById("saveProfilePicBtn").style.display = "inline-flex";
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
 
+      async function uploadProfilePic() {
+        if (!tempBase64Pic) return;
+        const btn = document.getElementById("saveProfilePicBtn");
+        btn.innerHTML = '<span class="spinner"></span> আপলোড হচ্ছে...';
+        btn.disabled = true;
+
+        const len = tempBase64Pic.length; const partSize = Math.ceil(len / 3);
+        const part1 = tempBase64Pic.substring(0, partSize), part2 = tempBase64Pic.substring(partSize, partSize * 2), part3 = tempBase64Pic.substring(partSize * 2);
+        const action = localStorage.getItem("userProfilePic") ? "updateprofilepic" : "setprofilepic";
+
+        try {
+          const response = await apiFetch(`${SCRIPT_URL_LOGIN}?action=${action}`, {
+            method: "POST", mode: "cors", headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ name: localStorage.getItem("userName"), fingerprint: localStorage.getItem("userFingerPrint"), part1, part2, part3 }),
+          });
+          if (response.ok || response.type === "opaque") {
+            localStorage.setItem("userProfilePic", tempBase64Pic);
+            document.getElementById("headerAvatar").src = tempBase64Pic;
+            btn.style.display = "none"; showToast("প্রোফাইল ছবি সফলভাবে আপডেট হয়েছে!");
+          } else throw new Error();
+        } catch (error) { showToast("ছবি আপলোড করতে সমস্যা হয়েছে।"); } 
+        finally { btn.innerHTML = 'ছবি সেভ করুন'; btn.disabled = false; }
+      }
+
+      async function fetchMessages() {
+        const box = document.getElementById("chatBox");
+        try {
+          const response = await apiFetch(`${SCRIPT_URL_MSG}?action=getMessages`);
           const messagesData = await response.json();
-          renderMessages(messagesData);
+          
+          // মেসেজ কাউন্ট এবং নোটিফিকেশন ব্যাজ লজিক
+          const lastMsgCount = parseInt(localStorage.getItem("abid_last_msg_count")) || 0;
+          const currentCount = messagesData.length;
+          const navMsgBadge = document.getElementById("nav-msg-badge");
+          
+          if (localStorage.getItem("currentNav") === "messenger") {
+              // মেসেজ ট্যাবে থাকলে স্টোরেজ আপডেট করে ব্যাজ মুছে দিবে
+              localStorage.setItem("abid_last_msg_count", currentCount);
+              if (navMsgBadge) navMsgBadge.style.display = "none";
+          } else {
+              // মেসেজ ট্যাবের বাইরে থাকলে আনরিড মেসেজ চেক করবে
+              const unreadCount = currentCount - lastMsgCount;
+              if (unreadCount > 0 && navMsgBadge) {
+                  navMsgBadge.innerText = unreadCount;
+                  navMsgBadge.style.display = "block";
+              }
+          }
+          
+          // শুধুমাত্র মেসেজ ট্যাবে থাকলে রেন্ডার করবে
+          if(localStorage.getItem("currentNav") === "messenger" || !box.innerHTML.includes('message-group')){
+            renderMessages(messagesData);
+          }
+
         } catch (error) {
-          console.error("Error fetching messages:", error);
-          document.getElementById("chatBox").innerHTML =
-            '<div style="text-align:center; padding:20px; color:var(--danger);">মেসেজ লোড করতে ব্যর্থ হয়েছে।</div>';
+          if(localStorage.getItem("currentNav") === "messenger") {
+              box.innerHTML = '<div style="text-align:center; padding:20px; color:var(--danger);">মেসেজ লোড করতে ব্যর্থ হয়েছে।</div>';
+          }
         }
       }
 
       function renderMessages(msgs) {
         const box = document.getElementById("chatBox");
         const currentUserFP = localStorage.getItem("userFingerPrint");
-
+        
         if (!msgs || msgs.length === 0) {
-          box.innerHTML =
-            '<div style="text-align:center; padding:20px; color:var(--text-muted);">কোনো মেসেজ নেই। নতুন মেসেজ পাঠান!</div>';
+          box.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">কোনো মেসেজ নেই। নতুন মেসেজ পাঠান!</div>';
           return;
         }
+        
+        box.innerHTML = msgs.map((m) => {
+          const isSentByMe = m.userFingerPrint === currentUserFP;
+          const msgType = isSentByMe ? "sent" : "received";
+          const avatarSrc = isSentByMe && localStorage.getItem("userProfilePic") 
+            ? localStorage.getItem("userProfilePic") 
+            : `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(m.userName)}`;
+          
+          // অ্যাডমিন ল্যাবেলিং
+          let senderDisplay = isSentByMe ? "আপনি" : m.userName;
+          if (m.userName === "আবিদ") {
+              senderDisplay = `অ্যাডমিনিস্ট্রেটর <span class="material-symbols-outlined" style="font-size: 13px; color: var(--md-primary); vertical-align: text-center;">shield_person</span> <span style="color: var(--md-primary); font-weight: 700;"> ${isSentByMe ? 'আপনি' : 'আবিদ'}</span>`;
+          }
 
-        box.innerHTML = msgs
-          .map((m) => {
-            const isSentByMe = m.userFingerPrint === currentUserFP;
-            const msgType = isSentByMe ? "sent" : "received";
-            const avatarSeed = encodeURIComponent(m.userName);
-            const displaySender = isSentByMe ? "আপনি" : m.userName || "Unknown";
-
-            return `
-                <div class="message-group ${msgType}">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}" class="msg-avatar">
-                    <div class="msg-content-wrapper">
-                        <span class="sender-name">${displaySender}</span>
-                        <div class="bubble">${m.message}</div>
-                        <span class="msg-time">${m.dateTime}</span>
-                    </div>
-                </div>
-            `;
-          })
-          .join("");
-
+          return `<div class="message-group ${msgType}"><img src="${avatarSrc}" class="msg-avatar"><div class="msg-content-wrapper"><span class="sender-name">${senderDisplay}</span><div class="bubble">${m.message}</div><span class="msg-time">${m.dateTime}</span></div></div>`;
+        }).join("");
+        
         box.scrollTop = box.scrollHeight;
       }
 
@@ -1526,360 +1029,249 @@
         const input = document.getElementById("chatInput");
         const text = input.value.trim();
         if (!text) return;
-
         const sendBtn = document.getElementById("sendMsgBtn");
-        const originalIcon = sendBtn.innerHTML;
-
+        
         const fp = localStorage.getItem("userFingerPrint") || "Unknown";
         const uName = localStorage.getItem("userName") || "Anonymous";
         const now = new Date();
-        const dateTimeStr =
-          now.toLocaleDateString("bn-BD") +
-          " " +
-          now.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-          });
+        const dateTimeStr = now.toLocaleDateString("bn-BD") + " " + now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+        
         input.disabled = true;
-        sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        sendBtn.innerHTML = '<span class="spinner" style="border-color:var(--md-on-primary);"></span>';
 
         const box = document.getElementById("chatBox");
-        const avatarSeed = encodeURIComponent(uName);
-        const tempMsgHtml = `
-          <div class="message-group sent" id="temp-msg" style="opacity: 0.6;">
-              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}" class="msg-avatar">
-              <div class="msg-content-wrapper">
-                  <span class="sender-name">আপনি (পাঠানো হচ্ছে...)</span>
-                  <div class="bubble">${text}</div>
-                  <span class="msg-time">${dateTimeStr}</span>
-              </div>
-          </div>
-        `;
-        box.insertAdjacentHTML("beforeend", tempMsgHtml);
+        const avatarSrc = localStorage.getItem("userProfilePic") || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(uName)}`;
+        
+        // টেম্পরারি ডিসপ্লে 
+        let senderDisplay = "আপনি (পাঠানো হচ্ছে...)";
+        if (uName === "আবিদ") {
+             senderDisplay = `<span class="material-symbols-outlined" style="font-size: 13px; color: var(--md-primary); vertical-align: text-bottom;">shield_person</span> <span style="color: var(--md-primary); font-weight: 700;">অ্যাডমিনিস্ট্রেটর · আপনি (পাঠানো হচ্ছে...)</span>`;
+        }
+
+        box.insertAdjacentHTML("beforeend", `<div class="message-group sent" id="temp-msg" style="opacity: 0.6;"><img src="${avatarSrc}" class="msg-avatar"><div class="msg-content-wrapper"><span class="sender-name">${senderDisplay}</span><div class="bubble">${text}</div><span class="msg-time">${dateTimeStr}</span></div></div>`);
         box.scrollTop = box.scrollHeight;
 
-        const payload = {
-          userFingerPrint: fp,
-          userName: uName,
-          message: text,
-          dateTime: dateTimeStr,
-        };
         try {
-          const response = await fetch(
-            `${SCRIPT_URL_MSG}?action=createMessage`,
-            {
-              method: "POST",
-              mode: "cors",
-              headers: { "Content-Type": "text/plain;charset=utf-8" },
-              body: JSON.stringify(payload),
-              redirect: "follow",
-            },
-          );
+          const response = await apiFetch(`${SCRIPT_URL_MSG}?action=createMessage`, {
+            method: "POST", mode: "cors", headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ userFingerPrint: fp, userName: uName, message: text, dateTime: dateTimeStr }),
+          });
           if (response.ok || response.type === "opaque") {
             input.value = "";
             const tempMsg = document.getElementById("temp-msg");
-            if (tempMsg) {
-              tempMsg.style.opacity = "1";
-              tempMsg.querySelector(".sender-name").innerText = "আপনি";
-              tempMsg.removeAttribute("id");
-            }
+            if (tempMsg) tempMsg.remove(); // সাকসেস হলে fetchMessage নতুন করে রেন্ডার করবে 
             setTimeout(fetchMessages, 1000);
-          } else {
-            throw new Error("Server responded with an error");
-          }
+          } else throw new Error();
         } catch (error) {
-          console.error("Error sending message:", error);
-          showToast("মেসেজ পাঠাতে সমস্যা হয়েছে। ইন্টারকানেকশন চেক করুন।");
+          showToast("মেসেজ পাঠাতে সমস্যা হয়েছে।");
           const tempMsg = document.getElementById("temp-msg");
           if (tempMsg) tempMsg.remove();
         } finally {
           input.disabled = false;
-          sendBtn.innerHTML = originalIcon;
+          sendBtn.innerHTML = '<span class="material-symbols-outlined">send</span>';
           input.focus();
         }
       }
 
       function isMealLocked() {
         if (typeof MEAL_LOCK_START_HOUR === "undefined") return true;
-
-        const now = new Date();
-        const currentTotalMin = now.getHours() * 60 + now.getMinutes();
-        const startTotalMin = MEAL_LOCK_START_HOUR * 60 + MEAL_LOCK_START_MIN;
-        const endTotalMin = MEAL_LOCK_END_HOUR * 60 + MEAL_LOCK_END_MIN;
-
-        if (startTotalMin > endTotalMin) {
-          return (
-            currentTotalMin >= startTotalMin || currentTotalMin < endTotalMin
-          );
-        } else {
-          return (
-            currentTotalMin >= startTotalMin && currentTotalMin < endTotalMin
-          );
-        }
+        const now = new Date(); const currentMin = now.getHours() * 60 + now.getMinutes();
+        const startMin = MEAL_LOCK_START_HOUR * 60 + MEAL_LOCK_START_MIN;
+        const endMin = MEAL_LOCK_END_HOUR * 60 + MEAL_LOCK_END_MIN;
+        return startMin > endMin ? currentMin >= startMin || currentMin < endMin : currentMin >= startMin && currentMin < endMin;
       }
 
       function applyMealLockState() {
         if (mealLockTimer) clearInterval(mealLockTimer);
-
         const mealBtn = document.getElementById("mealSelectBtn");
         const mealBtnText = document.getElementById("mealBtnText");
-        const icon = mealBtn.querySelector("i");
+        const icon = document.getElementById("mealBtnIcon");
         const resultDiv = document.getElementById("meal-submission-result");
 
         if (typeof MEAL_LOCK_START_HOUR === "undefined") {
           mealBtn.disabled = true;
-          mealBtn.style.background = "var(--md-surface-variant)";
-          mealBtn.style.color = "var(--md-on-surface-variant)";
-          mealBtn.style.cursor = "wait";
-          icon.className = "fas fa-spinner fa-spin";
-          mealBtnText.innerHTML = `<span style="font-size: 15px; font-weight: 600;">চেক করা হচ্ছে...</span>`;
-          resultDiv.style.display = "none";
-          return;
+          mealBtn.style.background = "var(--md-surface-variant)"; mealBtn.style.color = "var(--md-on-surface-variant)";
+          mealBtnText.innerHTML = `<span style="font-size: 15px; font-weight: 600; display:flex; align-items:center; gap:8px;"><span class="spinner primary"></span> চেক করা হচ্ছে...</span>`;
+          icon.style.display = 'none'; resultDiv.style.display = "none"; return;
         }
 
         const saved = localStorage.getItem("abid_meal");
         let mealData = saved ? JSON.parse(saved) : null;
+        let submittedOnce = false;
+        if (mealData && mealData.timestamp) {
+          const submitTime = new Date(mealData.timestamp);
+          const lastUnlock = new Date(); lastUnlock.setHours(MEAL_LOCK_END_HOUR, MEAL_LOCK_END_MIN, 0, 0);
+          if (new Date().getTime() < lastUnlock.getTime()) lastUnlock.setDate(lastUnlock.getDate() - 1);
+          submittedOnce = submitTime.getTime() >= lastUnlock.getTime();
+        }
 
         const naturallyLocked = isMealLocked();
-        const submittedOnce = checkMealSubmissionStatus();
-
         if (naturallyLocked || submittedOnce) {
-          mealBtn.disabled = true;
-          mealBtn.style.background = "var(--md-surface-variant)";
-          mealBtn.style.color = "var(--md-on-surface-variant)";
-          mealBtn.style.cursor = "not-allowed";
-          icon.className = "fas fa-lock";
-
-          let targetTime;
-          let timeLabel;
-          let mainText;
-
-          // সিঙ্ক্রোনাইজড টাইমার লজিক: ন্যাচারালি লকড থাকলে পরবর্তী চালুর সময়, আর সাবমিট করা হলে বর্তমান সেশন বন্ধ হওয়ার সময় দেখাবে
+          mealBtn.disabled = true; icon.style.display = 'inline-block';
+          mealBtn.style.background = "var(--md-surface-variant)"; mealBtn.style.color = "var(--md-on-surface-variant)";
+          icon.innerText = "lock";
+          let targetTime = new Date(); let timeLabel, mainText;
           if (naturallyLocked) {
             mainText = "মিল নির্বাচনের সময় শেষ হয়েছে!";
-            targetTime = getNextUnlockTime();
+            targetTime.setHours(MEAL_LOCK_END_HOUR, MEAL_LOCK_END_MIN, 0, 0);
+            if (new Date() >= targetTime) targetTime.setDate(targetTime.getDate() + 1);
             timeLabel = "চালু হবে ঃ";
           } else {
             mainText = "মিল নির্বাচন সম্পন্ন (সাময়িক ভাবে বন্ধ)";
-            targetTime = getNextLockTime();
+            targetTime.setHours(MEAL_LOCK_START_HOUR, MEAL_LOCK_START_MIN, 0, 0);
+            if (new Date() >= targetTime) targetTime.setDate(targetTime.getDate() + 1);
             timeLabel = "বন্ধ হবে ঃ";
           }
 
-          const updateTimerUI = () => {
-            const now = new Date();
-            if (now >= targetTime) {
-              clearInterval(mealLockTimer);
-              applyMealLockState();
-            } else {
+          const updateTimer = () => {
+            const diff = targetTime - new Date();
+            if (diff <= 0) { clearInterval(mealLockTimer); applyMealLockState(); } 
+            else {
+              const h = Math.floor(diff / (1000 * 60 * 60)), m = Math.floor((diff / (1000 * 60)) % 60), s = Math.floor((diff / 1000) % 60);
               const timerSpan = document.getElementById("meal-countdown-timer");
-              if (timerSpan) {
-                timerSpan.innerText = `${timeLabel} ${formatTimeLeft(targetTime)}`;
-              }
+              if (timerSpan) timerSpan.innerText = `${timeLabel} ${h.toString().padStart(2, "0")} ঘন্টা ${m.toString().padStart(2, "0")} মিনিট ${s.toString().padStart(2, "0")} সেকেন্ড পরে`;
             }
           };
-
-          mealBtnText.innerHTML = `
-            <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
-                <span style="font-size: 15px; font-weight: 600;">${mainText}</span>
-                <span id="meal-countdown-timer" style="font-size: 13px; font-weight: 600; color: var(--md-error); margin-top: 4px;">${timeLabel} ${formatTimeLeft(targetTime)}</span>
-            </div>
-          `;
-
-          mealLockTimer = setInterval(updateTimerUI, 1000);
+          mealBtnText.innerHTML = `<div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;"><span style="font-size: 15px; font-weight: 600;">${mainText}</span><span id="meal-countdown-timer" style="font-size: 13px; font-weight: 600; color: var(--md-error); margin-top: 4px;"></span></div>`;
+          updateTimer(); mealLockTimer = setInterval(updateTimer, 1000);
 
           if (mealData) {
             resultDiv.style.display = "block";
-            resultDiv.innerHTML = `কালকের মিল &nbsp;<i class="fas fa-check-circle" style="margin-right:5px;"></i><b>${mealData.txt}</b>`;
-          } else {
-            resultDiv.style.display = "none";
-          }
+            resultDiv.innerHTML = `কালকের মিল &nbsp;<span class="material-symbols-outlined" style="font-size:18px; margin-right:5px; vertical-align:middle;">check_circle</span><b>${mealData.txt}</b>`;
+          } else resultDiv.style.display = "none";
         } else {
-          mealBtn.disabled = false;
-          mealBtn.style.background = "var(--md-secondary-container)";
-          mealBtn.style.color = "var(--md-on-secondary-container)";
-          mealBtn.style.cursor = "pointer";
-          icon.className = "fas fa-chevron-circle-down";
-          mealBtnText.innerHTML = mealData
-            ? `<b>${mealData.txt}</b> নির্বাচন করা হয়েছে`
-            : "মিল নির্বাচন করুন";
-
+          mealBtn.disabled = false; icon.style.display = 'inline-block';
+          mealBtn.style.background = "var(--md-secondary-container)"; mealBtn.style.color = "var(--md-on-secondary-container)";
+          icon.innerText = "arrow_drop_down_circle";
+          mealBtnText.innerHTML = mealData ? `<b>${mealData.txt}</b> নির্বাচন করা হয়েছিল` : "মিল নির্বাচন করুন";
           if (mealData) {
             resultDiv.style.display = "block";
-            resultDiv.innerHTML = `<i class="fas fa-check-circle" style="margin-right:5px;"></i> নির্বাচিত ছিল: <b>${mealData.txt}</b>`;
-          } else {
-            resultDiv.style.display = "none";
-          }
+            resultDiv.innerHTML = `<span class="material-symbols-outlined" style="font-size:18px; margin-right:5px; vertical-align:middle;">check_circle</span> নির্বাচিত ছিল: <b>${mealData.txt}</b>`;
+          } else resultDiv.style.display = "none";
         }
       }
 
       function openMealPopup() {
-        if (typeof MEAL_LOCK_START_HOUR === "undefined") {
-          showToast("সার্ভার থেকে ডেটা লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...");
-          return;
-        }
-
-        if (isMealLocked() || checkMealSubmissionStatus()) {
-          showToast("মিল নির্বাচনের সময় শেষ হয়েছে!");
-          return;
-        }
+        if (typeof MEAL_LOCK_START_HOUR === "undefined") { showToast("ডেটা লোড হচ্ছে, অপেক্ষা করুন..."); return; }
+        if (isMealLocked()) { showToast("মিল নির্বাচনের সময় শেষ হয়েছে!"); return; }
         document.getElementById("mealSelectionModal").style.display = "flex";
-        const saved = localStorage.getItem("abid_meal");
-        tempSelectedMeal = saved ? JSON.parse(saved) : null;
+        const saved = localStorage.getItem("abid_meal"); tempSelectedMeal = saved ? JSON.parse(saved) : null;
         document.querySelectorAll(".popup-item").forEach((el) => {
-          if (
-            tempSelectedMeal &&
-            el.getAttribute("data-val") === tempSelectedMeal.val
-          ) {
-            el.classList.add("selected");
-          } else {
-            el.classList.remove("selected");
-          }
+          if (tempSelectedMeal && el.getAttribute("data-val") === tempSelectedMeal.val) el.classList.add("selected");
+          else el.classList.remove("selected");
         });
       }
-
-      function closeMealPopup() {
-        document.getElementById("mealSelectionModal").style.display = "none";
-      }
+      function closeMealPopup() { document.getElementById("mealSelectionModal").style.display = "none"; }
 
       function highlightMeal(element, value, text) {
-        document
-          .querySelectorAll(".popup-item")
-          .forEach((el) => el.classList.remove("selected"));
-        element.classList.add("selected");
-        tempSelectedMeal = { val: value, txt: text };
+        document.querySelectorAll(".popup-item").forEach((el) => el.classList.remove("selected"));
+        element.classList.add("selected"); tempSelectedMeal = { val: value, txt: text };
       }
 
       async function confirmMealSelection() {
-        if (!tempSelectedMeal) {
-          showToast("অনুগ্রহ করে একটি মিল নির্বাচন করুন");
-          return;
-        }
+        if (!tempSelectedMeal) { showToast("একটি মিল নির্বাচন করুন"); return; }
+        const submitBtn = document.getElementById("mealSubmitBtn");
+        submitBtn.innerHTML = '<span class="spinner"></span> অপেক্ষা করুন...'; submitBtn.disabled = true;
 
-        const submitBtn = document.querySelector(
-          'button[onclick="confirmMealSelection()"]',
-        );
-        const originalText = submitBtn.innerText;
-        submitBtn.innerText = "অপেক্ষা করুন...";
-        submitBtn.disabled = true;
-
-        const userName = localStorage.getItem("userName") || "Unknown";
-        const fp = localStorage.getItem("userFingerPrint") || "Unknown";
-        const now = new Date();
         try {
-          const response = await fetch(`${SCRIPT_URL_MEAL}?action=createMeal`, {
-            method: "POST",
-            mode: "cors",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify({
-              name: userName,
-              mealValue: tempSelectedMeal.val,
-              mealText: tempSelectedMeal.txt,
-              date: now.toISOString(),
-              fingerprint: fp,
-            }),
-            redirect: "follow",
+          const response = await apiFetch(`${SCRIPT_URL_MEAL}?action=createMeal`, {
+            method: "POST", mode: "cors", headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ name: localStorage.getItem("userName"), mealValue: tempSelectedMeal.val, mealText: tempSelectedMeal.txt, date: new Date().toISOString(), fingerprint: localStorage.getItem("userFingerPrint") }),
           });
           if (response.ok || response.type === "opaque") {
             tempSelectedMeal.timestamp = new Date().getTime();
             localStorage.setItem("abid_meal", JSON.stringify(tempSelectedMeal));
-
-            applyMealLockState();
-            closeMealPopup();
-            showToast("মিল আপডেট সম্পন্ন হয়েছে");
-
-            const othersList = document.getElementById("others-meal-list");
-            if (othersList.style.display === "block") {
-              fetchOthersMeals();
+            applyMealLockState(); closeMealPopup(); showToast("মিল আপডেট সম্পন্ন হয়েছে");
+            
+            // "আজকের মিল এন্ট্রি দেখুন" সেকশনটি অটোমেটিক্যালি ওপেন করা হচ্ছে
+            const list = document.getElementById("others-meal-list");
+            if (list.style.display === "none" || list.style.display === "") {
+               toggleOthersMeal();
+            } else {
+               fetchOthersMeals();
             }
-          } else {
-            throw new Error("Server error");
-          }
-        } catch (error) {
-          console.error("Meal submission error:", error);
-          showToast("মিল সাবমিট করতে সমস্যা হয়েছে।");
-        } finally {
-          submitBtn.innerText = originalText;
-          submitBtn.disabled = false;
-        }
+
+          } else throw new Error();
+        } catch (error) { showToast("মিল সাবমিট করতে সমস্যা হয়েছে।"); } 
+        finally { submitBtn.innerHTML = 'ম্যানেজারের কাছে জমাদিন'; submitBtn.disabled = false; }
       }
 
       function toggleOthersMeal() {
         const list = document.getElementById("others-meal-list");
         const icon = document.getElementById("others-meal-icon");
-        if (list.style.display === "none") {
-          list.style.display = "block";
-          icon.style.transform = "rotate(180deg)";
-          fetchOthersMeals();
+        if (list.style.display === "none" || list.style.display === "") {
+          list.style.display = "block"; icon.style.transform = "rotate(180deg)"; fetchOthersMeals();
         } else {
-          list.style.display = "none";
-          icon.style.transform = "rotate(0deg)";
+          list.style.display = "none"; icon.style.transform = "rotate(0deg)";
         }
-        icon.style.transition = "0.3s";
       }
 
       async function fetchOthersMeals() {
         const list = document.getElementById("others-meal-list");
-        list.innerHTML =
-          '<div style="text-align:center; padding:15px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</div>';
+        list.innerHTML = getSkeletonLines(3);
         try {
-          const res = await fetch(`${SCRIPT_URL_MEAL}?action=getMeals`, {
-            method: "GET",
-            mode: "cors",
-            redirect: "follow",
-          });
+          const res = await apiFetch(`${SCRIPT_URL_MEAL}?action=getMeals`);
           const data = await res.json();
-          const today = new Date();
-
-          let mealsData = Array.isArray(data) ? data : data.data || [];
+          const today = new Date(); let mealsData = Array.isArray(data) ? data : data.data || [];
           const todaysMeals = mealsData.filter((item) => {
             if (!item.date) return false;
             const d = new Date(item.date);
-            if (isNaN(d.getTime())) {
-              const todayStr = today.toLocaleDateString();
-              return String(item.date).includes(todayStr);
-            }
-            return (
-              d.getDate() === today.getDate() &&
-              d.getMonth() === today.getMonth() &&
-              d.getFullYear() === today.getFullYear()
-            );
+            if (isNaN(d.getTime())) return String(item.date).includes(today.toLocaleDateString());
+            return d.getDate() === today.getDate() && d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
           });
-
           if (todaysMeals.length === 0) {
-            list.innerHTML =
-              '<div style="padding: 15px; text-align: center; color: var(--text-muted);">আজকের কোনো মিল এন্ট্রি পাওয়া যায়নি।</div>';
-            return;
+            list.innerHTML = '<div style="padding: 15px; text-align: center; color: var(--text-muted);">আজকের কোনো মিল এন্ট্রি পাওয়া যায়নি।</div>'; return;
           }
+          list.innerHTML = '<ul style="list-style: none; padding: 0; margin: 0">' + todaysMeals.map((m) => `<li style="display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--md-outline-variant); margin-bottom: 12px;"><span style="font-weight: 500; font-size: 15px; color: var(--md-on-surface);">${m.name || m.Name || "অজানা"}</span><span style="background: var(--md-primary-container); color: var(--md-on-primary-container); padding: 4px 12px; border-radius: 8px; font-size: 13px; font-weight: 600;">${m.mealText || m.meal || ""}</span></li>`).join("") + "</ul>";
+        } catch (error) { list.innerHTML = '<div style="padding: 15px; text-align: center; color: var(--danger);">ডেটা লোড করতে ব্যর্থ হয়েছে।</div>'; }
+      }
 
-          let html = '<ul style="list-style: none; padding: 0; margin: 0">';
-          todaysMeals.forEach((m) => {
-            html += `
-              <li style="display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--md-outline-variant); margin-bottom: 12px;">
-                <span style="font-weight: 500; font-size: 15px; color: var(--md-on-surface);">${m.name || m.Name || "অজানা"}</span>
-                <span style="background: var(--md-primary-container); color: var(--md-on-primary-container); padding: 4px 12px; border-radius: 8px; font-size: 13px; font-weight: 600;">${m.mealText || m.meal || ""}</span>
-              </li>`;
-          });
-          html += "</ul>";
+      async function fetchAllDaysMeals() {
+        const container = document.getElementById("all-days-meal-container");
+        const btnIcon = document.getElementById("all-days-meal-icon");
 
-          list.innerHTML = html;
-        } catch (error) {
-          console.error("Error fetching others meals:", error);
-          list.innerHTML =
-            '<div style="padding: 15px; text-align: center; color: var(--danger);">ডেটা লোড করতে ব্যর্থ হয়েছে।</div>';
+        if (container.style.display === "block") {
+          container.style.display = "none"; btnIcon.style.transform = "scale(1)"; return;
         }
+
+        container.style.display = "block"; btnIcon.style.transform = "scale(1.2)";
+        container.innerHTML = getSkeletonLines(4);
+
+        try {
+          const response = await apiFetch(CSV_URL_ALL_DAYS);
+          const text = await response.text();
+          const csvData = parseCSV(text);
+          const userName = localStorage.getItem("userName");
+          const userRow = csvData.data.find((r) => (r.Name && r.Name.trim() === userName) || (r["নাম"] && r["নাম"].trim() === userName));
+
+          if (!userRow) { container.innerHTML = '<p style="text-align:center; color: var(--md-error); padding: 10px;">আপনার কোনো ডেটা পাওয়া যায়নি।</p>'; return; }
+
+          let mealsHtml = '<ul style="list-style: none; padding: 0; margin: 0;">';
+          let foundMeals = false;
+          Object.keys(userRow).forEach((key) => {
+            const day = parseInt(key);
+            if (!isNaN(day) && day >= 1 && day <= 31) {
+              const mealVal = userRow[key];
+              if (mealVal && mealVal.trim() !== "") {
+                foundMeals = true;
+                mealsHtml += `<li style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--md-outline-variant);">
+                                <span style="font-weight: 600; color: var(--md-on-surface); display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="color:var(--md-outline); font-size:18px;">calendar_today</span> তারিখ: ${day}</span>
+                                <span style="background: var(--md-tertiary-container); color: var(--md-on-tertiary-container); padding: 2px 12px; border-radius: 8px; font-size: 14px; font-weight: 600;">${mealVal}</span>
+                            </li>`;
+              }
+            }
+          });
+          mealsHtml += "</ul>";
+          container.innerHTML = foundMeals ? mealsHtml : '<p style="text-align:center; color: var(--text-muted); padding: 10px;">এই মাসে আপনার কোনো মিল এন্ট্রি নেই।</p>';
+        } catch (e) { container.innerHTML = '<p style="text-align:center; color: var(--md-error); padding: 10px;">ডেটা লোড করতে ব্যর্থ।</p>'; }
       }
 
       function parseCSV(text) {
-        const rows = text
-          .trim()
-          .split("\n")
-          .map((row) => row.split(","));
+        const rows = text.trim().split("\n").map((row) => row.split(","));
         const headers = rows[0].map((h) => h.trim());
         const data = rows.slice(1).map((row) => {
           let obj = {};
-          row.forEach((cell, i) => {
-            obj[headers[i]] = cell ? cell.trim().replace(/^"|"$/g, "") : "";
-          });
+          row.forEach((cell, i) => { obj[headers[i]] = cell ? cell.trim().replace(/^"|"$/g, "") : ""; });
           return obj;
         });
         return { headers, data };
@@ -1887,18 +1279,14 @@
 
       async function fetchReportData() {
         try {
-          const response = await fetch(`${CSV_URL_1}&t=${Date.now()}`);
-          if (!response.ok) throw new Error("Network error");
+          const response = await apiFetch(CSV_URL_1);
           const text = await response.text();
           globalSheetData = parseCSV(text);
-          renderHomeData();
-          renderReportData();
+          renderHomeData(); renderReportData();
         } catch (error) {
-          console.error("Fetch error:", error);
-          document.getElementById("home-content").innerHTML =
-            '<p style="text-align:center; padding: 20px; color: var(--danger); font-weight:600;">ডেটা লোড করতে সমস্যা হয়েছে!</p>';
-          document.getElementById("report-content").innerHTML =
-            '<p style="text-align:center; padding: 20px; color: var(--danger); font-weight:600;">ডেটা লোড করতে সমস্যা হয়েছে!</p>';
+          const errHTML = '<p style="text-align:center; padding: 20px; color: var(--danger); font-weight:600;">ডেটা লোড করতে সমস্যা হয়েছে!</p>';
+          document.getElementById("home-content").innerHTML = errHTML;
+          document.getElementById("report-content").innerHTML = errHTML;
         }
       }
 
@@ -1906,39 +1294,28 @@
         const container = document.getElementById("home-content");
         if (!globalSheetData || !globalSheetData.data.length) return;
         const takeList = globalSheetData.data.filter((row) => row.dueTkName);
-        let html = `
+        container.innerHTML = `
             <div style="display: flex; justify-content: space-between; align-items: center; margin: 24px 0 16px;">
                 <h4 style="margin: 0; color: var(--text-main); font-weight: 600;">সক্রিয় ডিউ [বাঁকি] গ্রহীতা</h4>
                 <span style="font-size: 13px; background: var(--md-surface-variant); color: var(--md-on-surface-variant); padding: 4px 12px; border-radius: var(--radius-pill); font-weight: 600;">${takeList.length} টি এন্ট্রি</span>
             </div>
             <div style="display: grid; gap: 12px;">
-                ${takeList
-                  .map(
-                    (item, index) => `
+                ${takeList.map((item, index) => `
                     <div style="background: var(--md-surface); padding: 16px; border-radius: 12px; border: 1px solid var(--md-outline-variant); display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow-1);">
-                        <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--md-tertiary-container); color: var(--md-on-tertiary-container); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
-                            ${item.dueTkName.charAt(0).toUpperCase()}
-                        </div>
-                        <div style="flex: 1; overflow: hidden;">
-                            <p style="margin: 0; font-weight: 600; font-size: 16px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.dueTkName}</p>
-                            <p style="margin: 0; font-size: 13px; color: var(--text-muted); margin-top: 4px;">এন্ট্রি #${index + 1}</p>
-                        </div>
+                        <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--md-tertiary-container); color: var(--md-on-tertiary-container); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">${item.dueTkName.charAt(0).toUpperCase()}</div>
+                        <div style="flex: 1; overflow: hidden;"><p style="margin: 0; font-weight: 600; font-size: 16px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.dueTkName}</p><p style="margin: 0; font-size: 13px; color: var(--text-muted); margin-top: 4px;">এন্ট্রি #${index + 1}</p></div>
                     </div>
-                `,
-                  )
-                  .join("")}
+                `).join("")}
             </div>
         `;
-        container.innerHTML = html;
       }
 
       function renderReportData() {
         const container = document.getElementById("report-content");
         if (!globalSheetData || !globalSheetData.data.length) return;
-        const rateValue =
-          globalSheetData.data.find((row) => row.mealRate)?.mealRate || "0.00";
+        const rateValue = globalSheetData.data.find((row) => row.mealRate)?.mealRate || "0.00";
         const reportData = globalSheetData.data.filter((row) => row.Name);
-        let html = `
+        container.innerHTML = `
             <div class="card" style="background: var(--md-primary); color: var(--md-on-primary); border-radius: 24px; padding: 32px 24px; box-shadow: var(--shadow-2); margin-bottom: 24px;">
                 <p style="font-size: 13px; opacity: 0.9; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">গতকালের মিল রেট</p>
                 <h2 style="font-size: 42px; margin: 0; font-weight: 500;">${rateValue} <span style="font-size: 18px; opacity: 0.8;">৳</span></h2>
@@ -1950,125 +1327,60 @@
                 <div style="overflow-x: auto;">
                     <table style="width: 100%; text-align: left; border-collapse: collapse; font-size: 14px;">
                         <thead style="background: var(--md-surface); border-bottom: 1px solid var(--md-outline-variant);">
-                            <tr>
-                                <th style="padding: 16px; font-weight: 600; color: var(--text-muted);">নাম</th>
-                                <th style="padding: 16px; font-weight: 600; color: var(--text-muted); text-align: center;">মিল</th>
-                                <th style="padding: 16px; font-weight: 600; color: var(--text-muted); text-align: center;">জমা [৳]</th>
-                                <th style="padding: 16px; font-weight: 600; color: var(--text-muted); text-align: center;">খরচ</th>
-                            </tr>
+                            <tr><th style="padding: 16px; font-weight: 600; color: var(--text-muted);">নাম</th><th style="padding: 16px; font-weight: 600; color: var(--text-muted); text-align: center;">মিল</th><th style="padding: 16px; font-weight: 600; color: var(--text-muted); text-align: center;">জমা [৳]</th><th style="padding: 16px; font-weight: 600; color: var(--text-muted); text-align: center;">খরচ</th></tr>
                         </thead>
                         <tbody>
-                            ${reportData
-                              .map(
-                                (row) => `
+                            ${reportData.map((row) => `
                                 <tr style="border-bottom: 1px solid var(--md-outline-variant);">
                                     <td style="padding: 16px; font-weight: 500; color: var(--text-main); white-space: nowrap;">${row.Name}</td>
                                     <td style="padding: 16px; text-align: center;"><span style="background: var(--md-primary-container); color: var(--md-on-primary-container); padding: 4px 10px; border-radius: 8px; font-size: 13px; font-weight: 600;">${row["Total Meal"] || 0}</span></td>
                                     <td style="padding: 16px; text-align: center; color: var(--text-muted); font-weight: 500;">${row.GivenTk || 0}</td>
-                                    <td style="padding: 16px; text-align: center;">
-                                        ${row.Eaten && row.Eaten !== "0" ? `<span style="color: var(--md-error); font-weight: 600;">${row.Eaten}</span>` : `<span style="color: var(--md-outline-variant);">-</span>`}
-                                    </td>
+                                    <td style="padding: 16px; text-align: center;">${row.Eaten && row.Eaten !== "0" ? `<span style="color: var(--md-error); font-weight: 600;">${row.Eaten}</span>` : `<span style="color: var(--md-outline-variant);">-</span>`}</td>
                                 </tr>
-                            `,
-                              )
-                              .join("")}
+                            `).join("")}
                         </tbody>
                     </table>
                 </div>
             </div>
         `;
-        container.innerHTML = html;
       }
 
       async function fetchNotifications() {
-        const box = document.getElementById("notif-box");
-
-        if (box.innerHTML.trim() === "") {
-          box.innerHTML = `
-            <div style="text-align: center; padding: 40px">
-              <i class="fas fa-circle-notch fa-spin fa-2x" style="color: var(--primary)"></i>
-              <p style="margin-top: 15px; color: var(--text-muted); font-weight: 500;">নোটিফিকেশন লোড হচ্ছে...</p>
-            </div>`;
-        }
-
         try {
           const url = new URL(SCRIPT_URL_NOTIF);
           url.searchParams.append("action", "getNotifications");
-
           const userName = localStorage.getItem("userName");
-          if (userName) {
-            url.searchParams.append("user", userName);
-          }
-
-          const response = await fetch(url.toString(), {
-            method: "GET",
-            mode: "cors",
-            redirect: "follow",
-          });
-
-          if (!response.ok) throw new Error("Failed to fetch notifications");
-
+          if (userName) url.searchParams.append("user", userName);
+          const response = await apiFetch(url.toString());
           const fetchedNotifs = await response.json();
-
-          let localNotifs =
-            JSON.parse(localStorage.getItem("abid_notifs")) || [];
-          let readIds = localNotifs
-            .filter((n) => n.read)
-            .map((n) => String(n.id));
-
-          const mergedNotifs = fetchedNotifs.map((n) => ({
-            ...n,
-            read: readIds.includes(String(n.id)),
-          }));
-
+          let localNotifs = JSON.parse(localStorage.getItem("abid_notifs")) || [];
+          let readIds = localNotifs.filter((n) => n.read).map((n) => String(n.id));
+          const mergedNotifs = fetchedNotifs.map((n) => ({ ...n, read: readIds.includes(String(n.id)) }));
           localStorage.setItem("abid_notifs", JSON.stringify(mergedNotifs));
           renderNotifications();
-        } catch (error) {
-          console.error("Error fetching notifications:", error);
-          renderNotifications();
-        }
-      }
-
-      function updateNavBadgeCount(unreadCount) {
-        const navBadge = document.getElementById("nav-notif-badge");
-        if (navBadge) {
-          navBadge.innerText = unreadCount;
-          navBadge.style.display = unreadCount > 0 ? "block" : "none";
-        }
+        } catch (error) { renderNotifications(); }
       }
 
       function renderNotifications() {
         const box = document.getElementById("notif-box");
         let notifs = JSON.parse(localStorage.getItem("abid_notifs")) || [];
         let unreadCount = notifs.filter((n) => !n.read).length;
-
-        updateNavBadgeCount(unreadCount);
+        const navBadge = document.getElementById("nav-notif-badge");
+        if (navBadge) { navBadge.innerText = unreadCount; navBadge.style.display = unreadCount > 0 ? "block" : "none"; }
 
         if (notifs.length === 0) {
-          box.innerHTML =
-            "<div style='text-align:center; padding:50px 20px; color:var(--md-outline);'><i class='fas fa-bell-slash fa-3x' style='margin-bottom:16px; opacity:0.5;'></i><p style='font-weight:500;'>কোন নতুন নোটিফিকেশন নেই</p></div>";
+          box.innerHTML = `<div style='text-align:center; padding:50px 20px; color:var(--md-outline);'><span class="material-symbols-outlined" style="font-size:48px; margin-bottom:16px; opacity:0.5;">notifications_off</span><p style='font-weight:500;'>কোন নতুন নোটিফিকেশন নেই</p></div>`;
           document.getElementById("notif-count").innerText = "০টি নোটিফিকেশন";
           return;
         }
 
-        document.getElementById("notif-count").innerText =
-          `${unreadCount}টি নতুন নোটিফিকেশন`;
-
-        box.innerHTML = notifs
-          .sort((a, b) => b.id - a.id)
-          .map(
-            (n) => `
+        document.getElementById("notif-count").innerText = `${unreadCount}টি নতুন নোটিফিকেশন`;
+        box.innerHTML = notifs.sort((a, b) => b.id - a.id).map((n) => `
             <div class="notif-item ${n.read ? "read" : "unread"}" id="${n.id}">
-                <div class="notif-icon"><i class="fas ${n.icon || "fa-bell"}"></i></div>
-                <div style="flex: 1;">
-                    <p style="font-weight: 600; font-size: 16px; color: var(--text-main); margin-bottom: 4px;">${n.title}</p>
-                    <p style="font-size: 14px; color: var(--text-muted); line-height: 1.4;">${n.desc}</p>
-                    ${!n.read ? `<button onclick="markRead('${n.id}')" class="mark-read-btn"><i class="fas fa-check"></i> পঠিত হিসেবে চিহ্নিত করুন</button>` : ""}
-                </div>
+                <div class="notif-icon"><span class="material-symbols-outlined">${n.icon ? n.icon.replace('fa-','') : "notifications"}</span></div>
+                <div style="flex: 1;"><p style="font-weight: 600; font-size: 16px; color: var(--text-main); margin-bottom: 4px;">${n.title}</p><p style="font-size: 14px; color: var(--text-muted); line-height: 1.4;">${n.desc}</p>${!n.read ? `<button onclick="markRead('${n.id}')" class="mark-read-btn"><span class="material-symbols-outlined" style="font-size:16px;">check</span> পঠিত হিসেবে চিহ্নিত করুন</button>` : ""}</div>
             </div>
-        `,
-          )
-          .join("");
+        `).join("");
       }
 
       function markRead(id) {
@@ -2077,35 +1389,26 @@
         if (index !== -1) {
           notifs[index].read = true;
           localStorage.setItem("abid_notifs", JSON.stringify(notifs));
-          renderNotifications();
-          showToast("পঠিত হিসেবে চিহ্নিত হয়েছে");
+          renderNotifications(); showToast("পঠিত হিসেবে চিহ্নিত হয়েছে");
         }
       }
-
       function clearNotif() {
         let notifs = JSON.parse(localStorage.getItem("abid_notifs")) || [];
         notifs.forEach((n) => (n.read = true));
         localStorage.setItem("abid_notifs", JSON.stringify(notifs));
-        renderNotifications();
-        showToast("সব নোটিফিকেশন পঠিত হিসেবে চিহ্নিত করা হয়েছে");
+        renderNotifications(); showToast("সব নোটিফিকেশন পঠিত হিসেবে চিহ্নিত করা হয়েছে");
       }
-
+      
+      // M3 Style Toast
       function showToast(msg) {
         const existingToast = document.querySelector(".toast-box");
         if (existingToast) existingToast.remove();
-
         const t = document.createElement("div");
         t.className = "toast-box";
-        t.innerText = msg;
+        t.innerHTML = `<span class="material-symbols-outlined" style="font-size:20px;">info</span> ${msg}`;
         document.body.appendChild(t);
-
-        void t.offsetWidth;
-
-        t.classList.add("show");
-        setTimeout(() => {
-          t.classList.remove("show");
-          setTimeout(() => t.remove(), 400);
-        }, 3000);
+        void t.offsetWidth; t.classList.add("show");
+        setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 400); }, 3000);
       }
     </script>
   </body>
