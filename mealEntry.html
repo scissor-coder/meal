@@ -1,725 +1,1097 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mess Meal Submission by ABID AL JAMEE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Mess Meal Submission | Abid Al Jamee</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        /* Material Design 3 Color Palette */
-        --md-primary: #6750a4;
-        --md-on-primary: #ffffff;
-        --md-primary-container: #eaddff;
-        --md-on-primary-container: #21005d;
-        --md-surface: #fef7ff;
-        --md-on-surface: #1c1b1f;
-        --md-surface-variant: #e7e0ec;
-        --md-on-surface-variant: #49454f;
-        --md-surface-container: #f3edf7;
-        --md-outline: #79747e;
-        --md-error: #b3261e;
-        --md-on-error: #ffffff;
-        --md-success: #146c2e;
-        --md-on-success: #ffffff;
-        --md-inverse-surface: #313033;
-        --md-inverse-on-surface: #f4eff4;
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-        /* Material Elevations */
-        --md-elevation-1:
-          0px 1px 3px 1px rgba(0, 0, 0, 0.15),
-          0px 1px 2px 0px rgba(0, 0, 0, 0.3);
-        --md-elevation-3:
-          0px 4px 8px 3px rgba(0, 0, 0, 0.15),
-          0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+    <!-- Pre-load theme to prevent flash of incorrect theme -->
+    <script>
+      const savedTheme = localStorage.getItem('appTheme') || 
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+
+    <style>
+      /* ==========================================================================
+         Theme Variables (Material Design 3)
+         ========================================================================== */
+      :root[data-theme="light"] {
+        --md-sys-color-primary: #6750a4;
+        --md-sys-color-on-primary: #ffffff;
+        --md-sys-color-primary-container: #eaddff;
+        --md-sys-color-on-primary-container: #21005d;
+        --md-sys-color-secondary: #625b71;
+        --md-sys-color-on-secondary: #ffffff;
+        --md-sys-color-secondary-container: #e8def8;
+        --md-sys-color-on-secondary-container: #1d192b;
+        --md-sys-color-error: #ba1a1a;
+        --md-sys-color-on-error: #ffffff;
+        --md-sys-color-background: #fdfcff;
+        --md-sys-color-on-background: #1a1c1e;
+        --md-sys-color-surface: #fdfcff;
+        --md-sys-color-on-surface: #1a1c1e;
+        --md-sys-color-surface-variant: #e7e0ec;
+        --md-sys-color-on-surface-variant: #49454f;
+        --md-sys-color-outline: #79747e;
+        --md-sys-color-surface-container: #f3edf7;
+        --md-sys-color-surface-container-high: #ece6f0;
+        
+        --shadow-elevation-1: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+        --shadow-elevation-3: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
       }
 
-      *,
-      *::before,
-      *::after {
+      :root[data-theme="dark"] {
+        --md-sys-color-primary: #d0bcff;
+        --md-sys-color-on-primary: #381e72;
+        --md-sys-color-primary-container: #4f378b;
+        --md-sys-color-on-primary-container: #eaddff;
+        --md-sys-color-secondary: #ccc2dc;
+        --md-sys-color-on-secondary: #332d41;
+        --md-sys-color-secondary-container: #4a4458;
+        --md-sys-color-on-secondary-container: #e8def8;
+        --md-sys-color-error: #ffb4ab;
+        --md-sys-color-on-error: #690005;
+        --md-sys-color-background: #1a1c1e;
+        --md-sys-color-on-background: #e2e2e6;
+        --md-sys-color-surface: #1a1c1e;
+        --md-sys-color-on-surface: #e2e2e6;
+        --md-sys-color-surface-variant: #49454f;
+        --md-sys-color-on-surface-variant: #cac4d0;
+        --md-sys-color-outline: #938f99;
+        --md-sys-color-surface-container: #1e1e22;
+        --md-sys-color-surface-container-high: #2b2930;
+        
+        --shadow-elevation-1: 0 1px 3px 0 rgba(0,0,0,0.3), 0 1px 2px 0 rgba(0,0,0,0.2);
+        --shadow-elevation-3: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -1px rgba(0,0,0,0.2);
+      }
+
+      /* ==========================================================================
+         Global Reset & Typography
+         ========================================================================== */
+      *, *::before, *::after {
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
         font-family: "Tiro Bangla", sans-serif;
       }
 
       body {
-        margin: 0;
-        background: var(--md-surface-container);
-        color: var(--md-on-surface);
+        background-color: var(--md-sys-color-background);
+        color: var(--md-sys-color-on-background);
         min-height: 100vh;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 16px;
+        flex-direction: column;
+        padding-bottom: 100px; 
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
-      .container {
-        width: 100%;
-        max-width: 600px;
-        background: var(--md-surface);
-        border-radius: 24px;
-        padding: 32px;
-        box-shadow: var(--md-elevation-1);
-      }
+      .material-symbols-outlined { vertical-align: middle; }
 
-      header {
-        text-align: center;
-        margin-bottom: 32px;
-      }
-
-      h2 {
-        font-size: 1.5rem;
-        font-weight: 500;
-        color: var(--md-on-surface);
-        margin: 0 0 8px 0;
-      }
-
-      p {
-        color: var(--md-on-surface-variant);
-        font-size: 0.875rem;
-        margin: 0;
-      }
-
-      .form-group {
-        margin-bottom: 24px;
-      }
-
-      label.input-label {
-        display: block;
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: var(--md-on-surface-variant);
-        margin-bottom: 8px;
-        letter-spacing: 0.033em;
-      }
-
-      input[type="date"],
-      select {
-        width: 100%;
-        padding: 16px;
-        border: 1px solid var(--md-outline);
-        border-radius: 12px;
-        font-size: 1rem;
+      button {
         font-family: inherit;
-        color: var(--md-on-surface);
-        background: var(--md-surface);
-        transition: all 0.2s ease;
-      }
-
-      select.meal-select {
-        appearance: none;
-        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%2349454f%22%20d%3D%22M7%2010l5%205%205-5z%22%2F%3E%3C%2Fsvg%3E");
-        background-repeat: no-repeat;
-        background-position: right 16px center;
-        background-size: 24px;
-        cursor: pointer;
-      }
-
-      input:focus,
-      select:focus {
-        outline: 2px solid var(--md-primary);
-        outline-offset: -1px;
-        border-color: transparent;
-      }
-
-      .meal-entry {
-        background: var(--md-surface);
-        border: 1px solid var(--md-surface-variant);
-        border-radius: 16px;
-        padding: 24px;
-        margin-bottom: 24px;
-        position: relative;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-      }
-
-      .remove-btn {
-        position: absolute;
-        top: 16px;
-        right: 16px;
-        background: transparent;
-        color: var(--md-on-surface-variant);
         border: none;
+        outline: none;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      }
+
+      button:active { transform: scale(0.97); }
+
+      /* ==========================================================================
+         Layout Components
+         ========================================================================== */
+      .top-app-bar {
+        background: linear-gradient(to right, var(--md-sys-color-surface), var(--md-sys-color-surface-container));
+        color: var(--md-sys-color-on-surface);
+        padding: 16px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        box-shadow: var(--shadow-elevation-1);
+        border-bottom: 1px solid var(--md-sys-color-surface-variant);
+      }
+
+      .app-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--md-sys-color-primary);
+      }
+
+      .header-actions { display: flex; gap: 8px; align-items: center; }
+
+      .icon-btn {
+        background: transparent;
+        color: var(--md-sys-color-on-surface-variant);
         border-radius: 50%;
         width: 40px;
         height: 40px;
-        cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition:
-          background 0.2s,
-          color 0.2s;
       }
 
-      .remove-btn:hover {
-        background: var(--md-surface-variant);
-        color: var(--md-error);
+      .icon-btn:hover {
+        background-color: var(--md-sys-color-surface-variant);
+        color: var(--md-sys-color-on-surface);
       }
 
-      .multi-select-container {
-        max-height: 250px;
-        overflow-y: auto;
-        background: var(--md-surface);
-        border: 1px solid var(--md-outline);
-        border-radius: 12px;
-        padding: 12px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .name-item {
-        display: inline-flex;
-        align-items: center;
+      .btn-outlined {
+        background: transparent;
+        color: var(--md-sys-color-primary);
+        border: 1px solid var(--md-sys-color-outline);
         padding: 8px 16px;
-        font-size: 0.875rem;
-        font-weight: 500;
-        cursor: pointer;
         border-radius: 100px;
-        border: 1px solid var(--md-outline);
-        background: var(--md-surface);
-        color: var(--md-on-surface);
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        user-select: none;
-      }
-
-      .name-item:hover:not(.disabled) {
-        background: var(--md-surface-variant);
-      }
-
-      .name-item input {
-        display: none;
-      }
-
-      .name-item:has(input:checked) {
-        background: var(--md-primary-container);
-        color: var(--md-on-primary-container);
-        border-color: transparent;
-      }
-
-      .name-item.disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-        background: var(--md-surface-variant);
-        border-color: transparent;
-      }
-
-      .btn-add {
-        background: var(--md-primary-container);
-        color: var(--md-on-primary-container);
-        border: none;
-        width: 100%;
-        padding: 16px;
-        border-radius: 100px;
-        cursor: pointer;
-        font-weight: 500;
-        font-size: 0.875rem;
-        margin-bottom: 24px;
-        transition: background 0.2s;
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 8px;
-      }
-
-      .btn-add:hover {
-        background: #d0bcfe;
-      }
-
-      .btn-submit {
-        width: 100%;
-        background: var(--md-primary);
-        color: var(--md-on-primary);
-        border: none;
-        padding: 16px;
-        border-radius: 100px;
+        gap: 6px;
+        font-weight: 600;
         font-size: 0.875rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition:
-          background 0.2s,
-          box-shadow 0.2s;
-        box-shadow: var(--md-elevation-1);
       }
 
-      .btn-submit:hover {
-        background: #56428f;
-        box-shadow: var(--md-elevation-3);
+      .btn-outlined:hover {
+        background: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+        border-color: transparent;
       }
+
+      .main-content {
+        padding: 20px 16px;
+        max-width: 680px;
+        margin: 0 auto;
+        width: 100%;
+        flex-grow: 1;
+      }
+
+      .branding-header { text-align: center; margin-bottom: 24px; }
+      .branding-header p { font-size: 0.875rem; color: var(--md-sys-color-on-surface-variant); letter-spacing: 0.25px; }
+      .branding-header b { color: var(--md-sys-color-primary); font-weight: 500; }
+
+      .card {
+        background-color: var(--md-sys-color-surface-container);
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: var(--shadow-elevation-1);
+        margin-bottom: 16px;
+      }
+
+      .form-group { margin-bottom: 24px; }
+      .input-label {
+        display: flex; align-items: center; gap: 6px; font-size: 0.95rem; font-weight: 600;
+        color: var(--md-sys-color-primary); margin-bottom: 12px; letter-spacing: 0.3px;
+      }
+
+      .md-input {
+        width: 100%; padding: 16px; border: 1px solid var(--md-sys-color-outline);
+        border-radius: 12px; font-size: 1rem; color: var(--md-sys-color-on-surface);
+        background-color: var(--md-sys-color-surface); transition: all 0.2s ease;
+      }
+
+      .md-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%2379747e%22%20d%3D%22M7%2010l5%205%205-5z%22%2F%3E%3C%2Fsvg%3E");
+        background-repeat: no-repeat; background-position: right 16px center; background-size: 24px;
+        
+      }
+
+      .md-input:focus, .md-select:focus {
+        outline: none; border-color: var(--md-sys-color-primary); border-width: 2px;
+        padding: 15px; background-color: var(--md-sys-color-surface-container-high);
+      }
+
+      .meal-entry {
+        background: linear-gradient(var(--md-sys-color-surface-container), var(--md-sys-color-surface-container));
+        border-radius: 28px;
+        padding: 28px; margin-bottom: 20px; position: relative; box-shadow: var(--shadow-elevation-1);
+        transition: all 0.3s ease; border: 2px solid transparent;
+      }
+
+      .meal-entry:focus-within { 
+        border-color: var(--md-sys-color-primary); 
+        background: var(--md-sys-color-surface);
+        box-shadow: 0 8px 24px rgba(103, 80, 164, 0.12);
+      }
+
+      .remove-btn {
+        position: absolute; top: 16px; right: 16px; background: transparent;
+        color: var(--md-sys-color-on-surface-variant); border-radius: 50%;
+        width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+      }
+
+      .remove-btn:hover { background-color: var(--md-sys-color-error); color: var(--md-sys-color-on-error); }
+
+      .multi-select-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+
+      .chip-label {
+        display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px;
+        font-size: 0.9rem; font-weight: 400; cursor: pointer; border-radius: 12px;
+        border: 1px solid var(--md-sys-color-outline); background-color: var(--md-sys-color-surface);
+        color: var(--md-sys-color-on-surface); transition: all 0.2s; user-select: none;
+      }
+
+      .chip-label input { display: none; }
+      .chip-label:has(input:checked) {
+        background-color: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); border-color: transparent;
+      }
+      .chip-label .check-icon { display: none; font-size: 18px; }
+      .chip-label:has(input:checked) .check-icon { display: block; }
+      .chip-label.disabled {
+        opacity: 0.5; cursor: not-allowed; background-color: var(--md-sys-color-surface-variant);
+        border-color: transparent; color: var(--md-sys-color-on-surface-variant);
+      }
+
+      .sticky-bottom-bar {
+        position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--md-sys-color-surface);
+        padding: 15px; box-shadow: 0 -1px 12px rgba(0, 0, 0, 0.08); display: flex; gap: 12px; justify-content: center; z-index: 100;
+        border-top: 1px solid gray;
+      }
+
+      .btn-tonal {
+        background-color: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container);
+        flex: 1; max-width: 280px; padding: 13px; border-radius: 100px; font-weight: 600; font-size: 1rem;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+      }
+      .btn-tonal:hover { background-color: var(--md-sys-color-surface-variant); }
+
+      .btn-filled {
+        flex: 1; max-width: 280px; background-color: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary);
+        padding: 13px; border-radius: 100px; font-size: 1rem; font-weight: 600;
+        display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: var(--shadow-elevation-1);
+      }
+      .btn-filled:hover { background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)); }
+      .btn-filled:disabled { background-color: var(--md-sys-color-surface-variant); color: var(--md-sys-color-on-surface-variant); box-shadow: none; cursor: not-allowed; }
 
       .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.4);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        padding: 16px;
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6);
+        display: none; align-items: flex-end; justify-content: center; z-index: 1000;
+        backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s ease;
       }
+
+      .modal-overlay.active { display: flex; opacity: 1; }
 
       .modal-content {
-        background: var(--md-surface);
-        padding: 24px;
-        border-radius: 28px;
-        width: 100%;
-        max-width: 400px;
-        box-shadow: var(--md-elevation-3);
+        background-color: var(--md-sys-color-surface-container); padding: 32px 24px; border-radius: 28px 28px 0 0;
+        width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-elevation-3);
+        transform: translateY(100%); transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1);
+      }
+      .modal-overlay.active .modal-content { transform: translateY(0); }
+
+      .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+
+      .btn-text {
+        background: transparent; color: var(--md-sys-color-primary); padding: 10px 24px;
+        border-radius: 100px; font-weight: 600; font-size: 0.875rem;
+      }
+      .btn-text:hover { background-color: var(--md-sys-color-surface-variant); }
+
+      /* Summary & Receipt Components */
+      .preview-box { margin-bottom: 24px; }
+      .summary-date { font-size: 0.95rem; font-weight: 600; color: var(--md-sys-color-primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+      /* Original Modal Styles (Not HD Receipt) */
+      .summary-meal-card-preview { 
+        background-color: var(--md-sys-color-surface); border: 1px solid rgba(0,0,0,0.05); 
+        border-radius: 16px; margin-bottom: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
+      }
+      .summary-meal-header-preview {
+        background-color: transparent; color: var(--md-sys-color-on-surface);
+        padding: 16px; font-weight: 700; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--md-sys-color-outline);
+      }
+      .summary-meal-count-preview { background-color: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); border-radius: 100px; padding: 2px 10px; font-size: 0.75rem; font-weight: 700; }
+      .summary-meal-names-preview { padding: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+      .name-badge-preview {
+        background-color: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container);
+        padding: 6px 12px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;
       }
 
-      .modal-content h3 {
-        margin: 0 0 16px 0;
-        font-size: 1.5rem;
-        font-weight: 400;
-        color: var(--md-on-surface);
+      /* COMPACT RECEIPT CAPTURE AREA (Force Light Mode, Ultra Dense) */
+      #captureArea {
+        background-color: #ffffff; color: #1a1c1e; padding: 16px 14px; border-radius: 12px;
+        margin: 0 auto 20px auto; box-shadow: 0 2px 12px rgba(0,0,0,0.08); position: relative; overflow: hidden;
+        max-width: 340px; width: 100%; text-rendering: geometricPrecision;
       }
 
-      .preview-box {
-        font-size: 0.875rem;
-        margin-bottom: 24px;
-        line-height: 1.5;
-        color: var(--md-on-surface-variant);
-        max-height: 50vh;
-        overflow-y: auto;
+      #capture-div {
+        position : relative;
+        overflow: hidden;
+        background: #ffffff; padding: 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(103, 80, 164, 0.12); max-width: 400px; margin: 0 auto;
       }
-
-      .modal-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 8px;
+      #capture-div::after {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #6750a4, #b091ff);
       }
-
-      .btn-cancel,
-      .btn-confirm {
-        background: transparent;
-        border: none;
-        padding: 10px 24px;
-        border-radius: 100px;
-        cursor: pointer;
-        font-weight: 500;
-        font-size: 0.875rem;
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
+      
+      
+      #captureArea .receipt-title {
+        color: #1a1c1e; font-size: 1.15rem; text-align: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #cac4d0; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 4px;
       }
+      #captureArea .receipt-title .material-symbols-outlined { font-size: 26px !important; color: #6750a4; }
+      #captureArea .summary-date { color: #6750a4; font-size: 0.85rem; margin-bottom: 10px; justify-content: center; margin-top: -4px;}
+      
+      #captureArea .summary-meal-card { background-color: #fdfcff; border: 1px solid #e7e0ec; border-radius: 8px; margin-bottom: 8px; }
+      #captureArea .summary-meal-header { color: #1a1c1e; padding: 8px 10px; font-weight: 700; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #e7e0ec; }
+      #captureArea .summary-meal-count { background-color: #6750a4; color: #ffffff; border-radius: 100px; padding: 2px 8px; font-size: 0.7rem; font-weight: 700; }
+      #captureArea .summary-meal-names { padding: 8px 10px; display: flex; flex-wrap: wrap; gap: 4px; }
+      #captureArea .name-badge { background-color: #eaddff; color: #21005d; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 2px; }
+      #captureArea .name-badge .material-symbols-outlined { font-size: 12px !important; }
 
-      .btn-cancel {
-        color: var(--md-primary);
+      .stat-row { display: flex; justify-content: space-between; gap: 6px; margin-top: 8px; }
+      .stat-card {
+        background: #f3edf7; padding: 10px 4px; border-radius: 8px; flex: 1; text-align: center; border: 1px solid rgba(103, 80, 164, 0.1);
       }
+      .stat-card .val { font-size: 1.4rem; font-weight: 800; color: #6750a4; line-height: 1; }
+      .stat-card .lbl { font-size: 0.7rem; color: #49454f; font-weight: 600; margin-top: 4px; }
 
-      .btn-cancel:hover:not(:disabled) {
-        background: rgba(103, 80, 164, 0.08);
-      }
+      .footer-branding { text-align: center; padding: 24px; font-size: 0.8rem; color: var(--md-sys-color-outline); }
 
-      .btn-confirm {
-        background: var(--md-primary);
-        color: var(--md-on-primary);
-      }
-
-      .btn-confirm:hover:not(:disabled) {
-        background: #56428f;
-      }
-
-      .btn-confirm:disabled,
-      .btn-cancel:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-
-      @keyframes spin {
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      /* Custom Toast Notification Styles */
-      .toast-container {
-        position: fixed;
-        bottom: 24px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        z-index: 2000;
-        pointer-events: none;
-      }
-
-      .toast {
-        background: var(--md-inverse-surface);
-        color: var(--md-inverse-on-surface);
-        padding: 12px 24px;
+      /* Improved Skeleton Loading Animation */
+      .skeleton-shimmer {
+        background: #e1dce6;
+        background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 100%);
+        background-repeat: no-repeat;
+        background-size: 1000px 100%;
+        animation: shimmer 2.5s infinite linear forwards;
         border-radius: 8px;
-        font-size: 0.875rem;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        box-shadow: var(--md-elevation-3);
-        opacity: 0;
-        transform: translateY(20px);
-        animation:
-          toastEnter 0.3s cubic-bezier(0, 0, 0.2, 1) forwards,
-          toastLeave 0.3s cubic-bezier(0.4, 0, 1, 1) forwards 3.5s;
-        max-width: 90vw;
-        width: max-content;
+      }
+      [data-theme="dark"] .skeleton-shimmer {
+        background: #2b2930;
+        background-image: linear-gradient(90deg, #2b2930 0%, #3b3841 20%, #2b2930 40%, #2b2930 100%);
+      }
+      @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
       }
 
-      .toast.success {
-        background: var(--md-success);
-        color: var(--md-on-success);
+      /* Toasts */
+      .toast-container {
+        position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%);
+        display: flex; flex-direction: column; gap: 8px; z-index: 2000; pointer-events: none;
+      }
+      .toast {
+        background-color: var(--md-sys-color-inverse-surface, #313033); color: var(--md-sys-color-inverse-on-surface, #f4eff4);
+        padding: 14px 24px; border-radius: 12px; font-weight: 500; font-size: 0.875rem; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-elevation-3);
+        animation: toastEnter 0.3s cubic-bezier(0.2, 0, 0, 1) forwards, toastLeave 0.3s cubic-bezier(0.2, 0, 0, 1) forwards 3s;
       }
 
-      .toast.error {
-        background: var(--md-error);
-        color: var(--md-on-error);
-      }
-
-      @keyframes toastEnter {
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes toastLeave {
-        to {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-      }
+      @keyframes spin { 100% { transform: rotate(360deg); } }
+      @keyframes toastEnter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes toastLeave { to { opacity: 0; transform: translateY(10px); } }
     </style>
   </head>
   <body>
-    <div class="container">
-      <header>
-        <h2><i><b>Delivery Group Meals</i></b></h2>
-        <p>Mess Meal Submission by ABID AL JAMEE</p>
-      </header>
+
+    <!-- App Header -->
+    <header class="top-app-bar">
+      <h1 class="app-title">
+        <span class="material-symbols-outlined">restaurant</span> Daily Meals
+      </h1>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+          <span class="material-symbols-outlined" id="themeIcon">light_mode</span>
+        </button>
+        <button class="btn-outlined" onclick="openRestoreModal()" title="Restore Saved Session">
+          <span class="material-symbols-outlined" style="font-size: 18px;">history</span> <i>Restore</i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Form Area -->
+    <div class="main-content">
+      <div class="branding-header">
+        <i><p>Mess Meal Submission by <b>ONLINE</b></p></i>
+      </div>
 
       <form id="mealForm">
-        <div class="form-group">
-          <label class="input-label">Delivery Date</label>
-          <input type="date" id="dateInput" required />
+        <div class="card">
+          <div class="form-group" style="margin: 0;">
+            <label class="input-label" for="dateInput">
+              <span class="material-symbols-outlined" style="font-size: 20px;">calendar_month</span> Delivery Date
+            </label>
+            <input type="date" id="dateInput" class="md-input" required onchange="updateDateDisplay(); saveSession();" />
+            <div id="dateDisplay" style="font-size: 0.9rem; font-weight: 600; color: var(--md-sys-color-primary); margin-top: 12px; display: flex; align-items: center; gap: 6px;"></div>
+          </div>
         </div>
 
-        <div id="entriesContainer"></div>
+        <div id="entriesContainer">
+          <!-- Initial Skeleton Loading State -->
+          <div id="skeletonLoader">
+            <div class="meal-entry" style="border: none; box-shadow: none;">
+              <div class="skeleton-shimmer" style="height: 20px; width: 35%; margin-bottom: 12px;"></div>
+              <div class="skeleton-shimmer" style="height: 56px; width: 100%; border-radius: 12px; margin-bottom: 24px;"></div>
+              <div class="skeleton-shimmer" style="height: 20px; width: 45%; margin-bottom: 12px;"></div>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <div class="skeleton-shimmer" style="height: 40px; width: 90px; border-radius: 12px;"></div>
+                <div class="skeleton-shimmer" style="height: 40px; width: 120px; border-radius: 12px;"></div>
+                <div class="skeleton-shimmer" style="height: 40px; width: 80px; border-radius: 12px;"></div>
+                <div class="skeleton-shimmer" style="height: 40px; width: 100px; border-radius: 12px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <button type="button" class="btn-add" onclick="addMealEntry()">
-          <span class="material-symbols-outlined" style="font-size: 20px"
-            >add</span
-          >
-          Add Another Meal
-        </button>
-        <button type="submit" class="btn-submit">Review Delivery</button>
+        <div class="sticky-bottom-bar">
+          <button type="button" class="btn-tonal" onclick="addMealEntry()">
+            <span class="material-symbols-outlined">add_circle</span> Add Meal
+          </button>
+          <button type="submit" class="btn-filled">
+            <i>Review</i> <span class="material-symbols-outlined">arrow_outward</span>
+          </button>
+        </div>
       </form>
+      
+      <div class="footer-branding"><i>Designed & Developed by <b>Abid Al Jamee</b></i></div>
     </div>
 
-    <div id="modalOverlay" class="modal-overlay">
-      <div class="modal-content">
-        <h3>Confirm Delivery</h3>
-        <div id="previewBox" class="preview-box"></div>
+    <!-- Modals -->
+    <!-- 1. Restore Modal -->
+    <div id="restoreModal" class="modal-overlay">
+      <div class="modal-content" style="max-width: 450px;">
+        <h3 class="modal-title" style="font-weight: 700; display: flex; align-items: center; gap: 8px; color: var(--md-sys-color-primary); margin-bottom: 16px;">
+          <span class="material-symbols-outlined">history</span> Restore Session
+        </h3>
+        <p style="color: var(--md-sys-color-on-surface-variant); font-size: 0.95rem; margin-bottom: 24px;">
+          Select a recently saved editing session to load.
+        </p>
+        <div class="form-group">
+          <label class="input-label">Available Sessions</label>
+          <select id="sessionSelect" class="md-select md-input"></select>
+        </div>
         <div class="modal-actions">
-          <button class="btn-cancel" onclick="closeModal()" id="btnCancel">
-            Back
-          </button>
-          <button class="btn-confirm" onclick="submitToSheet()" id="btnConfirm">
-            Confirm
+          <button class="btn-text" onclick="closeModal('restoreModal')">Cancel</button>
+          <button class="btn-filled" onclick="applyRestore()" style="max-width: 140px;">
+            <span class="material-symbols-outlined">restore</span> Restore
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- 2. Review & Confirm Modal -->
+    <div id="modalOverlay" class="modal-overlay">
+      <div class="modal-content">
+        <h3 class="modal-title" style="font-weight: 700; display: flex; align-items: center; gap: 8px; color: var(--md-sys-color-primary); margin-bottom: 24px;">
+          <span class="material-symbols-outlined">verified</span> Confirm Meals
+        </h3>
+        <div id="previewBox" class="preview-box"></div>
+        <div class="modal-actions">
+          
+          <button class="btn-text" onclick="closeModal('modalOverlay')" id="btnCancel"><span class="material-symbols-outlined">
+            more
+          </span> Back</button>
+          <button class="btn-filled" onclick="submitToSheet()" id="btnConfirm" style="max-width: 160px;">
+            <span class="material-symbols-outlined">check_circle</span> <i>Confirm</i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Summary & Download Modal -->
+    <div id="totalsOverlay" class="modal-overlay">
+      <div class="modal-content" style="max-width: 500px; padding: 24px 20px;">
+        
+        <!-- Skeleton Loading for Totals -->
+        <div id="totalsLoadingContent" style="padding: 20px 0;">
+           <div class="skeleton-shimmer" style="height: 40px; width: 60%; margin: 0 auto 32px auto; border-radius: 8px;"></div>
+           <div class="skeleton-shimmer" style="height: 140px; width: 100%; border-radius: 16px; margin-bottom: 32px;"></div>
+           <div style="display: flex; gap: 12px;">
+             <div class="skeleton-shimmer" style="height: 100px; flex: 1; border-radius: 20px;"></div>
+             <div class="skeleton-shimmer" style="height: 100px; flex: 1; border-radius: 20px;"></div>
+             <div class="skeleton-shimmer" style="height: 100px; flex: 1; border-radius: 20px;"></div>
+           </div>
+        </div>
+   
+<div id="totalsDataContent" style="display:none;">
+    
+    <div id="captureArea" style="background: linear-gradient(135deg, #ece6f0 0%, #fdfbf7 100%); padding: 32px 24px; border-radius: 16px;">
+      
+      <div id="capture-div">
+        
+        <h2 class="receipt-title" style="margin-top: 0;">
+          <span class="material-symbols-outlined">receipt_long</span>
+          আজকের মিল পরিবর্তন
+        </h2>
+        
+        <div id="receiptMealDetails"></div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0 8px 0;">
+          <h4 style="color: #1a1c1e; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 4px; margin: 0;">
+            <span class="material-symbols-outlined" style="color: #6750a4; font-size: 18px;">bar_chart</span> মিল গণনা
+          </h4>
+          <button type="button" onclick="refreshCounts()" data-html2canvas-ignore="true" style="background: #eaddff; color: #21005d; border-radius: 100px; padding: 4px 10px; font-size: 0.7rem; font-weight: 600; display: flex; align-items: center; gap: 4px; border: 1px solid rgba(103, 80, 164, 0.2);" title="Fetch latest counts from server">
+            <span class="material-symbols-outlined" style="font-size: 14px;" id="refreshIcon">refresh</span> <i>Update</i>
+          </button>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="val" id="totalDay">0</div>
+            <div class="lbl">দুপুর</div>
+          </div>
+          <div class="stat-card">
+            <div class="val" id="totalNight">0</div>
+            <div class="lbl">রাত</div>
+          </div>
+          <div class="stat-card">
+            <div class="val" id="totalMorning">0</div>
+            <div class="lbl">সকাল</div>
+          </div>                
+        </div>
+
+        <div style="text-align: center; margin-top: 28px; margin-bottom: 4px;">
+          <div style="display: inline-block; background: #f3edf7; color: #21005d; padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(103, 80, 164, 0.2);">
+            <span class="material-symbols-outlined" style="font-size: 15px; color: #6750a4; vertical-align: middle; margin-right: 4px;">auto_awesome</span>
+            <span style="vertical-align: middle; font-style: italic;">Generated by ABID</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <button class="btn-tonal" onclick="downloadSummary()" style="width: 100%; max-width: none; margin-bottom: 12px; font-size: 0.95rem;">
+        <span class="material-symbols-outlined" style="font-size: 20px;">download</span> <i>Download PNG</i>
+      </button>
+      <button class="btn-filled" onclick="finishAndReload()" style="width: 100%; max-width: none; font-size: 0.95rem;">
+        Done
+      </button>
+    </div>
+
+</div>
+
       </div>
     </div>
 
     <div id="toastContainer" class="toast-container"></div>
 
     <script>
-      const CSV_URL =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vThIiaP8iBgMS9bbYeASkztAvf4yZG9rIi0o1qvPEtqZBnTaPiO0PzhJI93LJH2HhIyEoV6P5ftqq92/pub?gid=1763748646&single=true&output=csv";
+      // --- Constants & Config ---
+      const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThIiaP8iBgMS9bbYeASkztAvf4yZG9rIi0o1qvPEtqZBnTaPiO0PzhJI93LJH2HhIyEoV6P5ftqq92/pub?gid=1763748646&single=true&output=csv";
+      const SHEET_APP_URL = "https://script.google.com/macros/s/AKfycbxbVAtO6ycxRS8lL-ZGm84tTQpoHLeFDc6JFRW6YIXnnY4nyZVM1dOcDAm7GiU8iyQX/exec";
+      const ALL_DAYS_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThIiaP8iBgMS9bbYeASkztAvf4yZG9rIi0o1qvPEtqZBnTaPiO0PzhJI93LJH2HhIyEoV6P5ftqq92/pub?gid=0&single=true&output=csv";
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      
+      const CACHE_KEY = "messMealDataCache";
+      const CACHE_TTL = 1000 * 60 * 60; // 1 hour caching for names/meals
 
-      const SHEET_APP_URL =
-        "https://script.google.com/macros/s/AKfycbxbVAtO6ycxRS8lL-ZGm84tTQpoHLeFDc6JFRW6YIXnnY4nyZVM1dOcDAm7GiU8iyQX/exec";
-
+      // --- State ---
       let cachedNames = [];
       let cachedMeals = [];
       let currentPayload = null;
+      let uiSummaryHtmlPreview = "";
+      let uiSummaryHtmlReceipt = "";
+      let isInitializing = true; 
 
-      const bdDate = new Date().toLocaleDateString("en-CA", {
-        timeZone: "Asia/Dhaka",
-      });
+      // Optimistic Updates Tracking
+      window.optimisticTotals = { morning: 0, day: 0, night: 0 };
 
-      document.getElementById("dateInput").value = bdDate;
-
-      // Custom Toast Function
-      function showToast(message, icon = "info", type = "default") {
-        const container = document.getElementById("toastContainer");
-        const toast = document.createElement("div");
-        toast.className = `toast ${type}`;
-        toast.innerHTML = `<span class="material-symbols-outlined" style="font-size: 20px;">${icon}</span> ${message}`;
-        container.appendChild(toast);
-
-        // Remove from DOM after animation completes (3.5s + 0.3s)
-        setTimeout(() => {
-          toast.remove();
-        }, 3800);
-      }
-
+      // --- Initialization ---
       async function init() {
-        await fetchData();
-        addMealEntry();
+        setupThemeIcon();
+        setupDefaultDate();
+        await fetchCleverData();
+        isInitializing = false;
       }
 
-      async function fetchData() {
-        try {
-          const response = await fetch(CSV_URL);
-          const data = await response.text();
-          const rows = data.split("\n").map((r) => r.split(","));
-          const namesSet = new Set();
-          const mealsMap = new Map();
+      // --- Fast Data Fetching (Stale-While-Revalidate) ---
+      async function fetchCleverData() {
+        const cached = localStorage.getItem(CACHE_KEY);
+        let usedCache = false;
 
-          for (let i = 1; i < rows.length; i++) {
-            const col = rows[i];
-            if (col.length < 13) continue;
-            if (col[0]) namesSet.add(col[0].trim());
-            if (col[11] && col[12])
-              mealsMap.set(col[11].trim(), col[12].trim());
-          }
-          cachedNames = Array.from(namesSet).sort();
-          cachedMeals = Array.from(mealsMap.entries());
+        if (cached) {
+            const parsed = JSON.parse(cached);
+            if (Date.now() - parsed.timestamp < CACHE_TTL) {
+                cachedNames = parsed.names;
+                cachedMeals = parsed.meals;
+                usedCache = true;
+                
+                document.getElementById('skeletonLoader')?.remove();
+                addMealEntry(); 
+            }
+        }
+
+        try {
+            const response = await fetch(CSV_URL + "&_t=" + Date.now());
+            const data = await response.text();
+            const rows = parseCSVText(data);
+            const namesSet = new Set();
+            const mealsMap = new Map();
+
+            for (let i = 1; i < rows.length; i++) {
+                const col = rows[i];
+                if (col.length < 13) continue;
+                if (col[0]) namesSet.add(col[0].trim());
+                if (col[11] && col[12]) mealsMap.set(col[11].trim(), col[12].trim());
+            }
+
+            const newNames = Array.from(namesSet).sort();
+            const newMeals = Array.from(mealsMap.entries());
+
+            localStorage.setItem(CACHE_KEY, JSON.stringify({
+                timestamp: Date.now(),
+                names: newNames,
+                meals: newMeals
+            }));
+
+            if (!usedCache) {
+                cachedNames = newNames;
+                cachedMeals = newMeals;
+                
+                document.getElementById('skeletonLoader')?.remove();
+                addMealEntry();
+            }
         } catch (e) {
-          showToast(
-            "Error loading CSV data. Please refresh.",
-            "error",
-            "error",
-          );
+            if (!usedCache) {
+              document.getElementById('skeletonLoader')?.remove();
+              showToast("Error loading network data.", "error");
+            }
         }
       }
 
+      // --- Theme Management ---
+      function setupThemeIcon() {
+        const theme = document.documentElement.getAttribute('data-theme');
+        document.getElementById('themeIcon').innerText = theme === 'dark' ? 'light_mode' : 'dark_mode';
+      }
+
+      function toggleTheme() {
+        const html = document.documentElement;
+        const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('appTheme', newTheme);
+        setupThemeIcon();
+      }
+
+      // --- Date Helpers ---
+      function setupDefaultDate() {
+        const todayObj = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Dhaka"}));
+        todayObj.setDate(todayObj.getDate() + 1); 
+        const yyyy = todayObj.getFullYear();
+        const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
+        const dd = String(todayObj.getDate()).padStart(2, '0');
+        document.getElementById("dateInput").value = `${yyyy}-${mm}-${dd}`;
+        updateDateDisplay();
+      }
+
+      function updateDateDisplay() {
+        const val = document.getElementById("dateInput").value;
+        if (val) {
+          const [y, m, d] = val.split("-");
+          document.getElementById("dateDisplay").innerHTML = 
+            `<span class="material-symbols-outlined" style="font-size:18px;">event</span> ${parseInt(d, 10)} ${monthNames[parseInt(m, 10) - 1]}, ${y}`;
+        }
+      }
+
+      // --- UI Utilities ---
+      function showToast(message, icon = "info") {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.innerHTML = `<span class="material-symbols-outlined">${icon}</span> ${message}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3300);
+      }
+
+      function openModal(id) { document.getElementById(id).classList.add('active'); }
+      function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+      // --- Multi-Session Draft Management (Top 5) ---
+      function saveSession() {
+        if (isInitializing) return; 
+
+        const entries = document.querySelectorAll(".meal-entry");
+        const draft = [];
+        entries.forEach((entry) => {
+            const mealSelect = entry.querySelector(".md-select");
+            const checkboxes = entry.querySelectorAll('input[type="checkbox"]:checked');
+            const names = Array.from(checkboxes).map(cb => cb.value);
+            if((mealSelect && mealSelect.value) || names.length > 0) {
+                draft.push({ meal: mealSelect ? mealSelect.value : "", names: names });
+            }
+        });
+
+        const currentDate = document.getElementById("dateInput").value;
+        if (!currentDate) return;
+
+        let sessions = JSON.parse(localStorage.getItem("mealSessions") || "[]");
+        const existingIndex = sessions.findIndex(s => s.date === currentDate);
+        
+        if (draft.length === 0 && existingIndex > -1 && sessions[existingIndex].draft.length > 0) {
+            return; 
+        }
+
+        const newSessionData = { date: currentDate, draft: draft, timestamp: Date.now() };
+
+        if (existingIndex > -1) {
+            sessions.splice(existingIndex, 1);
+        }
+        sessions.unshift(newSessionData); 
+        sessions = sessions.slice(0, 5);  
+
+        localStorage.setItem("mealSessions", JSON.stringify(sessions));
+      }
+
+      function openRestoreModal() {
+        const sessions = JSON.parse(localStorage.getItem("mealSessions") || "[]");
+        if (sessions.length === 0) {
+            showToast("No saved sessions available.", "info");
+            return;
+        }
+
+        const select = document.getElementById("sessionSelect");
+        select.innerHTML = sessions.map(s => {
+            const dateObj = new Date(s.date);
+            const fDate = `${dateObj.getDate()} ${monthNames[dateObj.getMonth()]}, ${dateObj.getFullYear()}`;
+            const timeStr = new Date(s.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            return `<option value="${s.date}">${fDate} (Saved: ${timeStr})</option>`;
+        }).join("");
+
+        openModal("restoreModal");
+      }
+
+      function applyRestore() {
+        const selectedDate = document.getElementById("sessionSelect").value;
+        const sessions = JSON.parse(localStorage.getItem("mealSessions") || "[]");
+        const session = sessions.find(s => s.date === selectedDate);
+        
+        if (session) {
+            document.getElementById("dateInput").value = session.date;
+            updateDateDisplay();
+            
+            document.getElementById("entriesContainer").innerHTML = '';
+            if (session.draft && session.draft.length > 0) {
+                session.draft.forEach(item => createEntryHTML(Date.now() + Math.random(), item.meal, item.names));
+            } else {
+                addMealEntry();
+            }
+            syncUniqueSelection();
+            syncUniqueMealSelection();
+            
+            closeModal("restoreModal");
+            showToast("Session restored successfully!", "check_circle");
+        }
+      }
+
+      // --- Dynamic Form Creation ---
       function addMealEntry() {
-        const id = Date.now();
+        createEntryHTML(Date.now(), "", []);
+        syncUniqueSelection();
+        syncUniqueMealSelection();
+        
+        setTimeout(() => {
+          const container = document.getElementById("entriesContainer");
+          if(container.lastElementChild) {
+            container.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 50);
+      }
+
+      function createEntryHTML(id, selectedMeal, selectedNames) {
         const container = document.getElementById("entriesContainer");
         const entry = document.createElement("div");
         entry.className = "meal-entry";
-        entry.id = `entry-${id}`;
+        entry.id = `entry-${id.toString().replace('.', '-')}`;
 
         const mealOptions = cachedMeals
-          .map(([val, text]) => `<option value="${val}">${text}</option>`)
+          .map(([val, text]) => `<option value="${val}" ${val === selectedMeal ? 'selected' : ''}>${text}</option>`)
           .join("");
 
         const nameOptions = cachedNames
-          .map(
-            (name) => `
-                <label class="name-item" data-name="${name}">
-                    <input type="checkbox" value="${name}" onchange="syncUniqueSelection()"> ${name}
-                </label>`,
-          )
-          .join("");
+          .map(name => `
+            <label class="chip-label" data-name="${name}">
+                <input type="checkbox" value="${name}" onchange="syncUniqueSelection()" ${selectedNames.includes(name) ? 'checked' : ''}> 
+                <span class="material-symbols-outlined check-icon">check</span>
+                ${name}
+            </label>`).join("");
 
         entry.innerHTML = `
-                <button type="button" class="remove-btn" onclick="removeEntry(${id})" aria-label="Remove Meal">
-                  <span class="material-symbols-outlined">close</span>
-                </button>
-                <div class="form-group" style="padding-right: 40px;">
-                    <label class="input-label">Meal Choice</label>
-                    <select class="meal-select" required onchange="syncUniqueMealSelection()">
-                        <option value="" disabled selected>Choose a dish...</option>
-                        ${mealOptions}
-                    </select>
-                </div>
-                <div class="form-group" style="margin-bottom:0">
-                    <label class="input-label">Who is having this?</label>
-                    <div class="multi-select-container">${nameOptions}</div>
-                </div>
-            `;
+            <button type="button" class="remove-btn" onclick="removeEntry('${entry.id}')" title="Remove Meal">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+            <div class="form-group" style="padding-right: 48px;">
+                <label class="input-label">
+                  <span class="material-symbols-outlined" style="font-size: 20px;">restaurant_menu</span> Meal Choice
+                </label>
+                <select class="md-select md-input" required onchange="syncUniqueMealSelection()">
+                    <option value="" disabled ${selectedMeal === "" ? 'selected' : ''}>Select a meal</option>
+                    ${mealOptions}
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label class="input-label">
+                  <span class="material-symbols-outlined" style="font-size: 20px;">group_add</span> Who is having this?
+                </label>
+                <div class="multi-select-container">${nameOptions}</div>
+            </div>
+        `;
         container.appendChild(entry);
-        syncUniqueSelection();
-        syncUniqueMealSelection();
       }
 
+      // --- Input Syncing Logic ---
       function syncUniqueSelection() {
-        const allCheckedCheckboxes = Array.from(
-          document.querySelectorAll('input[type="checkbox"]:checked'),
-        );
-        const selectedNames = allCheckedCheckboxes.map((cb) => cb.value);
-        const allCheckboxes = document.querySelectorAll(
-          'input[type="checkbox"]',
-        );
-
-        allCheckboxes.forEach((cb) => {
-          const label = cb.closest(".name-item");
+        const selectedNames = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+        document.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+          const label = cb.closest(".chip-label");
           if (!cb.checked) {
-            if (selectedNames.includes(cb.value)) {
-              cb.disabled = true;
-              label.classList.add("disabled");
-            } else {
-              cb.disabled = false;
-              label.classList.remove("disabled");
-            }
+            if (selectedNames.includes(cb.value)) { cb.disabled = true; label.classList.add("disabled"); } 
+            else { cb.disabled = false; label.classList.remove("disabled"); }
           } else {
-            cb.disabled = false;
-            label.classList.remove("disabled");
+            cb.disabled = false; label.classList.remove("disabled");
           }
         });
+        saveSession();
       }
 
       function syncUniqueMealSelection() {
-        const allSelects = document.querySelectorAll(".meal-select");
-        const selectedMeals = Array.from(allSelects)
-          .map((select) => select.value)
-          .filter((val) => val !== "");
-
+        const allSelects = document.querySelectorAll(".md-select");
+        const selectedMeals = Array.from(allSelects).map(s => s.value).filter(v => v !== "");
         allSelects.forEach((select) => {
-          const options = select.querySelectorAll("option");
-          options.forEach((option) => {
+          select.querySelectorAll("option").forEach((option) => {
             if (option.value === "") return;
-            if (
-              selectedMeals.includes(option.value) &&
-              select.value !== option.value
-            ) {
-              option.disabled = true;
-            } else {
-              option.disabled = false;
-            }
+            option.disabled = selectedMeals.includes(option.value) && select.value !== option.value;
           });
         });
+        saveSession();
       }
 
-      function removeEntry(id) {
-        const entries = document.querySelectorAll(".meal-entry");
-        if (entries.length > 1) {
-          document.getElementById(`entry-${id}`).remove();
+      function removeEntry(idStr) {
+        if (document.querySelectorAll(".meal-entry").length > 1) {
+          document.getElementById(idStr)?.remove();
           syncUniqueSelection();
           syncUniqueMealSelection();
         }
       }
 
+      // --- Form Submission & Validation ---
       document.getElementById("mealForm").addEventListener("submit", (e) => {
         e.preventDefault();
+        saveSession(); 
 
         const fullDateValue = document.getElementById("dateInput").value;
-        const dayOnly = fullDateValue.split("-")[2];
+        const dateParts = fullDateValue.split("-");
+        const formattedDateText = `${parseInt(dateParts[2], 10)} ${monthNames[parseInt(dateParts[1], 10) - 1]}, ${dateParts[0]}`;
 
         const entries = document.querySelectorAll(".meal-entry");
-        const mealData = {};
-        const Names = [];
-        const MealValues = [];
-
-        let summaryHtml = `
-    <div style="margin-bottom: 16px;">
-      <span style="color:var(--md-outline)">Delivery Day:</span>
-      <strong style="color:var(--md-on-surface)">${dayOnly}</strong>
-    </div>
-    <hr style="border:0; border-top:1px solid var(--md-surface-variant); margin:0 0 16px 0">`;
+        const mealData = {}; const Names = []; const MealValues = [];
+        
+        // Reset Optimistic Totals for this submission
+        window.optimisticTotals = { morning: 0, day: 0, night: 0 };
+        uiSummaryHtmlPreview = `<div class="summary-date"><span class="material-symbols-outlined" style="font-size: 18px;">calendar_today</span> ${formattedDateText}</div>`;
+        uiSummaryHtmlReceipt = `<div class="summary-date"><span class="material-symbols-outlined" style="font-size: 16px;">calendar_today</span> ${formattedDateText}</div>`;
 
         entries.forEach((entry) => {
-          const mealSelect = entry.querySelector(".meal-select");
+          const mealSelect = entry.querySelector(".md-select");
           const mealValue = mealSelect.value;
-          const mealText = mealSelect.options[mealSelect.selectedIndex].text;
-          const checkedCheckboxes = entry.querySelectorAll(
-            'input[type="checkbox"]:checked',
-          );
+          const mealText = mealSelect.options[mealSelect.selectedIndex]?.text || "";
+          const checkedCheckboxes = entry.querySelectorAll('input[type="checkbox"]:checked');
 
           if (checkedCheckboxes.length > 0 && mealValue) {
             const currentEntryNames = [];
+            let count = checkedCheckboxes.length;
+
+            // Calculate Optimistic Totals based on keywords
+            const mText = mealText.toLowerCase() + mealValue.toLowerCase();
+            if (mText.includes('সকাল') || mText.includes('morning') || mText.includes('m1') || mText.includes('m2')) {
+              window.optimisticTotals.morning += count;
+            } else if (mText.includes('রাত') || mText.includes('night') || mText.includes('n1') || mText.includes('n2') || mText.includes('dinner')) {
+              window.optimisticTotals.night += count;
+            } else {
+              window.optimisticTotals.day += count;
+            }
+
             checkedCheckboxes.forEach((cb) => {
-              const personName = cb.value;
-              mealData[personName] = mealValue;
-              Names.push(personName);
+              mealData[cb.value] = mealValue;
+              Names.push(cb.value);
               MealValues.push(mealValue);
-              currentEntryNames.push(personName);
+              currentEntryNames.push(cb.value);
             });
 
-            summaryHtml += `
-        <div style="margin-bottom:16px; padding: 12px; background: var(--md-surface-container); border-radius: 12px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-            <strong style="color:var(--md-on-surface);">
-              <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: text-bottom;">restaurant</span>
-              ${mealText}
-            </strong>
-            <span style="background: var(--md-primary-container); color: var(--md-on-primary-container); padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">
-              ${currentEntryNames.length} ${currentEntryNames.length === 1 ? "person" : "people"}
-            </span>
-          </div>
-          <span style="color:var(--md-on-surface-variant); font-size: 0.8rem;">${currentEntryNames.join(", ")}</span>
-        </div>`;
+            // Preview UI
+            let namesChipsHtmlPreview = currentEntryNames.map(name => `<div class="name-badge-preview"><span class="material-symbols-outlined" style="font-size: 14px;">person</span> ${name}</div>`).join('');
+            uiSummaryHtmlPreview += `
+              <div class="summary-meal-card-preview">
+                <div class="summary-meal-header-preview">
+                  <span>${mealText}</span>
+                  <span class="summary-meal-count-preview">${currentEntryNames.length}</span>
+                </div>
+                <div class="summary-meal-names-preview">${namesChipsHtmlPreview}</div>
+              </div>`;
+
+            // Compact Receipt UI
+            let namesChipsHtmlReceipt = currentEntryNames.map(name => `<div class="name-badge"><span class="material-symbols-outlined">person</span> ${name}</div>`).join('');
+            uiSummaryHtmlReceipt += `
+              <div class="summary-meal-card">
+                <div class="summary-meal-header">
+                  <span>${mealText}</span>
+                  <span class="summary-meal-count">${currentEntryNames.length}</span>
+                </div>
+                <div class="summary-meal-names">${namesChipsHtmlReceipt}</div>
+              </div>`;
           }
         });
 
         if (Names.length === 0) {
-          showToast(
-            "Please select at least one meal and one person.",
-            "warning",
-            "error",
-          );
+          showToast("Please select meals and names.", "error");
           return;
         }
 
         currentPayload = {
-          subDate: dayOnly,
+          subDate: dateParts[2], 
           subMealData: mealData,
           subNames: Names,
           subMealValues: MealValues,
         };
 
-        console.log("Payload:", currentPayload);
-
-        document.getElementById("previewBox").innerHTML = summaryHtml;
-        document.getElementById("modalOverlay").style.display = "flex";
+        document.getElementById("previewBox").innerHTML = uiSummaryHtmlPreview;
+        openModal("modalOverlay");
       });
 
-      function closeModal() {
-        document.getElementById("modalOverlay").style.display = "none";
+      // --- CSV Parsing Engine ---
+      function parseCSVText(str) {
+        const arr = []; let quote = false; let row = 0, col = 0;
+        for (let c = 0; c < str.length; c++) {
+          let cc = str[c], nc = str[c+1];
+          arr[row] = arr[row] || []; arr[row][col] = arr[row][col] || '';
+          if (cc === '"' && quote && nc === '"') { arr[row][col] += cc; ++c; continue; }
+          if (cc === '"') { quote = !quote; continue; }
+          if (cc === ',' && !quote) { ++col; continue; }
+          if (cc === '\r' && nc === '\n' && !quote) { ++row; col = 0; ++c; continue; }
+          if (cc === '\n' && !quote) { ++row; col = 0; continue; }
+          if (cc === '\r' && !quote) { ++row; col = 0; continue; }
+          arr[row][col] += cc;
+        }
+        return arr;
       }
 
+      // --- API Calls & Daily Totals ---
       async function submitToSheet() {
         const btnConfirm = document.getElementById("btnConfirm");
-        const btnCancel = document.getElementById("btnCancel");
-        const originalText = btnConfirm.innerHTML;
-
         btnConfirm.disabled = true;
-        btnCancel.disabled = true;
-        btnConfirm.innerHTML = `<span class="material-symbols-outlined" style="animation: spin 1s linear infinite; font-size: 18px;">sync</span> Submitting...`;
+        btnConfirm.innerHTML = `<span class="material-symbols-outlined" style="animation: spin 1s linear infinite;">sync</span> <i>Processing...</i>`;
 
         try {
-          const response = await fetch(SHEET_APP_URL, {
+          await fetch(SHEET_APP_URL, {
             method: "POST",
-            headers: {
-              "Content-Type": "text/plain;charset=utf-8",
-            },
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify(currentPayload),
           });
 
-          await response.text();
-
-          closeModal();
-          showToast("Delivery processed successfully!", "check_circle", "success");
-
-          // Slight delay to allow the user to see the success toast before reloading
-          setTimeout(() => {
-            location.reload();
-          }, 1500);
+          closeModal("modalOverlay");
+          showToast("Delivery processed!", "check_circle");
+          
+          fetchAndShowTotals(parseInt(currentPayload.subDate, 10));
         } catch (error) {
-          console.error("Submission failed:", error);
-          showToast(
-            "Failed to submit order. Please try again.",
-            "error",
-            "error",
-          );
-
+          showToast("Failed to submit. Check network.", "error");
           btnConfirm.disabled = false;
-          btnCancel.disabled = false;
-          btnConfirm.innerHTML = originalText;
+          btnConfirm.innerHTML = `<span class="material-symbols-outlined">check_circle</span> Confirm`;
         }
+      }
+
+      async function fetchAndShowTotals(dayInt) {
+        openModal("totalsOverlay");
+        document.getElementById("totalsLoadingContent").style.display = "block";
+        document.getElementById("totalsDataContent").style.display = "none";
+        
+        try {
+          // Bypasses browser & edge caches aggressively
+          const response = await fetch(`${ALL_DAYS_CSV}&_cb=${crypto.randomUUID()}`, {
+             cache: 'no-store',
+             headers: { 'Cache-Control': 'no-cache' }
+          });
+          const rows = parseCSVText(await response.text());
+          const colIndex = dayInt + 1; // Assuming day 1 is column index 2
+
+          // Parse raw string robustly and fallback to 0
+          let fDay = parseInt((rows[48] && rows[48][colIndex]) ? rows[48][colIndex].replace(/\D/g, '') : "0") || 0;
+          let fNight = parseInt((rows[49] && rows[49][colIndex]) ? rows[49][colIndex].replace(/\D/g, '') : "0") || 0;
+          let fMorning = parseInt((rows[50] && rows[50][colIndex]) ? rows[50][colIndex].replace(/\D/g, '') : "0") || 0;
+
+          // Optimistically add the currently submitted quantities
+          // This fakes instant updates while waiting for Google's 5 min Publish cycle
+          fDay += window.optimisticTotals.day;
+          fNight += window.optimisticTotals.night;
+          fMorning += window.optimisticTotals.morning;
+
+          // Inject into UI
+          document.getElementById("totalDay").innerText = fDay;
+          document.getElementById("totalNight").innerText = fNight;
+          document.getElementById("totalMorning").innerText = fMorning;
+
+          document.getElementById("receiptMealDetails").innerHTML = uiSummaryHtmlReceipt;
+
+          document.getElementById("totalsLoadingContent").style.display = "none";
+          document.getElementById("totalsDataContent").style.display = "block";
+        } catch (err) {
+          showToast("Could not fetch daily totals.", "error");
+          setTimeout(finishAndReload, 2000); // Fail gracefully
+        }
+      }
+
+      async function refreshCounts() {
+        const icon = document.getElementById("refreshIcon");
+        icon.style.animation = "spin 1s linear infinite";
+        
+        try {
+            const dayInt = parseInt(currentPayload.subDate, 10);
+            const response = await fetch(`${ALL_DAYS_CSV}&_cb=${crypto.randomUUID()}`, { cache: 'no-store' });
+            const rows = parseCSVText(await response.text());
+            const colIndex = dayInt + 1; 
+
+            // Explicitly grabbing pure numbers directly from the server
+            let fDay = parseInt((rows[48] && rows[48][colIndex]) ? rows[48][colIndex].replace(/\D/g, '') : "0") || 0;
+            let fNight = parseInt((rows[49] && rows[49][colIndex]) ? rows[49][colIndex].replace(/\D/g, '') : "0") || 0;
+            let fMorning = parseInt((rows[50] && rows[50][colIndex]) ? rows[50][colIndex].replace(/\D/g, '') : "0") || 0;
+
+            // Notice we do NOT add optimisticTotals here. We strictly show Server Truth.
+            document.getElementById("totalDay").innerText = fDay;
+            document.getElementById("totalNight").innerText = fNight;
+            document.getElementById("totalMorning").innerText = fMorning;
+            
+            showToast("Counts fully synced with server", "cloud_sync");
+        } catch (err) {
+            showToast("Failed to fetch latest counts", "error");
+        }
+        
+        icon.style.animation = "none";
+      }
+
+      // --- Ultra High Quality Image Capture ---
+      function downloadSummary() {
+        const element = document.getElementById("captureArea");
+        
+        html2canvas(element, {
+            scale: 5, // Upgraded Scale for ultra crisp rendering
+            backgroundColor: "#ffffff",
+            useCORS: true,
+            logging: false,
+            onclone: (clonedDoc) => {
+              // Ensure cloned version enforces geometricPrecision explicitly 
+              clonedDoc.getElementById("captureArea").style.textRendering = "geometricPrecision";
+            }
+        }).then(canvas => {
+            const link = document.createElement("a");
+            const dateStr = document.getElementById("dateInput").value;
+            link.download = `Delivery_Summary_${dateStr}.png`;
+            link.href = canvas.toDataURL("image/png", 1.0);
+            link.click();
+        }).catch(err => {
+            showToast("Failed to generate HD image.", "error");
+        });
+      }
+
+      function finishAndReload() {
+        location.reload();
       }
 
       init();
