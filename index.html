@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="bn">
   <head>
     <meta charset="UTF-8" />
@@ -102,7 +102,6 @@
         --shadow-2: 0px 1px 2px 0px rgba(0, 0, 0, 0.8), 0px 2px 6px 2px rgba(0, 0, 0, 0.6);
         --shadow-3: 0px 1px 3px 0px rgba(0, 0, 0, 0.8), 0px 4px 8px 3px rgba(0, 0, 0, 0.6);
 
-        /* FIX: Re-alias variables to fix CSS cascading issues in dark mode */
         --primary: var(--md-primary);
         --primary-light: var(--md-primary-container);
         --bg-body: var(--md-surface-container);
@@ -137,7 +136,7 @@
         font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
       }
 
-      /* Custom Spinner */
+      /* Custom Spinner & Animations */
       .spinner {
         width: 20px;
         height: 20px;
@@ -150,6 +149,9 @@
       }
       .spinner.primary { border-color: var(--md-primary); border-bottom-color: transparent; }
       @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      
+      @keyframes spin { 100% { transform: rotate(360deg); } }
+      .spinning { animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
 
       /* Skeleton Loading Styles */
       .skeleton {
@@ -169,6 +171,7 @@
       }
       .skeleton-text { height: 16px; margin-bottom: 8px; width: 100%; border-radius: 4px; }
       .skeleton-avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; }
+      .skeleton-msg-bubble { height: 40px; width: 60%; border-radius: 20px; margin-top: 4px; }
 
       /* --- লগইন স্ক্রিন --- */
       #auth-screen {
@@ -328,7 +331,7 @@
 
       .msg-avatar {
         width: 32px; height: 32px; border-radius: 50%; background: var(--md-surface-variant);
-        flex-shrink: 0; margin-bottom: 20px; object-fit: cover;
+        flex-shrink: 0; margin-bottom: 20px; object-fit: cover; border: 1px solid var(--md-outline-variant);
       }
       .msg-content-wrapper { display: flex; flex-direction: column; gap: 4px; }
       .message-group.sent .msg-content-wrapper { align-items: flex-end; }
@@ -442,18 +445,16 @@
       }
       .toast-box.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
 
-      /* Theme Toggle Button */
-      #theme-toggle {
+      /* Top Action Buttons */
+      .action-btn {
         background: transparent; border: none; color: var(--md-on-surface-variant);
         cursor: pointer; display: flex; align-items: center; justify-content: center;
         width: 36px; height: 36px; border-radius: 50%; transition: background-color 0.2s;
       }
-      #theme-toggle:hover { background-color: var(--md-surface-variant); }
-      
-      .toggle-icon-wrap {
-          display: flex; transition: transform 0.3s ease;
-      }
+      .action-btn:hover { background-color: var(--md-surface-variant); }
+      .toggle-icon-wrap { display: flex; transition: transform 0.3s ease; }
       #theme-toggle:active .toggle-icon-wrap { transform: rotate(45deg); }
+
     </style>
   </head>
   <body>
@@ -482,7 +483,9 @@
             <label>ই-মেল</label>
             <input type="email" id="loginEmail" placeholder="আপনার ই-মেল দিন" required />
           </div>
-          <button type="submit" class="btn-main" id="loginBtn">লগইন করুন</button>
+          <button type="submit" class="btn-main" id="loginBtn"><span class="material-symbols-outlined">
+            login
+          </span> লগইন করুন</button>
         </form>
 
         <form id="signupForm" style="display: none">
@@ -496,7 +499,9 @@
             <label>ই-মেল দিন</label>
             <input type="email" id="signupEmail" placeholder="একটি নতুন ই-মেল দিন" required />
           </div>
-          <button type="submit" class="btn-main" id="signupBtn">অ্যাকাউন্ট তৈরি করুন</button>
+          <button type="submit" class="btn-main" id="signupBtn"><span class="material-symbols-outlined">
+              add_circle
+            </span> অ্যাকাউন্ট তৈরি করুন</button>
         </form>
       </div>
     </div>
@@ -505,11 +510,19 @@
       <header>
         <h3 id="view-title" style="font-size: 20px; font-weight: 600">হোম</h3>
         <div style="display: flex; gap: 10px; align-items: center">
-          <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
+          <!-- Refresh Button -->
+          <button id="refresh-btn" class="action-btn" onclick="refreshData()" aria-label="Refresh Data">
+            <div class="toggle-icon-wrap">
+                <span class="material-symbols-outlined" id="refresh-icon">refresh</span>
+            </div>
+          </button>
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="action-btn" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
             <div class="toggle-icon-wrap">
                 <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
             </div>
           </button>
+          <!-- Avatar -->
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--md-surface-variant); overflow: hidden; cursor: pointer; border: 1px solid var(--md-outline-variant);">
             <img id="headerAvatar" src="" style="width: 100%; height: 100%; object-fit: cover" />
           </div>
@@ -674,6 +687,9 @@
       let tempSelectedMeal = null;
       let mealLockTimer = null;
       let tempBase64Pic = null;
+      
+      // Profiles Cache for Messages
+      const profileCache = {};
 
       // Global API Fetch wrapper to ensure always up-to-date data
       async function apiFetch(url, options = {}) {
@@ -694,11 +710,22 @@
             </div>
           `).join('');
       }
+      function getSkeletonChat(count = 4) {
+          return Array(count).fill(`
+            <div class="message-group" style="align-items: center; max-width: 100%;">
+                <div class="skeleton skeleton-avatar" style="width:32px; height:32px; margin-bottom: 0;"></div>
+                <div style="flex: 1; width: 100%;"><div class="skeleton skeleton-msg-bubble"></div></div>
+            </div>
+          `).join('');
+      }
+      function getSkeletonReport() {
+          return `<div><div class="skeleton skeleton-text" style="height: 120px; border-radius: 24px; margin-bottom: 24px"></div><div class="skeleton skeleton-text" style="height: 200px; border-radius: 12px"></div></div>`;
+      }
 
       // Initialize initial skeletons
       document.getElementById("home-content").innerHTML = getSkeletonList(2);
-      document.getElementById("chatBox").innerHTML = getSkeletonList(4);
-      document.getElementById("report-content").innerHTML = `<div><div class="skeleton skeleton-text" style="height: 120px; border-radius: 24px; margin-bottom: 24px"></div><div class="skeleton skeleton-text" style="height: 200px; border-radius: 12px"></div></div>`;
+      document.getElementById("chatBox").innerHTML = getSkeletonChat(4);
+      document.getElementById("report-content").innerHTML = getSkeletonReport();
       document.getElementById("notif-box").innerHTML = getSkeletonList(3);
       document.getElementById("others-meal-list").innerHTML = getSkeletonLines(3);
 
@@ -706,6 +733,41 @@
         const isDark = document.body.classList.toggle("dark-mode");
         localStorage.setItem("theme", isDark ? "dark" : "light");
         document.getElementById("theme-icon").innerText = isDark ? "light_mode" : "dark_mode";
+      }
+
+      // Live Refresh App Data
+      async function refreshData() {
+        const refreshIcon = document.getElementById("refresh-icon");
+        refreshIcon.classList.add("spinning");
+        
+        try {
+            // Refresh Meal Lock Status dynamically
+            document.getElementById("mealBtnText").innerHTML = `<span style="font-size: 15px; font-weight: 600; display:flex; align-items:center; gap:8px;"><span class="spinner primary"></span> চেক করা হচ্ছে...</span>`;
+            await fetchMealLockTimes();
+
+            const currentNav = localStorage.getItem("currentNav") || "home";
+            
+            if (currentNav === "home") {
+                await fetchReportData(true);
+                if (document.getElementById("others-meal-list").style.display === "block") {
+                    await fetchOthersMeals();
+                }
+                if (document.getElementById("all-days-meal-container").style.display === "block") {
+                    await fetchAllDaysMeals(true);
+                }
+            } else if (currentNav === "report") {
+                await fetchReportData(true);
+            } else if (currentNav === "messenger") {
+                await fetchMessages(true);
+            } else if (currentNav === "notification") {
+                await fetchNotifications(true);
+            }
+            showToast("ডেটা রিফ্রেশ করা হয়েছে");
+        } catch (e) {
+            showToast("রিফ্রেশ করতে সমস্যা হয়েছে");
+        } finally {
+            setTimeout(() => refreshIcon.classList.remove("spinning"), 500);
+        }
       }
 
       window.addEventListener("DOMContentLoaded", () => {
@@ -964,32 +1026,81 @@
         finally { btn.innerHTML = 'ছবি সেভ করুন'; btn.disabled = false; }
       }
 
-      async function fetchMessages() {
+      // Fetch User Profiles (For other users in Chat)
+      async function fetchUserProfile(fp, name) {
+        if (profileCache[fp]) return;
+        profileCache[fp] = 'fetching';
+        try {
+            const res = await apiFetch(`${SCRIPT_URL_LOGIN}?action=getprofile&fingerprint=${encodeURIComponent(fp)}&name=${encodeURIComponent(name)}`);
+            const data = await res.json();
+            if (data && data.profilePic) {
+                profileCache[fp] = data.profilePic;
+                document.querySelectorAll(`.avatar-${fp}`).forEach(img => img.src = data.profilePic);
+            } else {
+                profileCache[fp] = `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`;
+                document.querySelectorAll(`.avatar-${fp}`).forEach(img => img.src = profileCache[fp]);
+            }
+        } catch (e) {
+            delete profileCache[fp]; // Allow retry next time
+        }
+      }
+
+      async function fetchMessages(forceSkeleton = false) {
         const box = document.getElementById("chatBox");
+        if(forceSkeleton || !box.innerHTML.includes('message-group')){
+            box.innerHTML = getSkeletonChat(4);
+        }
+
         try {
           const response = await apiFetch(`${SCRIPT_URL_MSG}?action=getMessages`);
           const messagesData = await response.json();
           
-          // মেসেজ কাউন্ট এবং নোটিফিকেশন ব্যাজ লজিক
-          const lastMsgCount = parseInt(localStorage.getItem("abid_last_msg_count")) || 0;
-          const currentCount = messagesData.length;
+          // মেসেজ কাউন্ট এবং নোটিফিকেশন ব্যাজ লজিক (Last Message Time অনুযায়ী)
           const navMsgBadge = document.getElementById("nav-msg-badge");
+          const currentNav = localStorage.getItem("currentNav");
+          const currentCount = messagesData.length;
           
-          if (localStorage.getItem("currentNav") === "messenger") {
-              // মেসেজ ট্যাবে থাকলে স্টোরেজ আপডেট করে ব্যাজ মুছে দিবে
-              localStorage.setItem("abid_last_msg_count", currentCount);
-              if (navMsgBadge) navMsgBadge.style.display = "none";
-          } else {
-              // মেসেজ ট্যাবের বাইরে থাকলে আনরিড মেসেজ চেক করবে
-              const unreadCount = currentCount - lastMsgCount;
-              if (unreadCount > 0 && navMsgBadge) {
-                  navMsgBadge.innerText = unreadCount;
-                  navMsgBadge.style.display = "block";
+          if (currentCount > 0) {
+              const latestMsgTime = messagesData[currentCount - 1].dateTime;
+              
+              if (currentNav === "messenger") {
+                  // মেসেজ ট্যাবে থাকলে সর্বশেষ মেসেজের সময় (Time) সেভ করবে
+                  localStorage.setItem("abid_last_msg_time", latestMsgTime);
+                  localStorage.setItem("abid_last_msg_count", currentCount); // ফলব্যাক কাউন্ট
+                  if (navMsgBadge) navMsgBadge.style.display = "none";
+              } else {
+                  // মেসেজ ট্যাবের বাইরে থাকলে সময় অনুযায়ী আনরিড মেসেজ চেক করবে
+                  const savedTime = localStorage.getItem("abid_last_msg_time");
+                  const savedCount = parseInt(localStorage.getItem("abid_last_msg_count")) || 0;
+                  
+                  let unreadCount = 0;
+                  
+                  if (savedTime) {
+                      // পিছন থেকে লুপ করে দেখা হচ্ছে সংরক্ষিত সময়ের পর কয়টি নতুন মেসেজ এসেছে
+                      for (let i = currentCount - 1; i >= 0; i--) {
+                          if (messagesData[i].dateTime === savedTime) {
+                              break;
+                          }
+                          unreadCount++;
+                      }
+                      // একই মিনিটে একাধিক মেসেজ আসলে বা সময় না মিললে ডাবল চেকিং 
+                      if (unreadCount === 0 && currentCount > savedCount) {
+                          unreadCount = currentCount - savedCount;
+                      }
+                  } else {
+                      unreadCount = currentCount - savedCount;
+                  }
+                  
+                  if (unreadCount > 0 && navMsgBadge) {
+                      navMsgBadge.innerText = unreadCount;
+                      navMsgBadge.style.display = "block";
+                  }
               }
+          } else {
+              if (navMsgBadge) navMsgBadge.style.display = "none";
           }
           
-          // শুধুমাত্র মেসেজ ট্যাবে থাকলে রেন্ডার করবে
-          if(localStorage.getItem("currentNav") === "messenger" || !box.innerHTML.includes('message-group')){
+          if(currentNav === "messenger" || forceSkeleton){
             renderMessages(messagesData);
           }
 
@@ -1009,12 +1120,27 @@
           return;
         }
         
+        let profilesToFetch = [];
+
         box.innerHTML = msgs.map((m) => {
           const isSentByMe = m.userFingerPrint === currentUserFP;
           const msgType = isSentByMe ? "sent" : "received";
-          const avatarSrc = isSentByMe && localStorage.getItem("userProfilePic") 
-            ? localStorage.getItem("userProfilePic") 
-            : `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(m.userName)}`;
+          
+          // Avatar Logic
+          let avatarSrc = `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(m.userName)}`;
+          if (isSentByMe && localStorage.getItem("userProfilePic")) {
+              avatarSrc = localStorage.getItem("userProfilePic");
+          } else if (m.profilePic) {
+              avatarSrc = m.profilePic;
+          } else if (profileCache[m.userFingerPrint] && profileCache[m.userFingerPrint] !== 'fetching') {
+              avatarSrc = profileCache[m.userFingerPrint];
+          } else if (!isSentByMe) {
+              if(!profileCache[m.userFingerPrint]){
+                  profilesToFetch.push({ fp: m.userFingerPrint, name: m.userName });
+              }
+          }
+
+          const avatarClass = `msg-avatar avatar-${m.userFingerPrint}`;
           
           // অ্যাডমিন ল্যাবেলিং
           let senderDisplay = isSentByMe ? "আপনি" : m.userName;
@@ -1022,10 +1148,13 @@
               senderDisplay = `অ্যাডমিনিস্ট্রেটর <span class="material-symbols-outlined" style="font-size: 13px; color: var(--md-primary); vertical-align: text-center;">shield_person</span> <span style="color: var(--md-primary); font-weight: 700;"> ${isSentByMe ? 'আপনি' : 'আবিদ'}</span>`;
           }
 
-          return `<div class="message-group ${msgType}"><img src="${avatarSrc}" class="msg-avatar"><div class="msg-content-wrapper"><span class="sender-name">${senderDisplay}</span><div class="bubble">${m.message}</div><span class="msg-time">${m.dateTime}</span></div></div>`;
+          return `<div class="message-group ${msgType}"><img src="${avatarSrc}" class="${avatarClass}"><div class="msg-content-wrapper"><span class="sender-name">${senderDisplay}</span><div class="bubble">${m.message}</div><span class="msg-time">${m.dateTime}</span></div></div>`;
         }).join("");
         
         box.scrollTop = box.scrollHeight;
+
+        // Fetch missing profiles asynchronously
+        profilesToFetch.forEach(user => fetchUserProfile(user.fp, user.name));
       }
 
       async function sendMsg() {
@@ -1051,7 +1180,7 @@
              senderDisplay = `<span class="material-symbols-outlined" style="font-size: 13px; color: var(--md-primary); vertical-align: text-bottom;">shield_person</span> <span style="color: var(--md-primary); font-weight: 700;">অ্যাডমিনিস্ট্রেটর · আপনি (পাঠানো হচ্ছে...)</span>`;
         }
 
-        box.insertAdjacentHTML("beforeend", `<div class="message-group sent" id="temp-msg" style="opacity: 0.6;"><img src="${avatarSrc}" class="msg-avatar"><div class="msg-content-wrapper"><span class="sender-name">${senderDisplay}</span><div class="bubble">${text}</div><span class="msg-time">${dateTimeStr}</span></div></div>`);
+        box.insertAdjacentHTML("beforeend", `<div class="message-group sent" id="temp-msg" style="opacity: 0.6;"><img src="${avatarSrc}" class="msg-avatar avatar-${fp}"><div class="msg-content-wrapper"><span class="sender-name">${senderDisplay}</span><div class="bubble">${text}</div><span class="msg-time">${dateTimeStr}</span></div></div>`);
         box.scrollTop = box.scrollHeight;
 
         try {
@@ -1063,7 +1192,7 @@
             input.value = "";
             const tempMsg = document.getElementById("temp-msg");
             if (tempMsg) tempMsg.remove(); // সাকসেস হলে fetchMessage নতুন করে রেন্ডার করবে 
-            setTimeout(fetchMessages, 1000);
+            setTimeout(() => fetchMessages(true), 500);
           } else throw new Error();
         } catch (error) {
           showToast("মেসেজ পাঠাতে সমস্যা হয়েছে।");
@@ -1186,7 +1315,6 @@
             localStorage.setItem("abid_meal", JSON.stringify(tempSelectedMeal));
             applyMealLockState(); closeMealPopup(); showToast("মিল আপডেট সম্পন্ন হয়েছে");
             
-            // "আজকের মিল এন্ট্রি দেখুন" সেকশনটি অটোমেটিক্যালি ওপেন করা হচ্ছে
             const list = document.getElementById("others-meal-list");
             if (list.style.display === "none" || list.style.display === "") {
                toggleOthersMeal();
@@ -1211,7 +1339,7 @@
 
       async function fetchOthersMeals() {
         const list = document.getElementById("others-meal-list");
-        list.innerHTML = getSkeletonLines(3);
+        list.innerHTML = getSkeletonList(2);
         try {
           const res = await apiFetch(`${SCRIPT_URL_MEAL}?action=getMeals`);
           const data = await res.json();
@@ -1229,16 +1357,16 @@
         } catch (error) { list.innerHTML = '<div style="padding: 15px; text-align: center; color: var(--danger);">ডেটা লোড করতে ব্যর্থ হয়েছে।</div>'; }
       }
 
-      async function fetchAllDaysMeals() {
+      async function fetchAllDaysMeals(forceRefresh = false) {
         const container = document.getElementById("all-days-meal-container");
         const btnIcon = document.getElementById("all-days-meal-icon");
 
-        if (container.style.display === "block") {
+        if (!forceRefresh && container.style.display === "block") {
           container.style.display = "none"; btnIcon.style.transform = "scale(1)"; return;
         }
 
         container.style.display = "block"; btnIcon.style.transform = "scale(1.2)";
-        container.innerHTML = getSkeletonLines(4);
+        container.innerHTML = getSkeletonList(2);
 
         try {
           const response = await apiFetch(CSV_URL_ALL_DAYS);
@@ -1280,7 +1408,15 @@
         return { headers, data };
       }
 
-      async function fetchReportData() {
+      async function fetchReportData(forceSkeleton = false) {
+        const homeContent = document.getElementById("home-content");
+        const reportContent = document.getElementById("report-content");
+        
+        if (forceSkeleton || !homeContent.innerHTML.trim() || homeContent.innerHTML.includes('skeleton')) {
+            homeContent.innerHTML = getSkeletonList(2);
+            reportContent.innerHTML = getSkeletonReport();
+        }
+
         try {
           const response = await apiFetch(CSV_URL_1);
           const text = await response.text();
@@ -1288,8 +1424,8 @@
           renderHomeData(); renderReportData();
         } catch (error) {
           const errHTML = '<p style="text-align:center; padding: 20px; color: var(--danger); font-weight:600;">ডেটা লোড করতে সমস্যা হয়েছে!</p>';
-          document.getElementById("home-content").innerHTML = errHTML;
-          document.getElementById("report-content").innerHTML = errHTML;
+          homeContent.innerHTML = errHTML;
+          reportContent.innerHTML = errHTML;
         }
       }
 
@@ -1348,7 +1484,12 @@
         `;
       }
 
-      async function fetchNotifications() {
+      async function fetchNotifications(forceSkeleton = false) {
+        const box = document.getElementById("notif-box");
+        if(forceSkeleton || !box.innerHTML.includes('notif-item')){
+            box.innerHTML = getSkeletonList(3);
+        }
+
         try {
           const url = new URL(SCRIPT_URL_NOTIF);
           url.searchParams.append("action", "getNotifications");
@@ -1387,18 +1528,18 @@
       }
 
       function markRead(id) {
-        let notifs = JSON.parse(localStorage.getItem("abid_notifs")) || [];
-        let index = notifs.findIndex((n) => String(n.id) === String(id));
+        let localNotifs = JSON.parse(localStorage.getItem("abid_notifs")) || [];
+        let index = localNotifs.findIndex((n) => String(n.id) === String(id));
         if (index !== -1) {
-          notifs[index].read = true;
-          localStorage.setItem("abid_notifs", JSON.stringify(notifs));
+          localNotifs[index].read = true;
+          localStorage.setItem("abid_notifs", JSON.stringify(localNotifs));
           renderNotifications(); showToast("পঠিত হিসেবে চিহ্নিত হয়েছে");
         }
       }
       function clearNotif() {
-        let notifs = JSON.parse(localStorage.getItem("abid_notifs")) || [];
-        notifs.forEach((n) => (n.read = true));
-        localStorage.setItem("abid_notifs", JSON.stringify(notifs));
+        let localNotifs = JSON.parse(localStorage.getItem("abid_notifs")) || [];
+        localNotifs.forEach((n) => (n.read = true));
+        localStorage.setItem("abid_notifs", JSON.stringify(localNotifs));
         renderNotifications(); showToast("সব নোটিফিকেশন পঠিত হিসেবে চিহ্নিত করা হয়েছে");
       }
       
