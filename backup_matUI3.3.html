@@ -710,7 +710,7 @@
             </div>
           `).join('');
       }
-      function getSkeletonChat(count = 4) {
+      function getSkeletonChat(count = 6) {
           return Array(count).fill(`
             <div class="message-group" style="align-items: center; max-width: 100%;">
                 <div class="skeleton skeleton-avatar" style="width:32px; height:32px; margin-bottom: 0;"></div>
@@ -724,7 +724,7 @@
 
       // Initialize initial skeletons
       document.getElementById("home-content").innerHTML = getSkeletonList(2);
-      document.getElementById("chatBox").innerHTML = getSkeletonChat(4);
+      document.getElementById("chatBox").innerHTML = getSkeletonChat(6);
       document.getElementById("report-content").innerHTML = getSkeletonReport();
       document.getElementById("notif-box").innerHTML = getSkeletonList(3);
       document.getElementById("others-meal-list").innerHTML = getSkeletonLines(3);
@@ -1048,7 +1048,7 @@
       async function fetchMessages(forceSkeleton = false) {
         const box = document.getElementById("chatBox");
         if(forceSkeleton || !box.innerHTML.includes('message-group')){
-            box.innerHTML = getSkeletonChat(4);
+            box.innerHTML = getSkeletonChat(6);
         }
 
         try {
@@ -1339,7 +1339,7 @@
 
       async function fetchOthersMeals() {
         const list = document.getElementById("others-meal-list");
-        list.innerHTML = getSkeletonList(2);
+        list.innerHTML = getSkeletonList(3);
         try {
           const res = await apiFetch(`${SCRIPT_URL_MEAL}?action=getMeals`);
           const data = await res.json();
@@ -1487,7 +1487,7 @@
       async function fetchNotifications(forceSkeleton = false) {
         const box = document.getElementById("notif-box");
         if(forceSkeleton || !box.innerHTML.includes('notif-item')){
-            box.innerHTML = getSkeletonList(3);
+            box.innerHTML = getSkeletonList(5);
         }
 
         try {
@@ -1556,4 +1556,4 @@
       }
     </script>
   </body>
-            </html>
+</html>
